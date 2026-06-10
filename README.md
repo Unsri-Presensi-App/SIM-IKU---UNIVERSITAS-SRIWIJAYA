@@ -127,5 +127,3 @@ Lalu buka `http://localhost:8080/iku/1` di browser.
 - Aplikasi berjalan di **Docker**, jadi tidak perlu install PHP atau MySQL di komputer Anda.
 
 ---
-
-Selamat mencoba! Jika ada kendala, silakan tanyakan. 🚀

@@ -45,6 +45,24 @@ services:
     networks:
       - sim_iku_network
 
+  # phpMyAdmin (untuk akses database via browser)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: sim_iku_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"           # Akses via http://localhost:8081
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - PMA_USER=sim_user
+      - PMA_PASSWORD=secret123
+      - UPLOAD_LIMIT=100M
+    depends_on:
+      - db
+    networks:
+      - sim_iku_network
+
 networks:
   sim_iku_network:
     driver: bridge

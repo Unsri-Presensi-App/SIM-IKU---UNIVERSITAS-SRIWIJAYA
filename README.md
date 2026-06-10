@@ -1,5 +1,5 @@
 
-## 🚀 Panduan Instalasi SIM IKU dari GitHub (Clone + Docker)
+## 🚀 Panduan Instalasi SIM IKU
 
 Ikuti langkah-langkah di bawah ini secara berurutan.
 

@@ -127,3 +127,4 @@ Lalu buka `http://localhost:8080/iku/1` di browser.
 - Aplikasi berjalan di **Docker**, jadi tidak perlu install PHP atau MySQL di komputer Anda.
 
 ---
+<img width="433" height="577" alt="WhatsApp_Image_2024-11-12_at_13 12 53_f19d0de4-removebg-preview" src="https://github.com/user-attachments/assets/891d0a6b-5963-44af-b3ad-f47b4f22363d" />

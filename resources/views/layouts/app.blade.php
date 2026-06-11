@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
+@stack('styles')
+</head>
+<body>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -371,7 +374,7 @@
       </div>
     </div>
 
-    <a href="#" class="nav-item">
+    <a href="{{ url('/dashboard') }}" class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
       <span class="nav-left"><span class="nav-icon">⌂</span> Dashboard</span>
     </a>
     <a href="#" class="nav-item">
@@ -492,5 +495,29 @@
     });
   });
 </script>
+<script>
+  // ── Collapsible nav groups ─────────────────────────
+  document.querySelectorAll('.nav-parent[data-group]').forEach(parent => {
+    parent.addEventListener('click', () => {
+      const id      = parent.dataset.group;
+      const children = document.getElementById('group-' + id);
+      const isOpen  = parent.classList.contains('open');
+
+      if (isOpen) {
+        parent.classList.remove('open');
+        children.classList.add('collapsed');
+      } else {
+        parent.classList.add('open');
+        children.classList.remove('collapsed');
+      }
+    });
+  });
+</script>
+
+{{-- TAMBAHKAN BARIS INI --}}
+@stack('scripts')
+
+</body>
+</html>
 </body>
 </html>

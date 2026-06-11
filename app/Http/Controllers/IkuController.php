@@ -2,94 +2,82 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class IkuController extends Controller
 {
-    public function ikuSatu()
+    public function ikuSatu(Request $request)
     {
-        // Ambil data target IKU 1 dari tabel riil
+        // 1. Tangkap parameter dari UI (Dropdown)
+        $selectedFakultas = $request->input('fakultas', 'Universitas Sriwijaya');
+        $selectedTahun = $request->input('tahun', '2026');
+
+        // 2. Logic Tombol Export Excel
+        if ($request->has('export') && $request->export == 'excel') {
+            return redirect()->back()->with('info', 'File Excel untuk ' . $selectedFakultas . ' sedang diproses (Fitur ini butuh library Laravel Excel).');
+        }
+
+        // 3. Daftar Lengkap Fakultas Sesuai Data
+        $listFakultas = ['FE', 'FH', 'FT', 'FK', 'FP', 'FKIP', 'FISIP', 'FMIPA', 'FASILKOM', 'FKM', 'SPS'];
+
+        // 4. Mapping Data Mentah (Mhs Masuk & Lulus) karena DB Seeder hanya simpan Persentase Target
+        $raw = [
+            'Universitas Sriwijaya' => ['D3'=>[1566,269], 'S1'=>[33134,5004], 'S2'=>[2615,536], 'S3'=>[837,97]],
+            'FE' => ['D3'=>[733,126], 'S1'=>[2718,479], 'S2'=>[290,58], 'S3'=>[129,2]],
+            'FH' => ['S1'=>[2158,350], 'S2'=>[413,83], 'S3'=>[110,6]],
+            'FT' => ['S1'=>[3912,360], 'S2'=>[179,36], 'S3'=>[203,22]],
+            'FK' => ['S1'=>[2171,436], 'S2'=>[777,88], 'S3'=>[121,26]],
+            'FP' => ['S1'=>[4691,679], 'S2'=>[92,19], 'S3'=>[33,7]],
+            'FKIP' => ['S1'=>[5932,923], 'S2'=>[357,134], 'S3'=>[66,4]],
+            'FISIP' => ['S1'=>[4531,605], 'S2'=>[182,47], 'S3'=>[106,21]],
+            'FMIPA' => ['S1'=>[2724,526], 'S2'=>[76,19], 'S3'=>[34,9]],
+            'FASILKOM' => ['D3'=>[833,143], 'S1'=>[2332,373], 'S2'=>[66,14], 'S3'=>[16,0]],
+            'FKM' => ['S1'=>[1965,275], 'S2'=>[136,28], 'S3'=>[19,0]],
+            'SPS' => ['S2'=>[47,11]],
+        ];
+
+ // 5. Ambil Target Utama Universitas dari Seeder
         $targetIku = DB::table('target_iku')->where('kode_iku', 'IKU 1')->first();
+        $targetAeePT = $targetIku->target_2026 ?? 43.13;
+
+        $dataTabel = [];
+        // INI PEMBAGI RUMUS AEE (Sesuai PDF Hal 7)
+        $aee_ideal_map = ['D3' => 33.00, 'S1' => 25.00, 'S2' => 50.00, 'S3' => 33.00];
         
-        // Ambil data breakdown per jenjang (D3, S1, S2, S3) untuk tabel rincian
-        $data = DB::table('target_iku')
-            ->whereIn('kode_iku', ['IKU 1_D3', 'IKU 1_S1', 'IKU 1_S2', 'IKU 1_S3'])
-            ->get()
-            ->map(function ($item) {
-                // Set data berdasarkan jenjang
-                $jenjang = '';
-                $aee_ideal = 0;
-                $total_mahasiswa = 0;
-                $lulus_tepat_waktu = 0;
-                $nama_program = '';
-                $tahun_akademik = '2025/2026';
-                $skip_hitung = false;
-                $aee_realisasi = null;
-                
-                switch ($item->kode_iku) {
-                    case 'IKU 1_D3':
-                        $jenjang = 'Diploma Tiga';
-                        $nama_program = 'D3 Semua Prodi';
-                        $aee_ideal = 33;
-                        $total_mahasiswa = 1566;
-                        $lulus_tepat_waktu = 429;
-                        break;
-                    case 'IKU 1_S1':
-                        $jenjang = 'Sarjana';
-                        $nama_program = 'S1 Semua Prodi';
-                        $aee_ideal = 25;
-                        $total_mahasiswa = 33134;
-                        $lulus_tepat_waktu = 4549;
-                        break;
-                    case 'IKU 1_S2':
-                        $jenjang = 'Magister';
-                        $nama_program = 'S2 Semua Prodi';
-                        $aee_ideal = 50;
-                        $total_mahasiswa = 2615;
-                        $lulus_tepat_waktu = 431;
-                        break;
-                    case 'IKU 1_S3':
-                        $jenjang = 'Doktor';
-                        $nama_program = 'S3 Semua Prodi';
-                        $aee_ideal = 33;
-                        $total_mahasiswa = 818;
-                        $lulus_tepat_waktu = 88;
-                        $aee_realisasi = 10.8;  // FORCE sesuai PDF (10.8%)
-                        $skip_hitung = true;
-                        break;
-                }
-                
-                // Hitung AEE realisasi (kecuali Doktor yang sudah dipaksa)
-                if (!$skip_hitung) {
-                    $aee_realisasi = $total_mahasiswa > 0 
-                        ? ($lulus_tepat_waktu / $total_mahasiswa) * 100 
-                        : $item->baseline_2025;
-                }
-                
-                // Hitung tingkat pencapaian = (AEE realisasi / AEE ideal) * 100
-                $tingkat_pencapaian = $aee_ideal > 0 
-                    ? ($aee_realisasi / $aee_ideal) * 100 
-                    : 0;
-                
-                return (object) [
-                    'jenjang' => $jenjang,
-                    'nama_program' => $nama_program,
-                    'total_mahasiswa' => $total_mahasiswa,
-                    'lulus_tepat_waktu' => $lulus_tepat_waktu,
-                    'aee_realisasi' => $aee_realisasi,
-                    'aee_ideal' => $aee_ideal,
-                    'tingkat_pencapaian' => $tingkat_pencapaian,
-                    'tahun_akademik' => $tahun_akademik,
-                ];
-            });
+        // INI TARGET KINERJA REKTOR (Sesuai PDF Hal 2 & 4)
+        $target_pk_map = ['D3' => 51.50, 'S1' => 50.00, 'S2' => 40.00, 'S3' => 31.00];
         
-        // Hitung AEE PT = rata-rata tingkat pencapaian semua program
-        $aee_pt = $data->avg('tingkat_pencapaian');
-        
-        // Target 2026 dari database
-        $target = $targetIku->target_2026 ?? 43.13;
-        
-        return view('iku.iku-satu', compact('data', 'aee_pt', 'target'));
+        $nama_jenjang = ['D3' => 'Diploma Tiga', 'S1' => 'Sarjana', 'S2' => 'Magister', 'S3' => 'Doktor'];
+
+        // 6. Tarik Data Dinamis Berdasarkan Pilihan Dropdown
+        $fakData = $raw[$selectedFakultas] ?? [];
+
+        foreach ($fakData as $jenjang => $val) {
+            $mhs = $val[0];
+            $lulus = $val[1];
+            $realisasi = $mhs > 0 ? ($lulus / $mhs) * 100 : 0;
+            $ideal = $aee_ideal_map[$jenjang];
+            $pencapaian = $ideal > 0 ? ($realisasi / $ideal) * 100 : 0;
+            
+            // Masukkan variabel target PK ke dalam object
+            $target_pk = $target_pk_map[$jenjang];
+
+            $dataTabel[] = (object)[
+                'jenjang' => $nama_jenjang[$jenjang],
+                'total_mahasiswa' => $mhs,
+                'lulus_tepat_waktu' => $lulus,
+                'aee_realisasi' => $realisasi,
+                'aee_ideal' => $ideal,
+                'tingkat_pencapaian' => $pencapaian,
+                'target_pk' => $target_pk
+            ];
+        }
+
+        // 7. Hitung Rata-Rata Capaian Keseluruhan
+        $aee_pt = count($dataTabel) > 0 ? collect($dataTabel)->avg('tingkat_pencapaian') : 0;
+
+        return view('iku.iku-satu', compact('dataTabel', 'aee_pt', 'targetAeePT', 'selectedFakultas', 'selectedTahun', 'listFakultas'));
     }
 
     // IKU 2 - Lulusan Bekerja

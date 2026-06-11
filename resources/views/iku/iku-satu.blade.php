@@ -94,7 +94,7 @@
           <div class="mini-card"><div><div class="label">AEE Rata-rata Universitas</div><div class="value">{{ number_format($dataTabel ? collect($dataTabel)->avg('aee_realisasi') : 0, 2, ',', '.') }}%</div></div><div class="bubble b-blue">∑</div></div>
           <div class="mini-card"><div><div class="label">Target AEE PT {{ $selectedTahun }}</div><div class="value">{{ number_format($targetAeePT, 2, ',', '.') }}%</div></div><div class="bubble b-green">🎯</div></div>
           <div class="mini-card"><div><div class="label">Capaian terhadap Target</div><div class="value">{{ number_format($aee_pt, 2, ',', '.') }}%</div></div><div class="bubble b-orange">↗</div></div>
-          <div class="mini-card"><div><div class="label">Jumlah Fakultas</div><div class="value">{{ count($listFakultas) }}</div></div><div class="bubble b-blue">🏛</div></div>
+          <div class="mini-card"><div><div class="label">Jumlah Fakultas</div><div class="value">{{ count($listFakultas) -1 }}</div></div><div class="bubble b-blue">🏛</div></div>
         </div>
 
         <div class="layout">

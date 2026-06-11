@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IkuController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return redirect()->route('iku.satu');
@@ -18,3 +19,5 @@ Route::get('/iku/8', [IkuController::class, 'ikuDelapan'])->name('iku.delapan');
 Route::get('/iku/9', [IkuController::class, 'ikuSembilan'])->name('iku.sembilan');
 Route::get('/iku/10', [IkuController::class, 'ikuSepuluh'])->name('iku.sepuluh');
 Route::get('/iku/11', [IkuController::class, 'ikuSebelas'])->name('iku.sebelas');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/iku-1/export-excel', [IkuController::class, 'exportIkuSatuExcel'])->name('iku.satu.export');

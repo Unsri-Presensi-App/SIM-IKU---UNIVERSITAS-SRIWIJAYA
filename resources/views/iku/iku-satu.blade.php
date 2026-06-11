@@ -16,7 +16,9 @@
 <div class="app">
   <aside class="sidebar">
     <div class="brand"><div class="logo"></div><div><h1>SIM IKU</h1><p>Universitas Sriwijaya</p></div></div>
-    <div class="nav-item"><span class="nav-left">⌂ Dashboard</span></div>
+<a href="{{ url('/dashboard') }}" class="nav-item">
+  <span class="nav-left"><span class="nav-icon">⌂</span> Dashboard</span>
+</a>
     <div class="nav-item"><span class="nav-left">◉ Perjanjian Kinerja</span></div>
     <div class="nav-item"><span class="nav-left">▣ Capaian IKU</span></div>
     <div class="nav-title">Input Data IKU</div>
@@ -55,7 +57,11 @@
             <option value="2026" {{ $selectedTahun == '2026' ? 'selected' : '' }}>2026</option>
             <option value="2027" {{ $selectedTahun == '2027' ? 'selected' : '' }}>2027</option>
           </select>
-          <button type="submit" name="export" value="excel" class="btn ghost" form="filterForm">⬇ Export Excel</button>
+          <div class="actions">
+        <a href="{{ route('iku.satu.export') }}" class="btn ghost">
+        <span>⬇</span> Export Excel
+        </a>
+        </div>
         </form>
         <div class="search">Cari prodi, fakultas, atau data AEE...</div>
         <div class="avatar"></div>
@@ -102,7 +108,11 @@
             <div class="card">
               <div class="card-title">
                 <h3>AEE Universitas per Jenjang</h3>
-                <button type="submit" name="export" value="excel" form="filterForm" class="btn ghost">⬇ Export Excel</button>
+                <div class="actions">
+                 <a href="{{ route('iku.satu.export') }}" class="btn ghost">
+                 <span>⬇</span> Export Excel
+                 </a>
+                </div>
               </div>
               <div class="view-note">Tabel ini menampilkan AEE agregat Universitas Sriwijaya per jenjang. Data tidak dapat diedit karena berasal dari API Data Lake.</div>
               <table>

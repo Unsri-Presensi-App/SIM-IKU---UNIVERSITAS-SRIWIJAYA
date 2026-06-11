@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\IkuSatuExport;
 
 class IkuController extends Controller
 {
@@ -76,8 +78,15 @@ class IkuController extends Controller
 
         // 7. Hitung Rata-Rata Capaian Keseluruhan
         $aee_pt = count($dataTabel) > 0 ? collect($dataTabel)->avg('tingkat_pencapaian') : 0;
+        
 
         return view('iku.iku-satu', compact('dataTabel', 'aee_pt', 'targetAeePT', 'selectedFakultas', 'selectedTahun', 'listFakultas'));
+    }
+
+    public function exportIkuSatuExcel()
+    {
+        // File akan otomatis terunduh dengan nama "Laporan_IKU_1_AEE.xlsx"
+        return Excel::download(new IkuSatuExport, 'Laporan_IKU_1_AEE.xlsx');
     }
 
     // IKU 2 - Lulusan Bekerja

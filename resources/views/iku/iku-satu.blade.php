@@ -413,89 +413,210 @@
     </div>
   </div>
 
-        <div class="layout">
-          <div>
-            <div class="card">
-              <div class="card-title">
-                <h3>AEE Universitas per Jenjang</h3>
-                <div class="actions">
-                 <a href="{{ route('iku.satu.export') }}" class="btn ghost">
-                 <span>⬇</span> Export Excel
-                 </a>
-                </div>
-              </div>
-              <div class="view-note">Tabel ini menampilkan AEE agregat Universitas Sriwijaya per jenjang. Data tidak dapat diedit karena berasal dari API Data Lake.</div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Jenjang</th>
-                    <th>Mhs Masuk Cohort</th>
-                    <th>Lulus Tepat Waktu</th>
-                    <th>AEE Realisasi</th>
-                    <th>AEE Ideal (Pembagi)</th>
-                    <th>Capaian AEE</th>
-                    <th>Target PK Rektor</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @forelse($dataTabel as $row)
-                  <tr>
-                    <td><strong>{{ $row->jenjang }}</strong></td>
-                    <td>{{ number_format($row->total_mahasiswa, 0, ',', '.') }}</td>
-                    <td>{{ number_format($row->lulus_tepat_waktu, 0, ',', '.') }}</td>
-                    <td>{{ number_format($row->aee_realisasi, 2, ',', '.') }}%</td>
-                    <td>{{ number_format($row->aee_ideal, 2, ',', '.') }}%</td>
-                    <td>
-                      @php
-                        $pc = $row->tingkat_pencapaian;
-                        $tg = $row->target_pk;
-                        $persen_progress = $tg > 0 ? ($pc / $tg) * 100 : 0;
-                      @endphp
-                      <div style="display:flex;align-items:center;gap:8px;">
-                        <div class="progress {{ $pc >= $tg ? 'green' : ($persen_progress >= 80 ? 'orange' : 'red') }}" style="width:80px">
-                          <span style="width:{{ min($persen_progress, 100) }}%"></span>
-                        </div>
-                        <strong>{{ number_format($pc, 2, ',', '.') }}%</strong>
-                      </div>
-                    </td>
-                    <td><strong>{{ number_format($tg, 2, ',', '.') }}%</strong></td>
-                    <td>
-                      @if($pc >= $tg)
-                        <span class="badge good">Tercapai</span>
-                      @elseif($persen_progress >= 80)
-                        <span class="badge warn">Mendekati</span>
-                      @else
-                        <span class="badge red">Perlu Perhatian</span>
-                      @endif
-                    </td>
-                  </tr>
-                  @empty
-                  <tr>
-                    <td colspan="8" style="text-align: center; color: var(--muted); padding: 20px;">Data jenjang untuk fakultas ini belum tersedia.</td>
-                  </tr>
-                  @endforelse
+  <div class="lay">
+    <div>
 
-                  @if(count($dataTabel) > 0)
-                  <tr style="background:#f0f7ff;">
-                    <td colspan="3"><strong>Rata-rata Keseluruhan</strong></td>
-                    <td><strong>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</strong></td>
-                    <td><strong>-</strong></td>
-                    <td><strong>{{ number_format($aee_pt, 2, ',', '.') }}%</strong></td>
-                    <td><strong>{{ number_format($targetAeePT, 2, ',', '.') }}%</strong></td>
-                    <td>
-                      @if($aee_pt >= $targetAeePT)
-                        <span class="badge good">Tercapai</span>
-                      @else
-                        <span class="badge warn">Pemantauan</span>
-                      @endif
-                    </td>
-                  </tr>
-                  @endif
-                </tbody>
-              </table>
-              <div class="footer-note">Keterangan: mahasiswa pindah, DO, dan cuti lebih dari ketentuan tidak masuk perhitungan.</div>
+      {{-- Tabel Jenjang --}}
+      <div class="card">
+        <div class="ch">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
             </div>
+            <div>
+              <div class="ch-title">AEE Universitas per Jenjang</div>
+              <div class="ch-sub">Agregat Universitas Sriwijaya · Tahun {{ $selectedTahun }}</div>
+            </div>
+          </div>
+          <a href="{{ route('iku.satu.export') }}" class="btn btn-sm">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </a>
+        </div>
+        <div class="view-note">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Tabel read-only — data berasal dari API Data Lake dan tidak dapat diedit secara manual.
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Jenjang</th>
+                <th>Mhs Cohort</th>
+                <th>Lulus Tepat Waktu</th>
+                <th>Dikecualikan</th> <th>AEE Realisasi</th>
+                <th>AEE Ideal</th>
+                <th>Capaian AEE</th>
+                <th>Target PK</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($dataTabel as $row)
+              @php
+                $pc = $row->tingkat_pencapaian;
+                $tg = $row->target_pk;
+                $pp = $tg > 0 ? ($pc / $tg) * 100 : 0;
+                $pfClass = $pc >= $tg ? 'pf-green' : ($pp >= 80 ? 'pf-amber' : 'pf-red');
+              @endphp
+              <tr>
+                <td><strong style="color:var(--text);">{{ $row->jenjang }}</strong></td>
+                <td>{{ number_format($row->total_mahasiswa, 0, ',', '.') }}</td>
+                <td>{{ number_format($row->lulus_tepat_waktu, 0, ',', '.') }}</td>
+                <td>{{ number_format($row->dikecualikan ?? 0, 0, ',', '.') }}</td> <td style="font-weight:600;">{{ number_format($row->aee_realisasi, 2, ',', '.') }}%</td>
+                <td>{{ number_format($row->aee_ideal, 2, ',', '.') }}%</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <div class="prog" style="width:72px;">
+                      <div class="prog-f {{ $pfClass }}" style="width:{{ min($pp, 100) }}%"></div>
+                    </div>
+                    <strong style="color:var(--text);">{{ number_format($pc, 2, ',', '.') }}%</strong>
+                  </div>
+                </td>
+                <td style="color:var(--muted); font-weight:600;">{{ number_format($tg, 2, ',', '.') }}%</td>
+                <td>
+                  @if($pc >= $tg)
+                    <span class="badge good"><span class="badge-dot"></span>Tercapai</span>
+                  @elseif($pp >= 80)
+                    <span class="badge warn"><span class="badge-dot"></span>Mendekati</span>
+                  @else
+                    <span class="badge crit"><span class="badge-dot"></span>Perlu Perhatian</span>
+                  @endif
+                </td>
+              </tr>
+              @empty
+              <tr><td colspan="9" class="empty-cell">Data jenjang belum tersedia.</td></tr> @endforelse
+
+              @if(count($dataTabel) > 0)
+              <tr class="sum-row">
+                <td colspan="4">Rata-rata Keseluruhan</td> <td>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</td>
+                <td>—</td>
+                <td>{{ number_format($aee_pt, 2, ',', '.') }}%</td>
+                <td>{{ number_format($targetAeePT, 2, ',', '.') }}%</td>
+                <td>
+                  @if($aee_pt >= $targetAeePT)
+                    <span class="badge good"><span class="badge-dot"></span>Tercapai</span>
+                  @else
+                    <span class="badge warn"><span class="badge-dot"></span>Pemantauan</span>
+                  @endif
+                </td>
+              </tr>
+              @endif
+            </tbody>
+          </table>
+        </div>
+        <div class="fn">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Mahasiswa pindah, DO, dan cuti melebihi ketentuan tidak masuk perhitungan.
+        </div>
+      </div>
+
+      {{-- AEE per Fakultas --}}
+      <div class="card" id="detailFakultas">
+        <div class="ch">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="ch-title">AEE per Fakultas</div>
+          </div>
+          <button class="btn btn-sm" onclick="scrollToFakultas()">Lihat Semua</button>
+        </div>
+        <div class="fac-grid">
+          <div class="fac-card">
+            <div class="fac-rank">1</div>
+            <div class="fac-name">Fak. Kedokteran</div>
+            <div class="fac-val">48,90%</div>
+            <div class="prog"><div class="prog-f pf-green" style="width:100%"></div></div>
+            <div class="fac-note">Capaian 113,4% dari target</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-rank">2</div>
+            <div class="fac-name">Fak. Ekonomi</div>
+            <div class="fac-val">45,20%</div>
+            <div class="prog"><div class="prog-f pf-green" style="width:100%"></div></div>
+            <div class="fac-note">Capaian 104,8% dari target</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-rank">3</div>
+            <div class="fac-name">Fak. Teknik</div>
+            <div class="fac-val">42,60%</div>
+            <div class="prog"><div class="prog-f pf-amber" style="width:99%"></div></div>
+            <div class="fac-note">Capaian 98,7% from target</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-rank">4</div>
+            <div class="fac-name">FASILKOM</div>
+            <div class="fac-val">41,10%</div>
+            <div class="prog"><div class="prog-f pf-amber" style="width:95%"></div></div>
+            <div class="fac-note">Capaian 95,3% dari target</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-rank">5</div>
+            <div class="fac-name">FKIP</div>
+            <div class="fac-val">39,50%</div>
+            <div class="prog"><div class="prog-f pf-amber" style="width:92%"></div></div>
+            <div class="fac-note">Capaian 91,6% dari target</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-rank">6</div>
+            <div class="fac-name">Fak. Pertanian</div>
+            <div class="fac-val">38,70%</div>
+            <div class="prog"><div class="prog-f pf-amber" style="width:90%"></div></div>
+            <div class="fac-note">Perlu tindak lanjut S1</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    {{-- Sidebar --}}
+    <aside class="side">
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="ch" style="margin-bottom:12px;">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div class="ch-title">Capaian per Triwulan</div>
+          </div>
+        </div>
+        <div class="triwulan-chart">
+          <div class="twc-col">
+            <div class="twc-bar" style="height:42px;"><span class="twc-val">10,42%</span></div>
+            <div class="twc-lbl">TW1</div>
+          </div>
+          <div class="twc-col">
+            <div class="twc-bar" style="height:76px;"><span class="twc-val">21,56%</span></div>
+            <div class="twc-lbl">TW2</div>
+          </div>
+          <div class="twc-col">
+            <div class="twc-bar" style="height:108px;"><span class="twc-val">31,44%</span></div>
+            <div class="twc-lbl">TW3</div>
+          </div>
+          <div class="twc-col">
+            <div class="twc-bar" style="height:140px;"><span class="twc-val">{{ number_format($aee_pt, 2, ',', '.') }}%</span></div>
+            <div class="twc-lbl">TW4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="ch" style="margin-bottom:12px;">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="ch-title">Target PK Rektor {{ $selectedTahun }}</div>
+          </div>
+        </div>
+        <div class="tgt-row"><span class="tgt-lbl">AEE PT</span><span class="tgt-val">{{ number_format($targetAeePT, 2, ',', '.') }}%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">D3</span><span class="tgt-val">51,50%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">S1</span><span class="tgt-val">50,00%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">S2</span><span class="tgt-val">40,00%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">S3</span><span class="tgt-val">31,00%</span></div>
+      </div>
 
       <div class="card" style="margin-bottom:0;">
         <div class="ch" style="margin-bottom:10px;">
@@ -584,98 +705,238 @@
         <div class="sc-val" style="font-size:18px; margin-top:12px; display:flex; align-items:center; gap:7px;">
           <span class="pulse"></span>Aman
         </div>
-        <div class="layout">
-          <div>
-            <div class="card">
-              <div class="card-title"><h3>AEE {{ $selectedFakultas }} per Jenjang</h3><button type="submit" name="export" value="excel" form="filterForm" class="btn ghost">⬇ Export Excel</button></div>
-              <div class="view-note">Halaman user fakultas menampilkan AEE fakultas per jenjang dan rincian AEE per prodi. Seluruh data read-only dari API Data Lake.</div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Jenjang</th>
-                    <th>Mhs Masuk Cohort</th>
-                    <th>Lulus Tepat Waktu</th>
-                    <th>AEE Realisasi</th>
-                    <th>AEE Ideal (Pembagi)</th>
-                    <th>Capaian AEE</th>
-                    <th>Target PK Rektor</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @forelse($dataTabel as $row)
-                  <tr>
-                    <td><strong>{{ $row->jenjang }}</strong></td>
-                    <td>{{ number_format($row->total_mahasiswa, 0, ',', '.') }}</td>
-                    <td>{{ number_format($row->lulus_tepat_waktu, 0, ',', '.') }}</td>
-                    <td>{{ number_format($row->aee_realisasi, 2, ',', '.') }}%</td>
-                    <td>{{ number_format($row->aee_ideal, 2, ',', '.') }}%</td>
-                    <td>
-                      @php
-                        $pc = $row->tingkat_pencapaian;
-                        $tg = $row->target_pk;
-                        $persen_progress = $tg > 0 ? ($pc / $tg) * 100 : 0;
-                      @endphp
-                      <div style="display:flex;align-items:center;gap:8px;">
-                        <div class="progress {{ $pc >= $tg ? 'green' : ($persen_progress >= 80 ? 'orange' : 'red') }}" style="width:80px">
-                          <span style="width:{{ min($persen_progress, 100) }}%"></span>
-                        </div>
-                        <strong>{{ number_format($pc, 2, ',', '.') }}%</strong>
-                      </div>
-                    </td>
-                    <td><strong>{{ number_format($tg, 2, ',', '.') }}%</strong></td>
-                    <td>
-                      @if($pc >= $tg)
-                        <span class="badge good">Tercapai</span>
-                      @elseif($persen_progress >= 80)
-                        <span class="badge warn">Mendekati</span>
-                      @else
-                        <span class="badge red">Perlu Perhatian</span>
-                      @endif
-                    </td>
-                  </tr>
-                  @empty
-                  <tr>
-                    <td colspan="8" style="text-align: center; color: var(--muted); padding: 20px;">Data jenjang untuk fakultas ini belum tersedia.</td>
-                  </tr>
-                  @endforelse
+      </div>
+      <div class="sc-ic ic-purple">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+    </div>
+  </div>
 
-                  @if(count($dataTabel) > 0)
-                  <tr style="background:#f0f7ff;">
-                    <td colspan="3"><strong>Rata-rata Keseluruhan</strong></td>
-                    <td><strong>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</strong></td>
-                    <td><strong>-</strong></td>
-                    <td><strong>{{ number_format($aee_pt, 2, ',', '.') }}%</strong></td>
-                    <td><strong>{{ number_format($targetAeePT, 2, ',', '.') }}%</strong></td>
-                    <td>
-                      @if($aee_pt >= $targetAeePT)
-                        <span class="badge good">Tercapai</span>
-                      @else
-                        <span class="badge warn">Pemantauan</span>
-                      @endif
-                    </td>
-                  </tr>
-                  @endif
-                </tbody>
-              </table>
+  <div class="lay">
+    <div>
+
+      {{-- Tabel Jenjang Fakultas --}}
+      <div class="card">
+        <div class="ch">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
             </div>
-            <div class="card" id="detailProdi">
-              <div class="card-title"><h3>AEE per Program Studi</h3><button class="btn ghost">Lihat Semua Prodi</button></div>
-              <div class="filter-row"><select class="select"><option>Semua Jenjang</option><option>D3</option><option>S1</option><option>S2</option><option>S3</option></select><select class="select"><option>Semua Status</option><option>Tercapai</option><option>Perhatian</option></select><div class="search">Cari nama program studi...</div></div>
-              <table>
-                <thead><tr><th>No</th><th>Program Studi</th><th>Jenjang</th><th>Masuk</th><th>Lulus Tepat Waktu</th><th>AEE</th><th>Capaian</th><th>Status</th></tr></thead>
-                <tbody>
-                  <tr><td colspan="8" style="text-align:center; color: var(--muted);">[Data rincian prodi untuk {{ $selectedFakultas }} ditarik dari SIM Akademik pada rilis berikutnya]</td></tr>
-                </tbody>
-              </table>
+            <div>
+              <div class="ch-title">AEE {{ $selectedFakultas }} per Jenjang</div>
+              <div class="ch-sub">Tahun {{ $selectedTahun }}</div>
             </div>
           </div>
-          <aside class="side">
-            <div class="card"><div class="card-title"><h3>Capaian Fakultas per Triwulan</h3></div><div class="chart"><div class="bar-wrap"><div class="bar" style="--h:54px" data-v="10,65%"></div>TW1</div><div class="bar-wrap"><div class="bar" style="--h:96px" data-v="21,30%"></div>TW2</div><div class="bar-wrap"><div class="bar" style="--h:132px" data-v="31,95%"></div>TW3</div><div class="bar-wrap"><div class="bar" style="--h:174px" data-v="42,60%"></div>TW4</div></div></div>
-            <div class="card"><div class="card-title"><h3>Prodi Perlu Perhatian</h3></div><div class="target-row"><span>Teknik Elektro</span><strong style="color:var(--red)">44,57%</strong></div><div class="target-row"><span>Teknik Kimia</span><strong style="color:#b45309">46,11%</strong></div><div class="target-row"><span>Teknik Mesin</span><strong style="color:#b45309">47,20%</strong></div></div>
-            <div class="card"><div class="card-title"><h3>Catatan Sistem</h3></div><p class="muted small">Tidak ada form input pada halaman IKU 1. Jika terdapat perbedaan data, perbaikan dilakukan pada sistem sumber/Data Lake, bukan di SIM IKU.</p></div>
-            <div class="card"><div class="card-title"><h3>Riwayat Sinkronisasi</h3></div><div class="sync-row"><div class="dot">✓</div><div>{{ now()->format('d M Y') }}, 02.00 WIB<br><span class="muted small">API Data Lake</span></div><span class="badge good">Berhasil</span></div><div class="sync-row"><div class="dot">✓</div><div>{{ now()->subDay()->format('d M Y') }}, 02.00 WIB<br><span class="muted small">API Data Lake</span></div><span class="badge good">Berhasil</span></div></div>
-          </aside>
+          <a href="{{ route('iku.satu.export') }}" class="btn btn-sm">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </a>
+        </div>
+        <div class="view-note">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Data halaman Fakultas bersifat read-only dari API Data Lake.
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Jenjang</th>
+                <th>Mhs Cohort</th>
+                <th>Lulus Tepat Waktu</th>
+                <th>Dikecualikan</th> <th>AEE Realisasi</th>
+                <th>AEE Ideal</th>
+                <th>Capaian AEE</th>
+                <th>Target PK</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($dataTabel as $row)
+              @php
+                $pc = $row->tingkat_pencapaian;
+                $tg = $row->target_pk;
+                $pp = $tg > 0 ? ($pc / $tg) * 100 : 0;
+                $pfClass = $pc >= $tg ? 'pf-green' : ($pp >= 80 ? 'pf-amber' : 'pf-red');
+              @endphp
+              <tr>
+                <td><strong style="color:var(--text);">{{ $row->jenjang }}</strong></td>
+                <td>{{ number_format($row->total_mahasiswa, 0, ',', '.') }}</td>
+                <td>{{ number_format($row->lulus_tepat_waktu, 0, ',', '.') }}</td>
+                <td>{{ number_format($row->dikecualikan ?? 0, 0, ',', '.') }}</td> <td style="font-weight:600;">{{ number_format($row->aee_realisasi, 2, ',', '.') }}%</td>
+                <td>{{ number_format($row->aee_ideal, 2, ',', '.') }}%</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <div class="prog" style="width:72px;">
+                      <div class="prog-f {{ $pfClass }}" style="width:{{ min($pp, 100) }}%"></div>
+                    </div>
+                    <strong style="color:var(--text);">{{ number_format($pc, 2, ',', '.') }}%</strong>
+                  </div>
+                </td>
+                <td style="color:var(--muted); font-weight:600;">{{ number_format($tg, 2, ',', '.') }}%</td>
+                <td>
+                  @if($pc >= $tg)
+                    <span class="badge good"><span class="badge-dot"></span>Tercapai</span>
+                  @elseif($pp >= 80)
+                    <span class="badge warn"><span class="badge-dot"></span>Mendekati</span>
+                  @else
+                    <span class="badge crit"><span class="badge-dot"></span>Perlu Perhatian</span>
+                  @endif
+                </td>
+              </tr>
+              @empty
+              <tr><td colspan="9" class="empty-cell">Data jenjang untuk {{ $selectedFakultas }} belum tersedia.</td></tr> @endforelse
+
+              @if(count($dataTabel) > 0)
+              <tr class="sum-row">
+                <td colspan="4">Rata-rata Keseluruhan</td> <td>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</td>
+                <td>—</td>
+                <td>{{ number_format($aee_pt, 2, ',', '.') }}%</td>
+                <td>{{ number_format($targetAeePT, 2, ',', '.') }}%</td>
+                <td>
+                  @if($aee_pt >= $targetAeePT)
+                    <span class="badge good"><span class="badge-dot"></span>Tercapai</span>
+                  @else
+                    <span class="badge warn"><span class="badge-dot"></span>Pemantauan</span>
+                  @endif
+                </td>
+              </tr>
+              @endif
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {{-- AEE per Prodi --}}
+      <div class="card" id="detailProdi">
+        <div class="ch">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div class="ch-title">AEE per Program Studi</div>
+          </div>
+          <button class="btn btn-sm">Lihat Semua Prodi</button>
+        </div>
+        <div class="filter-row">
+          <select class="flt-sel">
+            <option>Semua Jenjang</option>
+            <option>D3</option><option>S1</option><option>S2</option><option>S3</option>
+          </select>
+          <select class="flt-sel">
+            <option>Semua Status</option>
+            <option>Tercapai</option><option>Perlu Perhatian</option>
+          </select>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th><th>Program Studi</th><th>Jenjang</th>
+                <th>Masuk</th><th>Lulus Tepat Waktu</th>
+                <th>AEE</th><th>Capaian</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="8" class="empty-cell" style="color:var(--faint);">
+                  Data rincian prodi untuk {{ $selectedFakultas }} akan ditarik dari SIM Akademik pada rilis berikutnya.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    {{-- Sidebar Fakultas --}}
+    <aside class="side">
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="ch" style="margin-bottom:12px;">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div class="ch-title">Capaian per Triwulan</div>
+          </div>
+        </div>
+        <div class="triwulan-chart">
+          <div class="twc-col">
+            <div class="twc-bar" style="height:42px;"><span class="twc-val">10,65%</span></div>
+            <div class="twc-lbl">TW1</div>
+          </div>
+          <div class="twc-col">
+            <div class="twc-bar" style="height:76px;"><span class="twc-val">21,30%</span></div>
+            <div class="twc-lbl">TW2</div>
+          </div>
+          <div class="twc-col">
+            <div class="twc-bar" style="height:108px;"><span class="twc-val">31,95%</span></div>
+            <div class="twc-lbl">TW3</div>
+          </div>
+          <div class="twc-col">
+            <div class="twc-bar" style="height:140px;"><span class="twc-val">42,60%</span></div>
+            <div class="twc-lbl">TW4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="ch" style="margin-bottom:12px;">
+          <div class="ch-left">
+            <div class="ch-icon" style="background:var(--red-lt);">
+              <svg width="14" height="14" fill="none" stroke="var(--red)" stroke-width="1.75" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="ch-title">Prodi Perlu Perhatian</div>
+          </div>
+        </div>
+        <div class="tgt-row"><span class="tgt-lbl">Teknik Elektro</span><span style="font-weight:700; color:var(--red);">44,57%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Teknik Kimia</span><span style="font-weight:700; color:var(--amber-dk);">46,11%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Teknik Mesin</span><span style="font-weight:700; color:var(--amber-dk);">47,20%</span></div>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="ch" style="margin-bottom:10px;">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="ch-title">Catatan Sistem</div>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--muted); line-height:1.6;">
+          Tidak ada form input pada halaman IKU 1. Jika terdapat perbedaan data, perbaikan dilakukan pada sistem sumber/Data Lake, bukan di SIM IKU.
+        </p>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="ch" style="margin-bottom:12px;">
+          <div class="ch-left">
+            <div class="ch-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.37"/></svg>
+            </div>
+            <div class="ch-title">Riwayat Sinkronisasi</div>
+          </div>
+        </div>
+        <div class="sync-row">
+          <div class="sync-dot">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="sync-info">
+            <div class="sync-date">{{ now()->format('d M Y') }}, 02.00 WIB</div>
+            <div class="sync-src">API Data Lake</div>
+          </div>
+          <span class="badge good"><span class="badge-dot"></span>Berhasil</span>
+        </div>
+        <div class="sync-row">
+          <div class="sync-dot">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="sync-info">
+            <div class="sync-date">{{ now()->subDay()->format('d M Y') }}, 02.00 WIB</div>
+            <div class="sync-src">API Data Lake</div>
+          </div>
+          <span class="badge good"><span class="badge-dot"></span>Berhasil</span>
         </div>
       </div>
 
@@ -718,5 +979,5 @@
     console.info('{{ session('info') }}');
   @endif
 </script>
-</body>
-</html>
+@endpush
+@endsection

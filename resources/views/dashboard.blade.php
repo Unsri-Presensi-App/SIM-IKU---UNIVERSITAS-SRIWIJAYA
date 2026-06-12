@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Eksekutif SIM IKU')
+@section('title', 'Dashboard SIM IKU')
 @section('crumb_parent', 'Home')
 @section('crumb_title',  'Dashboard')
 

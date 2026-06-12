@@ -74,7 +74,7 @@
   .ctrl-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .ctrl-right { display: flex; align-items: center; gap: 10px; }
 
-  /* ─── Role Buttons (baru, lebih besar & jelas) ─── */
+  /* ─── Role Buttons ─── */
   .role-btn {
     display: inline-flex; align-items: center; gap: 9px;
     padding: 11px 20px; border-radius: var(--r-lg);
@@ -91,7 +91,7 @@
   /* ─── Ctrl separator ─── */
   .ctrl-sep { width: 1px; height: 32px; background: var(--border); flex-shrink: 0; }
 
-  /* ─── Fakultas Dropdown (baru) ─── */
+  /* ─── Fakultas Dropdown ─── */
   .fak-dropdown-wrap { position: relative; }
   .fak-trigger {
     display: inline-flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -198,7 +198,7 @@
   .view-note svg { color: var(--faint); flex-shrink: 0; }
 
   /* ─── Table ─── */
-  .tbl-wrap { overflow-x: auto; margin: 0 -22px; padding: 0 22px; }
+  .tbl-wrap { overflow-x: auto; margin: 0 -22px; padding: 0 22px; -webkit-overflow-scrolling: touch; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead th { padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--faint); text-align: left; white-space: nowrap; background: transparent; }
   thead th:first-child { padding-left: 0; }
@@ -210,6 +210,9 @@
   tbody tr:hover td { background: var(--bg); }
   .sum-row td { background: #f8faff !important; font-weight: 700; color: var(--text); }
   .sum-row:hover td { background: #eef2ff !important; }
+
+  /* ─── Table scroll hint (mobile only) ─── */
+  .tbl-scroll-hint { display: none; }
 
   /* ─── Progress ─── */
   .prog { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; min-width: 72px; }
@@ -291,20 +294,218 @@
   /* Empty */
   .empty-cell { text-align: center; padding: 32px 20px !important; color: var(--muted) !important; }
 
+  /* ═══════════════════════════════════════════════════════════
+     MOBILE OPTIMIZATIONS
+     Breakpoints:
+       1100px  — sidebar turun ke bawah (sudah ada, dipertahankan)
+        900px  — sum-grid 2 kolom, fac-grid 2 kolom
+        768px  — tablet/HP landscape: ctrl-bar, card, tabel
+        580px  — HP portrait: ctrl-bar full-column, sum-grid 1 kolom
+  ═══════════════════════════════════════════════════════════ */
+
+  /* ── 1100px: sidebar ke bawah ── */
   @media (max-width: 1100px) {
     .lay { grid-template-columns: 1fr; }
     .side { position: static; }
   }
+
+  /* ── 900px: grid 2 kolom ── */
   @media (max-width: 900px) {
-    .sum-grid { grid-template-columns: repeat(2,1fr); }
-    .fac-grid { grid-template-columns: repeat(2,1fr); }
+    .sum-grid { grid-template-columns: repeat(2, 1fr); }
+    .fac-grid  { grid-template-columns: repeat(2, 1fr); }
   }
+
+  /* ── Sidebar: grid 2 kolom di rentang tablet ── */
+  @media (min-width: 581px) and (max-width: 1100px) {
+    .side {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .side .card { margin-bottom: 0 !important; }
+  }
+
+  /* ── 768px: penyesuaian umum tablet/HP landscape ── */
+  @media (max-width: 768px) {
+
+    /* Page header */
+    .ph {
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .ph-title { font-size: 18px; }
+    .ph-sub   { font-size: 12px; }
+    .ph > div:last-child { width: 100%; }
+    .ph .btn-sm { width: 100%; justify-content: center; }
+
+    /* Control bar */
+    .ctrl-bar {
+      padding: 12px 14px;
+      gap: 10px;
+      border-radius: var(--r-lg);
+      margin-bottom: 16px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .ctrl-left {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .ctrl-right {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .role-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 10px 16px;
+    }
+    .ctrl-sep { display: none !important; }
+    .fak-dropdown-wrap { width: 100%; }
+    .fak-trigger {
+      min-width: unset !important;
+      width: 100% !important;
+    }
+    .fak-dropdown {
+      min-width: unset;
+      width: 100%;
+      left: 0;
+      right: 0;
+      /* Batasi tinggi dropdown agar tidak keluar layar */
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+    .year-sel { flex: 1; }
+    .status-pill { font-size: 12px; padding: 7px 12px; }
+
+    /* Notice */
+    .notice {
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .notice-meta { font-size: 11px; white-space: normal; }
+
+    /* Summary cards */
+    .sum-grid {
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .sc { padding: 14px; }
+    .sc-lbl { font-size: 10px; }
+    .sc-val { font-size: 20px; margin-top: 8px; }
+    .sc-ic { width: 34px; height: 34px; border-radius: 9px; }
+
+    /* Cards */
+    .card {
+      padding: 14px;
+      border-radius: var(--r-lg);
+      margin-bottom: 12px;
+    }
+    .ch { margin-bottom: 12px; gap: 8px; }
+    .ch-title { font-size: 13px; }
+    .ch-sub   { font-size: 11px; }
+
+    /* Table scroll hint */
+    .tbl-scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      color: var(--faint);
+      margin-bottom: 6px;
+      font-style: italic;
+    }
+
+    /* Table wrapper — perlebar keluar card sesuai padding baru */
+    .tbl-wrap {
+      margin: 0 -14px;
+      padding: 0 14px;
+      -webkit-overflow-scrolling: touch;
+      /* Fade kanan sebagai petunjuk scroll */
+      -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
+      mask-image: linear-gradient(to right, black 90%, transparent 100%);
+    }
+    table {
+      min-width: 600px;
+      font-size: 12px;
+    }
+    thead th {
+      font-size: 10px;
+      padding: 7px 8px;
+    }
+    tbody td {
+      padding: 10px 8px;
+      font-size: 12px;
+    }
+    .prog { min-width: 48px; }
+
+    /* View note */
+    .view-note {
+      font-size: 11px;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+    }
+
+    /* Faculty grid */
+    .fac-card { padding: 12px; }
+    .fac-val  { font-size: 18px; }
+    .fac-name { font-size: 11px; }
+    .fac-note { font-size: 10px; }
+
+    /* Triwulan chart */
+    .triwulan-chart {
+      height: 140px;
+      padding: 20px 4px 0;
+      gap: 8px;
+    }
+    .twc-bar { width: 75%; }
+    .twc-val { font-size: 9px; }
+    .twc-lbl { font-size: 10px; }
+
+    /* Sidebar rows */
+    .tgt-row { font-size: 12px; padding: 8px 0; }
+    .sync-date { font-size: 11px; }
+    .sync-src  { font-size: 10px; }
+    .formula   { font-size: 12px; padding: 12px 14px; }
+
+    /* Filter row */
+    .filter-row { flex-direction: column; align-items: stretch; }
+    .flt-sel { width: 100%; }
+
+    /* Badge & footnote */
+    .badge { font-size: 10px; padding: 2px 7px; }
+    .fn    { font-size: 10px; }
+  }
+
+  /* ── 580px: HP portrait, single-column agresif ── */
   @media (max-width: 580px) {
     .sum-grid { grid-template-columns: 1fr; }
+    .fac-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .side .card { margin-bottom: 0 !important; }
+
+    /* Badge di ph-title tetap inline tapi font lebih kecil */
+    .ph-title .badge { font-size: 10px; padding: 2px 6px; }
+
+    /* Kartu summary jadi 2 kolom agar tidak terlalu panjang */
+    .sum-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── 400px: HP sangat kecil ── */
+  @media (max-width: 400px) {
     .fac-grid { grid-template-columns: 1fr; }
-    .ctrl-bar { flex-direction: column; align-items: flex-start; }
-    .card { padding: 16px; }
-    .fak-trigger { min-width: unset; width: 100%; }
+    .sum-grid { grid-template-columns: 1fr; }
+    .sc-val   { font-size: 18px; }
   }
 </style>
 @endpush
@@ -532,6 +733,11 @@
         <div class="view-note">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           Tabel read-only — data berasal dari API Data Lake dan tidak dapat diedit secara manual.
+        </div>
+        {{-- Scroll hint khusus mobile --}}
+        <div class="tbl-scroll-hint">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Geser ke kanan untuk melihat semua kolom
         </div>
         <div class="tbl-wrap">
           <table>
@@ -834,6 +1040,11 @@
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           Data halaman Fakultas bersifat read-only dari API Data Lake.
         </div>
+        {{-- Scroll hint khusus mobile --}}
+        <div class="tbl-scroll-hint">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Geser ke kanan untuk melihat semua kolom
+        </div>
         <div class="tbl-wrap">
           <table>
             <thead>
@@ -926,6 +1137,10 @@
             <option>Semua Status</option>
             <option>Tercapai</option><option>Perlu Perhatian</option>
           </select>
+        </div>
+        <div class="tbl-scroll-hint">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Geser ke kanan untuk melihat semua kolom
         </div>
         <div class="tbl-wrap">
           <table>

@@ -121,7 +121,7 @@
                     <th>Jenjang</th>
                     <th>Mhs Masuk Cohort</th>
                     <th>Lulus Tepat Waktu</th>
-                    <th>AEE Realisasi</th>
+                    <th>Dikecualikan</th> <th>AEE Realisasi</th>
                     <th>AEE Ideal (Pembagi)</th>
                     <th>Capaian AEE</th>
                     <th>Target PK Rektor</th>
@@ -134,11 +134,11 @@
                     <td><strong>{{ $row->jenjang }}</strong></td>
                     <td>{{ number_format($row->total_mahasiswa, 0, ',', '.') }}</td>
                     <td>{{ number_format($row->lulus_tepat_waktu, 0, ',', '.') }}</td>
-                    <td>{{ number_format($row->aee_realisasi, 2, ',', '.') }}%</td>
+                    <td>{{ number_format($row->dikecualikan ?? 0, 0, ',', '.') }}</td> <td>{{ number_format($row->aee_realisasi, 2, ',', '.') }}%</td>
                     <td>{{ number_format($row->aee_ideal, 2, ',', '.') }}%</td>
                     <td>
-                      @php 
-                        $pc = $row->tingkat_pencapaian; 
+                      @php
+                        $pc = $row->tingkat_pencapaian;
                         $tg = $row->target_pk;
                         $persen_progress = $tg > 0 ? ($pc / $tg) * 100 : 0;
                       @endphp
@@ -151,33 +151,33 @@
                     </td>
                     <td><strong>{{ number_format($tg, 2, ',', '.') }}%</strong></td>
                     <td>
-                      @if($pc >= $tg) 
+                      @if($pc >= $tg)
                         <span class="badge good">Tercapai</span>
-                      @elseif($persen_progress >= 80) 
+                      @elseif($persen_progress >= 80)
                         <span class="badge warn">Mendekati</span>
-                      @else 
-                        <span class="badge red">Perlu Perhatian</span> 
+                      @else
+                        <span class="badge red">Perlu Perhatian</span>
                       @endif
                     </td>
                   </tr>
                   @empty
                   <tr>
-                    <td colspan="8" style="text-align: center; color: var(--muted); padding: 20px;">Data jenjang untuk fakultas ini belum tersedia.</td>
+                    <td colspan="9" style="text-align: center; color: var(--muted); padding: 20px;">Data jenjang untuk fakultas ini belum tersedia.</td>
                   </tr>
                   @endforelse
-                  
+
                   @if(count($dataTabel) > 0)
                   <tr style="background:#f0f7ff;">
-                    <td colspan="3"><strong>Rata-rata Keseluruhan</strong></td>
+                    <td colspan="4"><strong>Rata-rata Keseluruhan</strong></td>
                     <td><strong>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</strong></td>
                     <td><strong>-</strong></td>
                     <td><strong>{{ number_format($aee_pt, 2, ',', '.') }}%</strong></td>
                     <td><strong>{{ number_format($targetAeePT, 2, ',', '.') }}%</strong></td>
                     <td>
-                      @if($aee_pt >= $targetAeePT) 
+                      @if($aee_pt >= $targetAeePT)
                         <span class="badge good">Tercapai</span>
-                      @else 
-                        <span class="badge warn">Pemantauan</span> 
+                      @else
+                        <span class="badge warn">Pemantauan</span>
                       @endif
                     </td>
                   </tr>
@@ -227,7 +227,7 @@
                     <th>Jenjang</th>
                     <th>Mhs Masuk Cohort</th>
                     <th>Lulus Tepat Waktu</th>
-                    <th>AEE Realisasi</th>
+                    <th>Dikecualikan</th> <th>AEE Realisasi</th>
                     <th>AEE Ideal (Pembagi)</th>
                     <th>Capaian AEE</th>
                     <th>Target PK Rektor</th>
@@ -240,11 +240,11 @@
                     <td><strong>{{ $row->jenjang }}</strong></td>
                     <td>{{ number_format($row->total_mahasiswa, 0, ',', '.') }}</td>
                     <td>{{ number_format($row->lulus_tepat_waktu, 0, ',', '.') }}</td>
-                    <td>{{ number_format($row->aee_realisasi, 2, ',', '.') }}%</td>
+                    <td>{{ number_format($row->dikecualikan ?? 0, 0, ',', '.') }}</td> <td>{{ number_format($row->aee_realisasi, 2, ',', '.') }}%</td>
                     <td>{{ number_format($row->aee_ideal, 2, ',', '.') }}%</td>
                     <td>
-                      @php 
-                        $pc = $row->tingkat_pencapaian; 
+                      @php
+                        $pc = $row->tingkat_pencapaian;
                         $tg = $row->target_pk;
                         $persen_progress = $tg > 0 ? ($pc / $tg) * 100 : 0;
                       @endphp
@@ -257,33 +257,33 @@
                     </td>
                     <td><strong>{{ number_format($tg, 2, ',', '.') }}%</strong></td>
                     <td>
-                      @if($pc >= $tg) 
+                      @if($pc >= $tg)
                         <span class="badge good">Tercapai</span>
-                      @elseif($persen_progress >= 80) 
+                      @elseif($persen_progress >= 80)
                         <span class="badge warn">Mendekati</span>
-                      @else 
-                        <span class="badge red">Perlu Perhatian</span> 
+                      @else
+                        <span class="badge red">Perlu Perhatian</span>
                       @endif
                     </td>
                   </tr>
                   @empty
                   <tr>
-                    <td colspan="8" style="text-align: center; color: var(--muted); padding: 20px;">Data jenjang untuk fakultas ini belum tersedia.</td>
+                    <td colspan="9" style="text-align: center; color: var(--muted); padding: 20px;">Data jenjang untuk fakultas ini belum tersedia.</td>
                   </tr>
                   @endforelse
-                  
+
                   @if(count($dataTabel) > 0)
                   <tr style="background:#f0f7ff;">
-                    <td colspan="3"><strong>Rata-rata Keseluruhan</strong></td>
+                    <td colspan="4"><strong>Rata-rata Keseluruhan</strong></td>
                     <td><strong>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</strong></td>
                     <td><strong>-</strong></td>
                     <td><strong>{{ number_format($aee_pt, 2, ',', '.') }}%</strong></td>
                     <td><strong>{{ number_format($targetAeePT, 2, ',', '.') }}%</strong></td>
                     <td>
-                      @if($aee_pt >= $targetAeePT) 
+                      @if($aee_pt >= $targetAeePT)
                         <span class="badge good">Tercapai</span>
-                      @else 
-                        <span class="badge warn">Pemantauan</span> 
+                      @else
+                        <span class="badge warn">Pemantauan</span>
                       @endif
                     </td>
                   </tr>

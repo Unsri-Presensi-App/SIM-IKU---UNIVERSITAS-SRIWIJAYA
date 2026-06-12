@@ -5,8 +5,8 @@ use App\Http\Controllers\IkuController;
 use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
-    return redirect()->route('iku.satu');
-});
+    return view('welcome');
+})->name('landing');
 
 Route::get('/iku/1', [IkuController::class, 'ikuSatu'])->name('iku.satu');
 Route::get('/iku/2', [IkuController::class, 'ikuDua'])->name('iku.dua');

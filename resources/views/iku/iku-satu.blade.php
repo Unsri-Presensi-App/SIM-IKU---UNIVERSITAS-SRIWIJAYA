@@ -71,39 +71,77 @@
     flex-wrap: wrap;
     margin-bottom: 24px;
   }
-  .ctrl-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .ctrl-right { display: flex; align-items: center; gap: 8px; }
+  .ctrl-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .ctrl-right { display: flex; align-items: center; gap: 10px; }
 
-  /* Mode Switcher */
-  .mode-sw { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md); padding: 3px; gap: 2px; }
-  .mode-sw button {
-    border: none; background: transparent; padding: 7px 16px; border-radius: 9px;
-    font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; font-family: inherit;
-    transition: all .18s; white-space: nowrap;
+  /* ─── Role Buttons ─── */
+  .role-btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 11px 20px; border-radius: var(--r-lg);
+    border: 1.5px solid var(--border-md);
+    background: var(--surface); color: var(--sub);
+    font-size: 14px; font-weight: 600; font-family: inherit;
+    cursor: pointer; transition: all .18s; white-space: nowrap; line-height: 1;
   }
-  .mode-sw button.active {
-    background: var(--surface); color: var(--indigo);
-    box-shadow: var(--sh-sm); font-weight: 700;
-  }
+  .role-btn svg { flex-shrink: 0; }
+  .role-btn:hover { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-lt); }
+  .role-btn.active { background: var(--indigo); border-color: var(--indigo); color: #fff; }
+  .role-btn.active:hover { background: var(--indigo-dk); border-color: var(--indigo-dk); }
 
-  /* Divider in ctrl-bar */
-  .ctrl-sep { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
+  /* ─── Ctrl separator ─── */
+  .ctrl-sep { width: 1px; height: 32px; background: var(--border); flex-shrink: 0; }
 
-  /* Faculty Tabs */
-  .fak-scroll { display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
-  .fak-scroll::-webkit-scrollbar { display: none; }
-  .fak-tab {
-    padding: 6px 13px; border-radius: var(--r-sm); border: 1px solid var(--border);
-    background: var(--surface); color: var(--sub); font-size: 12px; font-weight: 600;
-    cursor: pointer; transition: all .16s; white-space: nowrap; font-family: inherit;
+  /* ─── Fakultas Dropdown ─── */
+  .fak-dropdown-wrap { position: relative; }
+  .fak-trigger {
+    display: inline-flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 11px 16px; min-width: 230px;
+    border-radius: var(--r-lg); border: 1.5px solid var(--border-md);
+    background: var(--surface); color: var(--sub);
+    font-size: 14px; font-weight: 600; font-family: inherit;
+    cursor: pointer; transition: all .18s; line-height: 1;
   }
-  .fak-tab:hover { border-color: var(--border-md); background: var(--bg); color: var(--text); }
-  .fak-tab.active { background: var(--indigo-lt); border-color: #c7d2fe; color: var(--indigo); font-weight: 700; }
+  .fak-trigger-left { display: flex; align-items: center; gap: 9px; }
+  .fak-trigger svg.chevron { transition: transform .2s; flex-shrink: 0; }
+  .fak-trigger:hover,
+  .fak-trigger.open { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-lt); }
+  .fak-trigger.open svg.chevron { transform: rotate(180deg); }
+
+  .fak-dropdown {
+    display: none; position: absolute;
+    top: calc(100% + 8px); left: 0;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    box-shadow: 0 8px 28px rgba(16,24,40,.13);
+    min-width: 270px; z-index: 300;
+    overflow: hidden; padding: 6px 0;
+  }
+  .fak-dropdown.open { display: block; }
+
+  .fak-dropdown-header {
+    padding: 9px 16px 5px;
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em; color: var(--faint);
+  }
+  .fak-item {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; padding: 11px 16px;
+    font-size: 14px; color: var(--sub);
+    font-family: inherit; font-weight: 500;
+    background: none; border: none; cursor: pointer;
+    text-align: left; transition: background .13s;
+  }
+  .fak-item svg { flex-shrink: 0; color: var(--faint); }
+  .fak-item:hover { background: var(--bg); color: var(--text); }
+  .fak-item:hover svg { color: var(--muted); }
+  .fak-item.active { background: var(--indigo-lt); color: var(--indigo); font-weight: 700; }
+  .fak-item.active svg { color: var(--indigo); }
+  .fak-divider { height: 1px; background: var(--border); margin: 5px 0; }
 
   /* Year Select */
   .year-sel {
-    padding: 8px 32px 8px 12px; border-radius: var(--r-md); border: 1px solid var(--border-md);
-    background: var(--surface); color: var(--text); font-size: 13px; font-weight: 600;
+    padding: 10px 32px 10px 14px; border-radius: var(--r-lg); border: 1.5px solid var(--border-md);
+    background: var(--surface); color: var(--text); font-size: 14px; font-weight: 600;
     font-family: inherit; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2398a2b3' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 10px center;
@@ -112,9 +150,9 @@
   .year-sel:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(79,70,229,.12); }
 
   /* Status Pill */
-  .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 99px; font-size: 12px; font-weight: 600; color: var(--sub); }
-  .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 2px var(--green-lt); animation: pulse 2.4s ease infinite; flex-shrink: 0; }
-  @keyframes pulse { 0%,100%{box-shadow:0 0 0 2px var(--green-lt)} 50%{box-shadow:0 0 0 4px #86efac33} }
+  .status-pill { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 99px; font-size: 13px; font-weight: 600; color: var(--sub); }
+  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px var(--green-lt); animation: pulse 2.4s ease infinite; flex-shrink: 0; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 3px var(--green-lt)} 50%{box-shadow:0 0 0 5px #86efac33} }
 
   /* ─── Notice Banner ─── */
   .notice {
@@ -160,7 +198,7 @@
   .view-note svg { color: var(--faint); flex-shrink: 0; }
 
   /* ─── Table ─── */
-  .tbl-wrap { overflow-x: auto; margin: 0 -22px; padding: 0 22px; }
+  .tbl-wrap { overflow-x: auto; margin: 0 -22px; padding: 0 22px; -webkit-overflow-scrolling: touch; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead th { padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--faint); text-align: left; white-space: nowrap; background: transparent; }
   thead th:first-child { padding-left: 0; }
@@ -172,6 +210,9 @@
   tbody tr:hover td { background: var(--bg); }
   .sum-row td { background: #f8faff !important; font-weight: 700; color: var(--text); }
   .sum-row:hover td { background: #eef2ff !important; }
+
+  /* ─── Table scroll hint (mobile only) ─── */
+  .tbl-scroll-hint { display: none; }
 
   /* ─── Progress ─── */
   .prog { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; min-width: 72px; }
@@ -253,19 +294,218 @@
   /* Empty */
   .empty-cell { text-align: center; padding: 32px 20px !important; color: var(--muted) !important; }
 
+  /* ═══════════════════════════════════════════════════════════
+     MOBILE OPTIMIZATIONS
+     Breakpoints:
+       1100px  — sidebar turun ke bawah (sudah ada, dipertahankan)
+        900px  — sum-grid 2 kolom, fac-grid 2 kolom
+        768px  — tablet/HP landscape: ctrl-bar, card, tabel
+        580px  — HP portrait: ctrl-bar full-column, sum-grid 1 kolom
+  ═══════════════════════════════════════════════════════════ */
+
+  /* ── 1100px: sidebar ke bawah ── */
   @media (max-width: 1100px) {
     .lay { grid-template-columns: 1fr; }
     .side { position: static; }
   }
+
+  /* ── 900px: grid 2 kolom ── */
   @media (max-width: 900px) {
-    .sum-grid { grid-template-columns: repeat(2,1fr); }
-    .fac-grid { grid-template-columns: repeat(2,1fr); }
+    .sum-grid { grid-template-columns: repeat(2, 1fr); }
+    .fac-grid  { grid-template-columns: repeat(2, 1fr); }
   }
+
+  /* ── Sidebar: grid 2 kolom di rentang tablet ── */
+  @media (min-width: 581px) and (max-width: 1100px) {
+    .side {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .side .card { margin-bottom: 0 !important; }
+  }
+
+  /* ── 768px: penyesuaian umum tablet/HP landscape ── */
+  @media (max-width: 768px) {
+
+    /* Page header */
+    .ph {
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .ph-title { font-size: 18px; }
+    .ph-sub   { font-size: 12px; }
+    .ph > div:last-child { width: 100%; }
+    .ph .btn-sm { width: 100%; justify-content: center; }
+
+    /* Control bar */
+    .ctrl-bar {
+      padding: 12px 14px;
+      gap: 10px;
+      border-radius: var(--r-lg);
+      margin-bottom: 16px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .ctrl-left {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .ctrl-right {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .role-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 10px 16px;
+    }
+    .ctrl-sep { display: none !important; }
+    .fak-dropdown-wrap { width: 100%; }
+    .fak-trigger {
+      min-width: unset !important;
+      width: 100% !important;
+    }
+    .fak-dropdown {
+      min-width: unset;
+      width: 100%;
+      left: 0;
+      right: 0;
+      /* Batasi tinggi dropdown agar tidak keluar layar */
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+    .year-sel { flex: 1; }
+    .status-pill { font-size: 12px; padding: 7px 12px; }
+
+    /* Notice */
+    .notice {
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .notice-meta { font-size: 11px; white-space: normal; }
+
+    /* Summary cards */
+    .sum-grid {
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .sc { padding: 14px; }
+    .sc-lbl { font-size: 10px; }
+    .sc-val { font-size: 20px; margin-top: 8px; }
+    .sc-ic { width: 34px; height: 34px; border-radius: 9px; }
+
+    /* Cards */
+    .card {
+      padding: 14px;
+      border-radius: var(--r-lg);
+      margin-bottom: 12px;
+    }
+    .ch { margin-bottom: 12px; gap: 8px; }
+    .ch-title { font-size: 13px; }
+    .ch-sub   { font-size: 11px; }
+
+    /* Table scroll hint */
+    .tbl-scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      color: var(--faint);
+      margin-bottom: 6px;
+      font-style: italic;
+    }
+
+    /* Table wrapper — perlebar keluar card sesuai padding baru */
+    .tbl-wrap {
+      margin: 0 -14px;
+      padding: 0 14px;
+      -webkit-overflow-scrolling: touch;
+      /* Fade kanan sebagai petunjuk scroll */
+      -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
+      mask-image: linear-gradient(to right, black 90%, transparent 100%);
+    }
+    table {
+      min-width: 600px;
+      font-size: 12px;
+    }
+    thead th {
+      font-size: 10px;
+      padding: 7px 8px;
+    }
+    tbody td {
+      padding: 10px 8px;
+      font-size: 12px;
+    }
+    .prog { min-width: 48px; }
+
+    /* View note */
+    .view-note {
+      font-size: 11px;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+    }
+
+    /* Faculty grid */
+    .fac-card { padding: 12px; }
+    .fac-val  { font-size: 18px; }
+    .fac-name { font-size: 11px; }
+    .fac-note { font-size: 10px; }
+
+    /* Triwulan chart */
+    .triwulan-chart {
+      height: 140px;
+      padding: 20px 4px 0;
+      gap: 8px;
+    }
+    .twc-bar { width: 75%; }
+    .twc-val { font-size: 9px; }
+    .twc-lbl { font-size: 10px; }
+
+    /* Sidebar rows */
+    .tgt-row { font-size: 12px; padding: 8px 0; }
+    .sync-date { font-size: 11px; }
+    .sync-src  { font-size: 10px; }
+    .formula   { font-size: 12px; padding: 12px 14px; }
+
+    /* Filter row */
+    .filter-row { flex-direction: column; align-items: stretch; }
+    .flt-sel { width: 100%; }
+
+    /* Badge & footnote */
+    .badge { font-size: 10px; padding: 2px 7px; }
+    .fn    { font-size: 10px; }
+  }
+
+  /* ── 580px: HP portrait, single-column agresif ── */
   @media (max-width: 580px) {
     .sum-grid { grid-template-columns: 1fr; }
+    .fac-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .side .card { margin-bottom: 0 !important; }
+
+    /* Badge di ph-title tetap inline tapi font lebih kecil */
+    .ph-title .badge { font-size: 10px; padding: 2px 6px; }
+
+    /* Kartu summary jadi 2 kolom agar tidak terlalu panjang */
+    .sum-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── 400px: HP sangat kecil ── */
+  @media (max-width: 400px) {
     .fac-grid { grid-template-columns: 1fr; }
-    .ctrl-bar { flex-direction: column; align-items: flex-start; }
-    .card { padding: 16px; }
+    .sum-grid { grid-template-columns: 1fr; }
+    .sc-val   { font-size: 18px; }
   }
 </style>
 @endpush
@@ -303,48 +543,105 @@
 <div class="ctrl-bar">
   <div class="ctrl-left">
 
-    {{-- Mode Switch --}}
-    <div class="mode-sw">
-      <button type="button" id="btnUniv" class="{{ $selectedFakultas == 'Universitas Sriwijaya' ? 'active' : '' }}">
-        User Universitas
-      </button>
-      <button type="button" id="btnFak" class="{{ $selectedFakultas != 'Universitas Sriwijaya' ? 'active' : '' }}">
-        User Fakultas
-      </button>
+    {{-- Hidden select untuk submit form Laravel – tidak diubah --}}
+    <select name="fakultas" id="facultySelect" style="display:none;">
+      <option value="Universitas Sriwijaya" {{ $selectedFakultas == 'Universitas Sriwijaya' ? 'selected' : '' }}>
+        Universitas Sriwijaya
+      </option>
+      @foreach($listFakultas as $fak)
+        <option value="{{ $fak }}" {{ $selectedFakultas == $fak ? 'selected' : '' }}>{{ $fak }}</option>
+      @endforeach
+    </select>
+
+    {{-- Tombol Universitas --}}
+    <button type="button" id="btnUniv"
+      class="role-btn {{ $selectedFakultas == 'Universitas Sriwijaya' ? 'active' : '' }}">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Universitas
+    </button>
+
+    {{-- Tombol Fakultas --}}
+    <button type="button" id="btnFak"
+      class="role-btn {{ $selectedFakultas != 'Universitas Sriwijaya' ? 'active' : '' }}">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+      Fakultas
+    </button>
+
+    {{-- Separator, hanya muncul saat mode Fakultas --}}
+    <div class="ctrl-sep" id="fakSep"
+      style="{{ $selectedFakultas != 'Universitas Sriwijaya' ? '' : 'display:none;' }}">
     </div>
 
-    <div class="ctrl-sep"></div>
+    {{-- Dropdown pilih fakultas, hanya muncul saat mode Fakultas --}}
+    <div class="fak-dropdown-wrap" id="fakDropWrap"
+      style="{{ $selectedFakultas != 'Universitas Sriwijaya' ? '' : 'display:none;' }}">
 
-    {{-- Faculty Tabs --}}
-    <div class="fak-scroll">
-      <select name="fakultas" id="facultySelect" style="display:none;">
-        <option value="Universitas Sriwijaya" {{ $selectedFakultas == 'Universitas Sriwijaya' ? 'selected' : '' }}>
-          Universitas Sriwijaya
-        </option>
+      <button type="button"
+        class="fak-trigger"
+        id="fakTrigger"
+        onclick="toggleFakDropdown()">
+        <div class="fak-trigger-left">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span id="fakLabel">
+            {{ $selectedFakultas != 'Universitas Sriwijaya' ? $selectedFakultas : 'Pilih Fakultas…' }}
+          </span>
+        </div>
+        <svg class="chevron" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+
+      <div class="fak-dropdown" id="fakDropdown">
+        <div class="fak-dropdown-header">Pilih Fakultas</div>
+
         @foreach($listFakultas as $fak)
-          <option value="{{ $fak }}" {{ $selectedFakultas == $fak ? 'selected' : '' }}>{{ $fak }}</option>
+          @php $isSps = strtoupper(trim($fak)) === 'SPS'; @endphp
+          @if($fak !== 'Universitas Sriwijaya' && !$isSps)
+          <button type="button"
+            class="fak-item {{ $selectedFakultas == $fak ? 'active' : '' }}"
+            onclick="setFakultas('{{ $fak }}')">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            {{ $fak }}
+          </button>
+          @endif
         @endforeach
-      </select>
 
-      {{-- Univ tab --}}
-      <button type="button" class="fak-tab {{ $selectedFakultas == 'Universitas Sriwijaya' ? 'active' : '' }}"
-        onclick="setFakultas('Universitas Sriwijaya')">Universitas</button>
+        <div class="fak-divider"></div>
+        <div class="fak-dropdown-header">Sekolah Pascasarjana</div>
 
-      {{-- Per-fakultas tabs --}}
-      @foreach($listFakultas as $fak)
-        @if($fak !== 'Universitas Sriwijaya')
-        <button type="button" class="fak-tab {{ $selectedFakultas == $fak ? 'active' : '' }}"
-          onclick="setFakultas('{{ $fak }}')">
-          {{ \Illuminate\Support\Str::replace(['Fakultas ', 'FAKULTAS '], '', $fak) }}
-        </button>
-        @endif
-      @endforeach
+        @foreach($listFakultas as $fak)
+          @if(strtoupper(trim($fak)) === 'SPS')
+          <button type="button"
+            class="fak-item {{ $selectedFakultas == $fak ? 'active' : '' }}"
+            onclick="setFakultas('{{ $fak }}')">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            Sekolah Pascasarjana (SPS)
+          </button>
+          @endif
+        @endforeach
+      </div>
     </div>
 
   </div>
 
   <div class="ctrl-right">
-    <div class="status-pill"><span class="pulse"></span>Sinkron</div>
+    <div class="status-pill"><span class="pulse"></span>Data Tersinkron</div>
     <select name="tahun" class="year-sel" onchange="document.getElementById('filterForm').submit();">
       <option value="2026" {{ $selectedTahun == '2026' ? 'selected' : '' }}>2026</option>
       <option value="2027" {{ $selectedTahun == '2027' ? 'selected' : '' }}>2027</option>
@@ -436,6 +733,11 @@
         <div class="view-note">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           Tabel read-only — data berasal dari API Data Lake dan tidak dapat diedit secara manual.
+        </div>
+        {{-- Scroll hint khusus mobile --}}
+        <div class="tbl-scroll-hint">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Geser ke kanan untuk melihat semua kolom
         </div>
         <div class="tbl-wrap">
           <table>
@@ -736,6 +1038,11 @@
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           Data halaman Fakultas bersifat read-only dari API Data Lake.
         </div>
+        {{-- Scroll hint khusus mobile --}}
+        <div class="tbl-scroll-hint">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Geser ke kanan untuk melihat semua kolom
+        </div>
         <div class="tbl-wrap">
           <table>
             <thead>
@@ -826,6 +1133,10 @@
             <option>Semua Status</option>
             <option>Tercapai</option><option>Perlu Perhatian</option>
           </select>
+        </div>
+        <div class="tbl-scroll-hint">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Geser ke kanan untuk melihat semua kolom
         </div>
         <div class="tbl-wrap">
           <table>
@@ -946,32 +1257,61 @@
 
 @push('scripts')
 <script>
+  /* ─── setFakultas: tidak berubah, submit form Laravel ─── */
   function setFakultas(val) {
     document.getElementById('facultySelect').value = val;
     document.getElementById('filterForm').submit();
   }
 
+  /* ─── Buka/tutup dropdown pilih fakultas ─── */
+  function toggleFakDropdown() {
+    var dd = document.getElementById('fakDropdown');
+    var tr = document.getElementById('fakTrigger');
+    dd.classList.toggle('open');
+    tr.classList.toggle('open');
+  }
+
+  /* ─── Tutup dropdown jika klik di luar area ─── */
+  document.addEventListener('click', function(e) {
+    var wrap = document.getElementById('fakDropWrap');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('fakDropdown').classList.remove('open');
+      document.getElementById('fakTrigger').classList.remove('open');
+    }
+  });
+
+  /* ─── Tombol Universitas ─── */
   document.getElementById('btnUniv').addEventListener('click', function() {
     setFakultas('Universitas Sriwijaya');
   });
 
+  /* ─── Tombol Fakultas ─── */
   document.getElementById('btnFak').addEventListener('click', function() {
-    const opts = document.querySelectorAll('#facultySelect option');
-    for (const opt of opts) {
-      if (opt.value !== 'Universitas Sriwijaya') {
-        setFakultas(opt.value);
-        break;
-      }
+    var fakSep      = document.getElementById('fakSep');
+    var fakDropWrap = document.getElementById('fakDropWrap');
+
+    fakSep.style.display      = 'block';
+    fakDropWrap.style.display = 'block';
+
+    var currentVal = document.getElementById('facultySelect').value;
+    if (currentVal && currentVal !== 'Universitas Sriwijaya') {
+      /* Sudah ada pilihan sebelumnya, cukup buka dropdown */
+      toggleFakDropdown();
+    } else {
+      /* Belum ada pilihan, langsung buka dropdown */
+      document.getElementById('fakDropdown').classList.add('open');
+      document.getElementById('fakTrigger').classList.add('open');
     }
   });
 
+  /* ─── scrollToFakultas: tidak berubah ─── */
   function scrollToFakultas() {
-    const el = document.getElementById('detailFakultas');
+    var el = document.getElementById('detailFakultas');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       el.style.transition = 'box-shadow 0.4s';
       el.style.boxShadow = '0 0 0 2px var(--indigo)';
-      setTimeout(() => { el.style.boxShadow = ''; }, 1600);
+      setTimeout(function() { el.style.boxShadow = ''; }, 1600);
     }
   }
 

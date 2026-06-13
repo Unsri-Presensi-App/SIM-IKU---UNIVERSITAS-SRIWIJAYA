@@ -543,7 +543,8 @@
             <span class="sb-child-label">IKU 1 – AEE PT</span>
             <span class="sb-badge">Auto</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.dua') }}"
+             class="sb-child {{ request()->routeIs('iku.dua') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 2 – Lulusan</span>
           </a>

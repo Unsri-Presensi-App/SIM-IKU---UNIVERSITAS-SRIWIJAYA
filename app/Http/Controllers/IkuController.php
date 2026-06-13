@@ -210,26 +210,17 @@ class IkuController extends Controller
         $targetIku      = DB::table('target_iku')->where('kode_iku', 'IKU 2')->first();
         $targetFakultas = DB::table('target_fakultas')->where('kode_iku', 'IKU 2')->get();
 
-        // Agregat per fakultas (TOTAL pada PDF hal.20): baseline 73,57% -> target 75%.
-        // CATATAN: angka ini rata-rata TERTIMBANG per jumlah lulusan (bukan rata-rata sederhana),
-        // sehingga diambil langsung dari nilai resmi PDF.
-        $aggBaseline = 73.57;
-        $aggTarget   = 75.00;
-
         // === PLACEHOLDER API TRACER STUDY (DALAM PENGEMBANGAN) ===
         // Realisasi IKU 2 idealnya dari hasil tracer study (responden berbobot, rumus Slovin galat 2,3%).
-        // Saat API tracer tersedia, isi $realisasiFak dari sana. Sementara: null (belum tersedia).
-        // Struktur target diharapkan: getTracerStudy($fakultas) -> ['responden'=>, 'memenuhi'=>, 'persen'=>]
-        $realisasiTersedia = false; // true bila data realisasi tracer sudah masuk
+        // Saat API tracer tersedia, isi realisasi dari sana. Sementara: null (belum tersedia).
+        $realisasiTersedia = false;
 
         return view('iku.iku-dua', [
-            'target'             => $targetIku->target_2026 ?? 73,
-            'baseline'           => $targetIku->baseline_2025 ?? 71,
-            'satuan'             => $targetIku->satuan ?? '%',
-            'fakultas'           => $targetFakultas,
-            'aggBaseline'        => $aggBaseline,
-            'aggTarget'          => $aggTarget,
-            'realisasiTersedia'  => $realisasiTersedia,
+            'target'            => $targetIku->target_2026 ?? 75,
+            'baseline'          => $targetIku->baseline_2025 ?? 73.6,
+            'satuan'            => $targetIku->satuan ?? '%',
+            'fakultas'          => $targetFakultas,
+            'realisasiTersedia' => $realisasiTersedia,
         ]);
     }
 

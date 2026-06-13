@@ -702,25 +702,12 @@
               @empty
               <tr><td colspan="7" class="empty-cell">Data target per fakultas belum tersedia.</td></tr>
               @endforelse
-
-              @if(count($fakultas) > 0)
-              <tr class="sum-row">
-                <td colspan="2">Agregat Universitas</td>
-                <td>{{ number_format($aggBaseline, 2, ',', '.') }}%</td>
-                <td>{{ number_format($aggTarget, 2, ',', '.') }}%</td>
-                <td>{{ $aggTarget - $aggBaseline > 0 ? '+' : '' }}{{ number_format($aggTarget - $aggBaseline, 2, ',', '.') }}%</td>
-                <td>—</td>
-                <td>
-                  <span class="badge info"><span class="badge-dot"></span>Rata-rata Tertimbang</span>
-                </td>
-              </tr>
-              @endif
             </tbody>
           </table>
         </div>
         <div class="fn">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Agregat universitas = rata-rata tertimbang per jumlah lulusan (nilai resmi Kontrak Kinerja, bukan rata-rata sederhana).
+          Baseline 2025 = 73,6% · Target 2026 = 75% (sesuai Kontrak Kinerja Rektor). Capaian per fakultas dari hasil tracer study.
         </div>
       </div>
 
@@ -797,8 +784,7 @@
         </div>
         <div class="tgt-row"><span class="tgt-lbl">Baseline 2025</span><span class="tgt-val">{{ number_format($baseline, 2, ',', '.') }}%</span></div>
         <div class="tgt-row"><span class="tgt-lbl">Target 2026</span><span class="tgt-val">{{ number_format($target, 2, ',', '.') }}%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Agregat Fakultas (Baseline)</span><span class="tgt-val">{{ number_format($aggBaseline, 2, ',', '.') }}%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Agregat Fakultas (Target)</span><span class="tgt-val">{{ number_format($aggTarget, 2, ',', '.') }}%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Kenaikan</span><span class="tgt-val">+{{ number_format($target - $baseline, 2, ',', '.') }}%</span></div>
       </div>
 
       <div class="card" style="margin-bottom:0;">

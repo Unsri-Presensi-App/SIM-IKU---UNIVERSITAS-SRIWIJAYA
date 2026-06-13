@@ -193,11 +193,42 @@
     .g4, .g3 { grid-template-columns: repeat(2,1fr); }
     .g65     { grid-template-columns: 1fr; }
   }
-  @media (max-width: 640px) {
-    .g4, .g3 { grid-template-columns: 1fr; }
-    .ph { flex-direction: column; align-items: flex-start; }
+  @media (max-width: 760px) {
+    .ph { flex-direction: column; align-items: flex-start; margin-bottom: 22px; }
+    .ph-right { width: 100%; justify-content: space-between; }
+    .ph-title { font-size: 19px; }
+    .g4, .g3 { grid-template-columns: 1fr; gap: 12px; margin-bottom: 14px; }
+    .g65 { gap: 12px; margin-bottom: 14px; }
     .card { padding: 18px; }
-    .mh, .mc-body { padding: 20px; }
+    .mc-value { font-size: 26px; }
+    .dim-v { font-size: 24px; }
+
+    /* Tabel: izinkan scroll horizontal mulus + petunjuk fade */
+    .tbl-wrap {
+      margin: 0 -18px; padding: 0 18px;
+      -webkit-overflow-scrolling: touch;
+      -webkit-mask-image: linear-gradient(to right, #000 92%, transparent 100%);
+      mask-image: linear-gradient(to right, #000 92%, transparent 100%);
+    }
+    table { min-width: 460px; }
+    thead th { font-size: 10px; padding: 7px 10px; }
+    tbody td { padding: 11px 10px; }
+
+    /* Modal full-ish di mobile */
+    .mo { padding: 0; align-items: flex-end; }
+    .mb { max-width: 100%; max-height: 92vh; border-radius: var(--r-xl) var(--r-xl) 0 0; }
+    .mh { padding: 20px 18px 16px; }
+    .mh-text h3 { font-size: 16px; }
+    .mc-body { padding: 18px; overflow-x: auto; }
+    .mc-body table { min-width: 540px; }
+
+    /* Legend donut & badge rapikan */
+    .badge { font-size: 10px; padding: 2px 7px; }
+  }
+  @media (max-width: 420px) {
+    .ph-right { flex-direction: column; align-items: stretch; gap: 8px; }
+    .ph-right .year-sel { width: 100%; }
+    .mc-value { font-size: 23px; }
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -210,7 +241,7 @@
   <div class="ph-left">
     <div class="ph-eyebrow">SIM IKU · {{ $selectedTahun }}</div>
     <div class="ph-title">Dashboard Kinerja Utama</div>
-    <div class="ph-sub">Pantauan eksekutif realisasi Indikator Kinerja Utama tahun berjalan.</div>
+    <div class="ph-sub">Pantauan eksekutif progres Indikator Kinerja Utama menuju target tahun berjalan.</div>
   </div>
   <div class="ph-right">
     <div class="status-pill">
@@ -226,13 +257,26 @@
   </div>
 </section>
 
+{{-- ── BANNER: realisasi nyata belum tersedia ── --}}
+@if(empty($realisasiTersedia))
+<div class="card" style="flex-direction:row; align-items:center; gap:12px; padding:14px 18px; margin-bottom:20px; background:var(--amber-lt); border-color:#fde68a;">
+  <div class="mc-icon ic-amber" style="width:34px; height:34px;">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  </div>
+  <div style="font-size:13px; color:var(--amber-dk); line-height:1.5;">
+    <strong>Angka menampilkan progres Baseline 2025 → Target, bukan realisasi aktual.</strong>
+    Data realisasi nyata menyusul setelah API (mahasiswa &amp; tracer study) tersedia.
+  </div>
+</div>
+@endif
+
 {{-- ── 1. KARTU RINGKASAN ── --}}
 <div class="g4">
 
   {{-- Rata-Rata Capaian --}}
   <div class="card mc">
     <div class="mc-top">
-      <span class="mc-label">Rata-Rata Capaian IKU</span>
+      <span class="mc-label">Rata-Rata Progres IKU</span>
       <div class="mc-icon ic-indigo">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
           <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
@@ -292,28 +336,28 @@
 
 </div>
 
-{{-- ── 2. TIGA DIMENSI IKU ── --}}
+{{-- ── 2. TIGA DIMENSI IKU (sesuai Sasaran Strategis PDF) ── --}}
 <div class="g3">
 
   <div class="card">
-    <div class="dim-ew">Dimensi 1</div>
-    <div class="dim-t">Kualitas Lulusan</div>
-    <div class="dim-v">{{ number_format($dimensi['lulusan'], 1, ',', '.') }}%</div>
-    <div class="prog"><div class="prog-f" style="width:{{ min($dimensi['lulusan'], 100) }}%; background:var(--indigo);"></div></div>
+    <div class="dim-ew">Sasaran · Talenta</div>
+    <div class="dim-t">IKU 1–3 · Lulusan &amp; Mahasiswa</div>
+    <div class="dim-v">{{ number_format($dimensi['talenta'], 1, ',', '.') }}%</div>
+    <div class="prog"><div class="prog-f" style="width:{{ min($dimensi['talenta'], 100) }}%; background:var(--indigo);"></div></div>
   </div>
 
   <div class="card">
-    <div class="dim-ew">Dimensi 2</div>
-    <div class="dim-t">Kualitas Dosen</div>
-    <div class="dim-v">{{ number_format($dimensi['dosen'], 1, ',', '.') }}%</div>
-    <div class="prog"><div class="prog-f" style="width:{{ min($dimensi['dosen'], 100) }}%; background:var(--amber);"></div></div>
+    <div class="dim-ew">Sasaran · Inovasi</div>
+    <div class="dim-t">IKU 4–6 · Riset, Kerjasama &amp; Publikasi</div>
+    <div class="dim-v">{{ number_format($dimensi['inovasi'], 1, ',', '.') }}%</div>
+    <div class="prog"><div class="prog-f" style="width:{{ min($dimensi['inovasi'], 100) }}%; background:var(--amber);"></div></div>
   </div>
 
   <div class="card">
-    <div class="dim-ew">Dimensi 3</div>
-    <div class="dim-t">Kurikulum &amp; Tata Kelola</div>
-    <div class="dim-v">{{ number_format($dimensi['kurikulum'], 1, ',', '.') }}%</div>
-    <div class="prog"><div class="prog-f" style="width:{{ min($dimensi['kurikulum'], 100) }}%; background:var(--green);"></div></div>
+    <div class="dim-ew">Sasaran · Tata Kelola</div>
+    <div class="dim-t">IKU 7–11 · Kontribusi &amp; Integritas</div>
+    <div class="dim-v">{{ number_format($dimensi['tata_kelola'], 1, ',', '.') }}%</div>
+    <div class="prog"><div class="prog-f" style="width:{{ min($dimensi['tata_kelola'], 100) }}%; background:var(--green);"></div></div>
   </div>
 
 </div>
@@ -329,7 +373,7 @@
             <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
           </svg>
         </div>
-        <span class="ch-title">Capaian vs Target 12 IKU <span style="color:var(--muted); font-weight:500;">({{ $selectedTahun }})</span></span>
+        <span class="ch-title">Progres vs Target 11 IKU <span style="color:var(--muted); font-weight:500;">({{ $selectedTahun }})</span></span>
       </div>
     </div>
     <div style="height:296px; width:100%; position:relative;">
@@ -383,7 +427,7 @@
       </div>
       <button type="button" class="btn btn-sm" onclick="openModal('modalAllData')">
         <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Lihat Semua 12 Data
+        Lihat Semua 11 Data
       </button>
     </div>
 
@@ -405,7 +449,7 @@
             <td style="color:var(--text); font-weight:500;">{{ $row->nama }}</td>
             <td>
               <div style="display:flex; align-items:center; gap:8px;">
-                <span style="font-weight:700; color:var(--red); font-size:14px;">{{ number_format($row->capaian_persen, 2, ',', '.') }}%</span>
+                <span style="font-weight:700; color:var(--red); font-size:14px;">{{ number_format($row->capaian_persen, 1, ',', '.') }}%</span>
                 <span class="badge crit"><span class="badge-dot"></span>Kritis</span>
               </div>
             </td>
@@ -502,7 +546,7 @@
   <div class="mb">
     <div class="mh">
       <div class="mh-text">
-        <h3>Rekapitulasi 12 Indikator Kinerja Utama</h3>
+        <h3>Rekapitulasi 11 Indikator Kinerja Utama</h3>
         <p>Data keseluruhan · Tahun Perjanjian Kinerja {{ $selectedTahun }}</p>
       </div>
       <button class="modal-close" onclick="closeModal('modalAllData')" aria-label="Tutup">
@@ -517,9 +561,9 @@
           <tr>
             <th>Kode</th>
             <th>Nama Indikator</th>
-            <th>Target</th>
-            <th>Realisasi</th>
-            <th>Capaian</th>
+            <th>Baseline 2025</th>
+            <th>Target 2026</th>
+            <th>Progres</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -528,9 +572,9 @@
           <tr>
             <td><span class="code-chip">{{ $iku->kode }}</span></td>
             <td style="font-weight:500;">{{ $iku->nama }}</td>
-            <td style="color:var(--muted);">{{ is_numeric($iku->target)     ? number_format($iku->target,     2, ',', '.') : $iku->target }}</td>
-            <td style="font-weight:600;">{{ is_numeric($iku->realisasi) ? number_format($iku->realisasi, 2, ',', '.') : $iku->realisasi }}</td>
-            <td style="font-weight:700; color:var(--text);">{{ number_format($iku->capaian_persen, 2, ',', '.') }}%</td>
+            <td style="color:var(--muted);">{{ number_format($iku->baseline, 2, ',', '.') }} <span style="font-size:11px;color:var(--faint);">{{ $iku->satuan }}</span></td>
+            <td style="font-weight:600;">{{ number_format($iku->target, 2, ',', '.') }} <span style="font-size:11px;color:var(--faint);">{{ $iku->satuan }}</span></td>
+            <td style="font-weight:700; color:var(--text);">{{ number_format($iku->capaian_persen, 1, ',', '.') }}%</td>
             <td>
               @if($iku->capaian_persen >= 100)
                 <span class="badge good"><span class="badge-dot"></span>Tercapai</span>
@@ -627,7 +671,7 @@
         labels: @json($chartLabels),
         datasets: [
           {
-            label: 'Capaian Saat Ini (%)',
+            label: 'Progres ke Target (%)',
             data: @json($chartCapaian),
             backgroundColor: '#4f46e5',
             borderRadius: { topLeft: 5, topRight: 5 },

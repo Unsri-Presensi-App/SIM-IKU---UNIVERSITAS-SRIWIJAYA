@@ -666,6 +666,22 @@
   <div class="notice-meta">Update: {{ now()->format('d M Y, H.i') }} WIB</div>
 </div>
 
+{{-- ── BANNER: data mahasiswa dari API belum lengkap ── --}}
+@if(!empty($dataBelumLengkap))
+<div class="notice" style="background:var(--amber-lt); border-color:#fde68a;">
+  <div class="notice-left">
+    <div class="notice-ic" style="background:var(--amber);">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <div class="notice-text" style="color:var(--amber-dk);">
+      <strong>Sebagian data mahasiswa belum tersedia.</strong>
+      API jumlah mahasiswa aktif/keluar masih dalam pengembangan; jenjang tanpa data dilewati dari perhitungan AEE.
+    </div>
+  </div>
+  <div class="notice-meta" style="color:var(--amber-dk);">Mode data sementara (mock)</div>
+</div>
+@endif
+
 {{-- ── SECTIONS ── --}}
 
 {{-- ─ SECTION UNIVERSITAS ─ --}}
@@ -674,8 +690,8 @@
   <div class="sum-grid">
     <div class="sc">
       <div>
-        <div class="sc-lbl">AEE Rata-rata Universitas</div>
-        <div class="sc-val">{{ number_format($dataTabel ? collect($dataTabel)->avg('aee_realisasi') : 0, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+        <div class="sc-lbl">AEE PT Realisasi</div>
+        <div class="sc-val">{{ number_format($aee_pt, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
       </div>
       <div class="sc-ic ic-indigo">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
@@ -693,7 +709,7 @@
     <div class="sc">
       <div>
         <div class="sc-lbl">Capaian terhadap Target</div>
-        <div class="sc-val">{{ number_format($aee_pt, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+        <div class="sc-val">{{ number_format($capaian_thd_target, 1, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
       </div>
       <div class="sc-ic ic-amber">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
@@ -792,7 +808,7 @@
 
               @if(count($dataTabel) > 0)
               <tr class="sum-row">
-                <td colspan="3">Rata-rata Keseluruhan</td>
+                <td colspan="3">AEE PT (Rata-rata Pencapaian)</td>
                 <td>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</td>
                 <td>—</td>
                 <td>{{ number_format($aee_pt, 2, ',', '.') }}%</td>
@@ -815,60 +831,36 @@
         </div>
       </div>
 
-      {{-- AEE per Fakultas --}}
+      {{-- Capaian AEE per Jenjang (dinamis dari data) --}}
       <div class="card" id="detailFakultas">
         <div class="ch">
           <div class="ch-left">
             <div class="ch-icon">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </div>
-            <div class="ch-title">AEE per Fakultas</div>
+            <div class="ch-title">Capaian AEE per Jenjang</div>
           </div>
           <button class="btn btn-sm" onclick="scrollToFakultas()">Lihat Semua</button>
         </div>
         <div class="fac-grid">
-          <div class="fac-card">
-            <div class="fac-rank">1</div>
-            <div class="fac-name">Fak. Kedokteran</div>
-            <div class="fac-val">48,90%</div>
-            <div class="prog"><div class="prog-f pf-green" style="width:100%"></div></div>
-            <div class="fac-note">Capaian 113,4% dari target</div>
-          </div>
-          <div class="fac-card">
-            <div class="fac-rank">2</div>
-            <div class="fac-name">Fak. Ekonomi</div>
-            <div class="fac-val">45,20%</div>
-            <div class="prog"><div class="prog-f pf-green" style="width:100%"></div></div>
-            <div class="fac-note">Capaian 104,8% dari target</div>
-          </div>
-          <div class="fac-card">
-            <div class="fac-rank">3</div>
-            <div class="fac-name">Fak. Teknik</div>
-            <div class="fac-val">42,60%</div>
-            <div class="prog"><div class="prog-f pf-amber" style="width:99%"></div></div>
-            <div class="fac-note">Capaian 98,7% dari target</div>
-          </div>
-          <div class="fac-card">
-            <div class="fac-rank">4</div>
-            <div class="fac-name">FASILKOM</div>
-            <div class="fac-val">41,10%</div>
-            <div class="prog"><div class="prog-f pf-amber" style="width:95%"></div></div>
-            <div class="fac-note">Capaian 95,3% dari target</div>
-          </div>
-          <div class="fac-card">
-            <div class="fac-rank">5</div>
-            <div class="fac-name">FKIP</div>
-            <div class="fac-val">39,50%</div>
-            <div class="prog"><div class="prog-f pf-amber" style="width:92%"></div></div>
-            <div class="fac-note">Capaian 91,6% dari target</div>
-          </div>
-          <div class="fac-card">
-            <div class="fac-rank">6</div>
-            <div class="fac-name">Fak. Pertanian</div>
-            <div class="fac-val">38,70%</div>
-            <div class="prog"><div class="prog-f pf-amber" style="width:90%"></div></div>
-            <div class="fac-note">Perlu tindak lanjut S1</div>
-          </div>
+          @php $rankSorted = collect($dataTabel)->sortByDesc('tingkat_pencapaian')->values(); @endphp
+          @forelse($rankSorted as $i => $row)
+            @php
+              $rasio = $row->target_pk > 0 ? ($row->tingkat_pencapaian / $row->target_pk) * 100 : 0;
+              $pf = $row->tingkat_pencapaian >= $row->target_pk ? 'pf-green' : ($rasio >= 80 ? 'pf-amber' : 'pf-red');
+            @endphp
+            <div class="fac-card">
+              <div class="fac-rank">{{ $i + 1 }}</div>
+              <div class="fac-name">{{ $row->jenjang }}</div>
+              <div class="fac-val">{{ number_format($row->tingkat_pencapaian, 2, ',', '.') }}%</div>
+              <div class="prog"><div class="prog-f {{ $pf }}" style="width:{{ min($rasio, 100) }}%"></div></div>
+              <div class="fac-note">Capaian {{ number_format($rasio, 1, ',', '.') }}% dari target PK</div>
+            </div>
+          @empty
+            <div class="fac-card" style="grid-column:1/-1; text-align:center; color:var(--muted);">
+              Data jenjang belum tersedia.
+            </div>
+          @endforelse
         </div>
       </div>
 
@@ -887,22 +879,16 @@
           </div>
         </div>
         <div class="triwulan-chart">
+          @php
+            $twVals = [$aee_pt * 0.25, $aee_pt * 0.50, $aee_pt * 0.75, $aee_pt];
+            $twMax  = max($aee_pt, 0.0001);
+          @endphp
+          @foreach($twVals as $idx => $tw)
           <div class="twc-col">
-            <div class="twc-bar" style="height:42px;"><span class="twc-val">10,42%</span></div>
-            <div class="twc-lbl">TW1</div>
+            <div class="twc-bar" style="height:{{ max(8, ($tw / $twMax) * 140) }}px;"><span class="twc-val">{{ number_format($tw, 2, ',', '.') }}%</span></div>
+            <div class="twc-lbl">TW{{ $idx + 1 }}</div>
           </div>
-          <div class="twc-col">
-            <div class="twc-bar" style="height:76px;"><span class="twc-val">21,56%</span></div>
-            <div class="twc-lbl">TW2</div>
-          </div>
-          <div class="twc-col">
-            <div class="twc-bar" style="height:108px;"><span class="twc-val">31,44%</span></div>
-            <div class="twc-lbl">TW3</div>
-          </div>
-          <div class="twc-col">
-            <div class="twc-bar" style="height:140px;"><span class="twc-val">{{ number_format($aee_pt, 2, ',', '.') }}%</span></div>
-            <div class="twc-lbl">TW4</div>
-          </div>
+          @endforeach
         </div>
       </div>
 
@@ -916,10 +902,9 @@
           </div>
         </div>
         <div class="tgt-row"><span class="tgt-lbl">AEE PT</span><span class="tgt-val">{{ number_format($targetAeePT, 2, ',', '.') }}%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">D3</span><span class="tgt-val">51,50%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">S1</span><span class="tgt-val">50,00%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">S2</span><span class="tgt-val">40,00%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">S3</span><span class="tgt-val">31,00%</span></div>
+        @foreach($dataTabel as $row)
+        <div class="tgt-row"><span class="tgt-lbl">{{ $row->jenjang }}</span><span class="tgt-val">{{ number_format($row->target_pk, 2, ',', '.') }}%</span></div>
+        @endforeach
       </div>
 
       <div class="card" style="margin-bottom:0;">
@@ -978,8 +963,8 @@
   <div class="sum-grid">
     <div class="sc">
       <div>
-        <div class="sc-lbl">AEE Rata-rata Fakultas</div>
-        <div class="sc-val">{{ number_format($dataTabel ? collect($dataTabel)->avg('aee_realisasi') : 0, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+        <div class="sc-lbl">AEE PT Realisasi Fakultas</div>
+        <div class="sc-val">{{ number_format($aee_pt, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
       </div>
       <div class="sc-ic ic-indigo">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
@@ -997,7 +982,7 @@
     <div class="sc">
       <div>
         <div class="sc-lbl">Capaian terhadap Target</div>
-        <div class="sc-val">{{ number_format($aee_pt, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+        <div class="sc-val">{{ number_format($capaian_thd_target, 1, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
       </div>
       <div class="sc-ic ic-amber">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
@@ -1098,7 +1083,7 @@
 
               @if(count($dataTabel) > 0)
               <tr class="sum-row">
-                <td colspan="3">Rata-rata Keseluruhan</td>
+                <td colspan="3">AEE PT Fakultas (Rata-rata Pencapaian)</td>
                 <td>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</td>
                 <td>—</td>
                 <td>{{ number_format($aee_pt, 2, ',', '.') }}%</td>
@@ -1177,22 +1162,16 @@
           </div>
         </div>
         <div class="triwulan-chart">
+          @php
+            $twValsF = [$aee_pt * 0.25, $aee_pt * 0.50, $aee_pt * 0.75, $aee_pt];
+            $twMaxF  = max($aee_pt, 0.0001);
+          @endphp
+          @foreach($twValsF as $idx => $tw)
           <div class="twc-col">
-            <div class="twc-bar" style="height:42px;"><span class="twc-val">10,65%</span></div>
-            <div class="twc-lbl">TW1</div>
+            <div class="twc-bar" style="height:{{ max(8, ($tw / $twMaxF) * 140) }}px;"><span class="twc-val">{{ number_format($tw, 2, ',', '.') }}%</span></div>
+            <div class="twc-lbl">TW{{ $idx + 1 }}</div>
           </div>
-          <div class="twc-col">
-            <div class="twc-bar" style="height:76px;"><span class="twc-val">21,30%</span></div>
-            <div class="twc-lbl">TW2</div>
-          </div>
-          <div class="twc-col">
-            <div class="twc-bar" style="height:108px;"><span class="twc-val">31,95%</span></div>
-            <div class="twc-lbl">TW3</div>
-          </div>
-          <div class="twc-col">
-            <div class="twc-bar" style="height:140px;"><span class="twc-val">42,60%</span></div>
-            <div class="twc-lbl">TW4</div>
-          </div>
+          @endforeach
         </div>
       </div>
 
@@ -1202,12 +1181,27 @@
             <div class="ch-icon" style="background:var(--red-lt);">
               <svg width="14" height="14" fill="none" stroke="var(--red)" stroke-width="1.75" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             </div>
-            <div class="ch-title">Prodi Perlu Perhatian</div>
+            <div class="ch-title">Jenjang Perlu Perhatian</div>
           </div>
         </div>
-        <div class="tgt-row"><span class="tgt-lbl">Teknik Elektro</span><span style="font-weight:700; color:var(--red);">44,57%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Teknik Kimia</span><span style="font-weight:700; color:var(--amber-dk);">46,11%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Teknik Mesin</span><span style="font-weight:700; color:var(--amber-dk);">47,20%</span></div>
+        @php
+          $perluPerhatian = collect($dataTabel)
+              ->filter(fn($r) => $r->tingkat_pencapaian < $r->target_pk)
+              ->sortBy('tingkat_pencapaian')
+              ->values();
+        @endphp
+        @forelse($perluPerhatian as $row)
+          @php
+            $rasioPP = $row->target_pk > 0 ? ($row->tingkat_pencapaian / $row->target_pk) * 100 : 0;
+            $warna   = $rasioPP >= 80 ? 'var(--amber-dk)' : 'var(--red)';
+          @endphp
+          <div class="tgt-row">
+            <span class="tgt-lbl">{{ $row->jenjang }}</span>
+            <span style="font-weight:700; color:{{ $warna }};">{{ number_format($row->tingkat_pencapaian, 2, ',', '.') }}%</span>
+          </div>
+        @empty
+          <div class="tgt-row"><span class="tgt-lbl" style="color:var(--green-dk);">Semua jenjang memenuhi target 👍</span></div>
+        @endforelse
       </div>
 
       <div class="card" style="margin-bottom:0;">

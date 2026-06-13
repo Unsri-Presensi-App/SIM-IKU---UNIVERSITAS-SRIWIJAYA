@@ -16,6 +16,17 @@ class IkuSatu extends Model
         'aee_realisasi',
         'aee_ideal',
         'tingkat_pencapaian',
+        'target_capaian',   // ditambah agar konsisten dgn data tabel di controller/view
         'tahun_akademik',
+    ];
+
+    // Pastikan kolom angka di-cast agar perhitungan & number_format aman
+    protected $casts = [
+        'total_mahasiswa'    => 'integer',
+        'lulus_tepat_waktu'  => 'integer',
+        'aee_realisasi'      => 'float',
+        'aee_ideal'          => 'float',
+        'tingkat_pencapaian' => 'float',
+        'target_capaian'     => 'float',
     ];
 }

@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
                 'kode_iku'      => 'IKU 4',
                 'nama_iku'      => 'Dosen Mendapat Rekognisi Internasional',
                 'baseline_2025' => 37.33,
-                'target_2026'   => 44.60,   // matriks PK Wajib hal.2 = 44,6%
+                'target_2026'   => 45.00,   // matriks PK Wajib hal.2 = 44,6%
                 'satuan'        => '%',
                 'keterangan'    => 'Target: 784 dosen mendapat rekognisi',
             ],

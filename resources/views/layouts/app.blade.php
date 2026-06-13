@@ -548,11 +548,13 @@
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 2 – Lulusan</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.tiga') }}"
+             class="sb-child {{ request()->routeIs('iku.tiga') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 3 – Kegiatan / Prestasi</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.empat') }}"
+             class="sb-child {{ request()->routeIs('iku.empat') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 4 – Rekognisi Dosen</span>
           </a>
@@ -574,11 +576,13 @@
           </svg>
         </div>
         <div class="sb-children closed" id="group-inovasi">
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.lima') }}"
+             class="sb-child {{ request()->routeIs('iku.lima') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 5 – Kerja Sama / Hilirisasi</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.enam') }}"
+             class="sb-child {{ request()->routeIs('iku.enam') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 6 – Publikasi Scopus / WoS</span>
           </a>
@@ -600,11 +604,13 @@
           </svg>
         </div>
         <div class="sb-children closed" id="group-kontribusi">
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.tujuh') }}"
+             class="sb-child {{ request()->routeIs('iku.tujuh') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 7 – SDGs</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.delapan') }}"
+             class="sb-child {{ request()->routeIs('iku.delapan') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 8 – Penyusunan Kebijakan</span>
           </a>
@@ -625,15 +631,18 @@
           </svg>
         </div>
         <div class="sb-children closed" id="group-tatakelola">
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.sembilan') }}"
+             class="sb-child {{ request()->routeIs('iku.sembilan') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 9 – Pendapatan Non-UKT</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.sepuluh') }}"
+             class="sb-child {{ request()->routeIs('iku.sepuluh') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 10 – Zona Integritas</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.sebelas') }}"
+             class="sb-child {{ request()->routeIs('iku.sebelas') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 11a – Opini Keuangan</span>
           </a>

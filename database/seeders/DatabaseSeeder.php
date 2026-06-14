@@ -10,6 +10,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
+        // 0. Pastikan akun admin tersedia (registrasi publik dinonaktifkan).
+        $this->call(UserSeeder::class);
+
         // 1. Kosongkan tabel agar tidak duplikasi saat di-seed ulang.
         Schema::disableForeignKeyConstraints();
         DB::table('target_iku')->truncate();

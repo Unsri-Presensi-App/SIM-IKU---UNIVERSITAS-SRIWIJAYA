@@ -105,12 +105,22 @@
     }
 
     .sb-logo {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
-      background: radial-gradient(circle at 40% 35%, #fde047, #f59e0b 40%, #0b4aa2 42%, #0b4aa2 68%, #f8fafc 70%);
+      background: #fff;
+      padding: 3px;
       box-shadow: 0 6px 16px rgba(0,0,0,.3);
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sb-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
 
     .sb-brand-text { overflow: hidden; transition: opacity .2s, width .2s; white-space: nowrap; }
@@ -345,6 +355,32 @@
     .sb-user-role { font-size: 11px; color: var(--sb-muted); white-space: nowrap; }
     .sidebar.collapsed .sb-user-info { opacity: 0; width: 0; }
 
+    /* ── Tombol logout sidebar ── */
+    .sb-logout {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+      padding: 9px 10px;
+      border: none;
+      border-radius: var(--r-md);
+      background: transparent;
+      color: var(--sb-muted);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .sb-logout:hover { background: rgba(239,68,68,.12); color: #fca5a5; }
+    .sb-logout svg { flex-shrink: 0; }
+    .sb-logout .sb-logout-label { transition: opacity .2s, width .2s; }
+    .sidebar.collapsed .sb-logout { justify-content: center; }
+    .sidebar.collapsed .sb-logout .sb-logout-label { opacity: 0; width: 0; }
+
     /* ═══════════════════════════════════════════════
        MAIN AREA
     ═══════════════════════════════════════════════ */
@@ -475,7 +511,9 @@
 
     {{-- Brand --}}
     <div class="sb-brand">
-      <div class="sb-logo"></div>
+      <div class="sb-logo">
+        <img src="{{ asset('images/logo-unsri.png') }}" alt="Logo Universitas Sriwijaya">
+      </div>
       <div class="sb-brand-text">
         <h1>SIM IKU</h1>
         <p>Universitas Sriwijaya</p>
@@ -712,13 +750,29 @@
 
     {{-- Bottom user --}}
     <div class="sb-bottom">
+      @php
+        $namaUser = auth()->user()->name ?? 'Admin UNSRI';
+        $inisial  = strtoupper(mb_substr($namaUser, 0, 1));
+      @endphp
       <div class="sb-user">
-        <div class="sb-avatar">A</div>
+        <div class="sb-avatar">{{ $inisial }}</div>
         <div class="sb-user-info">
-          <div class="sb-user-name">Admin UNSRI</div>
-          <div class="sb-user-role">Super Administrator</div>
+          <div class="sb-user-name">{{ $namaUser }}</div>
+          <div class="sb-user-role">Administrator</div>
         </div>
       </div>
+
+      {{-- Logout (POST + CSRF) --}}
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="sb-logout">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span class="sb-logout-label">Keluar</span>
+        </button>
+      </form>
     </div>
 
   </aside>
@@ -773,7 +827,7 @@
         <div style="width:1px; height:22px; background:var(--border); flex-shrink:0;"></div>
 
         {{-- Avatar --}}
-        <div class="tb-avatar" title="Admin UNSRI">A</div>
+        <div class="tb-avatar" title="{{ auth()->user()->name ?? 'Admin UNSRI' }}">{{ strtoupper(mb_substr(auth()->user()->name ?? 'A', 0, 1)) }}</div>
       </div>
     </header>
 

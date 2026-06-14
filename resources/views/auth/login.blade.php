@@ -175,7 +175,7 @@
 
   <div class="login-card">
     <div class="login-brand">
-      <img src="{{ asset('images/logo-unsri.png') }}" alt="Logo Universitas Sriwijaya" />
+      <img src="https://fkm.unsri.ac.id/assets/kcfinder/upload/files/logo-unsri.png" alt="Logo Universitas Sriwijaya">
       <h1>SIM IKU</h1>
       <p>Sistem Informasi Manajemen Indikator Kinerja Utama</p>
     </div>

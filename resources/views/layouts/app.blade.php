@@ -512,7 +512,7 @@
     {{-- Brand --}}
     <div class="sb-brand">
       <div class="sb-logo">
-        <img src="{{ asset('images/logo-unsri.png') }}" alt="Logo Universitas Sriwijaya">
+        <img src="https://fkm.unsri.ac.id/assets/kcfinder/upload/files/logo-unsri.png" alt="Logo Universitas Sriwijaya">
       </div>
       <div class="sb-brand-text">
         <h1>SIM IKU</h1>

@@ -700,7 +700,8 @@
     <div class="sc">
       <div>
         <div class="sc-lbl">Target AEE PT {{ $selectedTahun }}</div>
-        <div class="sc-val">{{ number_format($targetAeePT, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+        <div class="sc-val">{{ number_format($targetPencapaianPT, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">Skala Tingkat Pencapaian</div>
       </div>
       <div class="sc-ic ic-green">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -809,12 +810,12 @@
               @if(count($dataTabel) > 0)
               <tr class="sum-row">
                 <td colspan="3">AEE PT (Rata-rata Pencapaian)</td>
-                <td>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</td>
+                <td>—</td>
                 <td>—</td>
                 <td>{{ number_format($aee_pt, 2, ',', '.') }}%</td>
-                <td>{{ number_format($targetAeePT, 2, ',', '.') }}%</td>
+                <td>{{ number_format($targetPencapaianPT, 2, ',', '.') }}%</td>
                 <td>
-                  @if($aee_pt >= $targetAeePT)
+                  @if($aee_pt >= $targetPencapaianPT)
                     <span class="badge good"><span class="badge-dot"></span>Tercapai</span>
                   @else
                     <span class="badge warn"><span class="badge-dot"></span>Pemantauan</span>
@@ -901,7 +902,15 @@
             <div class="ch-title">Target PK Rektor {{ $selectedTahun }}</div>
           </div>
         </div>
-        <div class="tgt-row"><span class="tgt-lbl">AEE PT</span><span class="tgt-val">{{ number_format($targetAeePT, 2, ',', '.') }}%</span></div>
+
+        {{-- Info resmi skala "AEE PT langsung" (PDF hal.2 matriks PK) --}}
+        <div class="tgt-row" style="border-bottom:1px dashed var(--border);padding-bottom:8px;margin-bottom:8px;">
+          <span class="tgt-lbl">AEE PT (Matriks PK)</span>
+          <span class="tgt-val">{{ number_format($baselineAeePT, 2, ',', '.') }}% &rarr; {{ number_format($targetAeePT, 2, ',', '.') }}%</span>
+        </div>
+
+        {{-- Skala "Tingkat Pencapaian" (PDF hal.5) — dipakai tabel di halaman ini --}}
+        <div class="tgt-row"><span class="tgt-lbl">AEE PT (Pencapaian)</span><span class="tgt-val">{{ number_format($targetPencapaianPT, 2, ',', '.') }}%</span></div>
         @foreach($dataTabel as $row)
         <div class="tgt-row"><span class="tgt-lbl">{{ $row->jenjang }}</span><span class="tgt-val">{{ number_format($row->target_pk, 2, ',', '.') }}%</span></div>
         @endforeach
@@ -973,7 +982,8 @@
     <div class="sc">
       <div>
         <div class="sc-lbl">Target AEE PT {{ $selectedTahun }}</div>
-        <div class="sc-val">{{ number_format($targetAeePT, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+        <div class="sc-val">{{ number_format($targetPencapaianPT, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">Skala Tingkat Pencapaian</div>
       </div>
       <div class="sc-ic ic-green">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -1084,12 +1094,12 @@
               @if(count($dataTabel) > 0)
               <tr class="sum-row">
                 <td colspan="3">AEE PT Fakultas (Rata-rata Pencapaian)</td>
-                <td>{{ number_format(collect($dataTabel)->avg('aee_realisasi'), 2, ',', '.') }}%</td>
+                <td>—</td>
                 <td>—</td>
                 <td>{{ number_format($aee_pt, 2, ',', '.') }}%</td>
-                <td>{{ number_format($targetAeePT, 2, ',', '.') }}%</td>
+                <td>{{ number_format($targetPencapaianPT, 2, ',', '.') }}%</td>
                 <td>
-                  @if($aee_pt >= $targetAeePT)
+                  @if($aee_pt >= $targetPencapaianPT)
                     <span class="badge good"><span class="badge-dot"></span>Tercapai</span>
                   @else
                     <span class="badge warn"><span class="badge-dot"></span>Pemantauan</span>

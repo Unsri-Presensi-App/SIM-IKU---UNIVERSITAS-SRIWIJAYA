@@ -67,6 +67,56 @@ class DatabaseSeeder extends Seeder
                 'satuan'        => '%',
                 'keterangan'    => 'Target AEE khusus S3 (matriks PK Rektor)',
             ],
+            // --------------------------------------------------------------
+            // TARGET TINGKAT PENCAPAIAN AEE per jenjang (PDF hal.5 - tabel PJ).
+            // Angka ini BERBEDA dari matriks PK (IKU 1_D3..S3 di atas): ini adalah
+            // hasil normalisasi "Tingkat Pencapaian = AEE realisasi / AEE ideal x 100",
+            // yang dibandingkan oleh dashboard terhadap realisasi mock.
+            // Sumber resmi (OCR PDF hal.5):
+            //   D3=52,05%  S1=60,41%  S2=41,02%  S3=35,05%
+            //   Baseline:  D3=27,48%  S1=54,92%  S2=32,96%  S3=32,60%
+            //   AEE PT: baseline 36,95% -> target 47,11%
+            // --------------------------------------------------------------
+            [
+                'kode_iku'      => 'IKU 1_PENCAPAIAN_D3',
+                'nama_iku'      => 'Tingkat Pencapaian AEE - Diploma Tiga',
+                'baseline_2025' => 27.48,
+                'target_2026'   => 52.05,
+                'satuan'        => '%',
+                'keterangan'    => 'Tingkat Pencapaian AEE D3 (PDF hal.5)',
+            ],
+            [
+                'kode_iku'      => 'IKU 1_PENCAPAIAN_S1',
+                'nama_iku'      => 'Tingkat Pencapaian AEE - Sarjana',
+                'baseline_2025' => 54.92,
+                'target_2026'   => 60.41,
+                'satuan'        => '%',
+                'keterangan'    => 'Tingkat Pencapaian AEE S1 (PDF hal.5)',
+            ],
+            [
+                'kode_iku'      => 'IKU 1_PENCAPAIAN_S2',
+                'nama_iku'      => 'Tingkat Pencapaian AEE - Magister',
+                'baseline_2025' => 32.96,
+                'target_2026'   => 41.02,   // <-- ANGKA RESMI (PDF hal.5), bukan 40,92
+                'satuan'        => '%',
+                'keterangan'    => 'Tingkat Pencapaian AEE S2 (PDF hal.5)',
+            ],
+            [
+                'kode_iku'      => 'IKU 1_PENCAPAIAN_S3',
+                'nama_iku'      => 'Tingkat Pencapaian AEE - Doktor',
+                'baseline_2025' => 32.60,
+                'target_2026'   => 35.05,
+                'satuan'        => '%',
+                'keterangan'    => 'Tingkat Pencapaian AEE S3 (PDF hal.5)',
+            ],
+            [
+                'kode_iku'      => 'IKU 1_PENCAPAIAN_PT',
+                'nama_iku'      => 'Rekap Pencapaian AEE PT (rata-rata 4 jenjang)',
+                'baseline_2025' => 36.95,
+                'target_2026'   => 47.11,   // rata-rata tingkat pencapaian (PDF hal.5 & 15)
+                'satuan'        => '%',
+                'keterangan'    => 'Pembanding setara untuk rata-rata tingkat pencapaian AEE',
+            ],
             [
                 'kode_iku'      => 'IKU 2',
                 'nama_iku'      => 'Lulusan Langsung Bekerja/Melanjutkan/Berwirausaha',

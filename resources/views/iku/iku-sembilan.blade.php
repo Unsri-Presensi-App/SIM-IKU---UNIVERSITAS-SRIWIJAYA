@@ -102,12 +102,12 @@
 </div>
 <div class="lay">
   <div>
-    @php $prog9=round(13.3/15.0*100,1); @endphp
+    {{-- $prog dari controller --}}
     <div class="big-metric">
       <div class="big-metric-label">Progres Pendapatan Non-UKT Baseline → Target</div>
-      <div class="big-metric-val">{{ $prog9 }}%</div>
-      <div class="big-metric-target">Baseline: 13,3% | Target: 15,0%</div>
-      <div style="margin:16px auto 0;max-width:400px;height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;"><div style="width:{{ $prog9 }}%;height:100%;background:var(--gold);border-radius:999px;"></div></div>
+      <div class="big-metric-val">{{ $prog }}%</div>
+      <div class="big-metric-target">Baseline: {{ number_format($baseline,1,',','.') }}% | Target: {{ number_format($target,1,',','.') }}%</div>
+      <div style="margin:16px auto 0;max-width:400px;height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;"><div style="width:{{ $prog }}%;height:100%;background:var(--gold);border-radius:999px;"></div></div>
       <div style="font-size:12px;opacity:.6;margin-top:8px;">Gap tersisa: +1,7 pp — relatif terjangkau, perlu konsistensi</div>
     </div>
     <div class="card">
@@ -117,31 +117,20 @@
           <table>
             <thead><tr><th>Sub-Indikator</th><th>Baseline 2025</th><th>Target 2026</th><th>Progres</th><th>Status</th></tr></thead>
             <tbody>
+              {{-- $sub_rows dari controller (TODO: integrasikan data laporan keuangan) --}}
+              @foreach($sub_rows as $r)
               @php
-              $rows9=[
-                ['Pendapatan Non-UKT / Total Pendapatan','13,3%','15%',round(13.3/15*100,1),'amber'],
-                ['Pendapatan terhadap Total Aset','59,35%','—',100,'green'],
-                ['DIPA/APBN terhadap Total Pendapatan','28,21%','4,13%',100,'green'],
-                ['Pendapatan Industri / Total Pendapatan','2,7%','2,74%',round(2.7/2.74*100,1),'amber'],
-                ['Dana Abadi terhadap Total Aset','0,04%','4%',round(0.04/4*100,1),'red'],
-                ['Alokasi Riset dari Dana Masyarakat','10,3%','11,5%',round(10.3/11.5*100,1),'green'],
-                ['Alokasi Upskilling Dosen','3,95%','5%',round(3.95/5*100,1),'amber'],
-                ['Alokasi Update Laboratorium','2%','5%',round(2/5*100,1),'red'],
-              ];
-              @endphp
-              @foreach($rows9 as $r)
-              @php
-                $color=$r[4]==='green'?'var(--green)':($r[4]==='amber'?'var(--amber)':'var(--red)');
-                $stCls=$r[4]==='green'?'st-green':($r[4]==='amber'?'st-amber':'st-red');
-                $stLbl=$r[4]==='green'?'Mendekati':($r[4]==='amber'?'Mendekati':'Kritis');
-                $progW=min($r[3],100);
+                $color=$r['status']==='green'?'var(--green)':($r['status']==='amber'?'var(--amber)':'var(--red)');
+                $stCls=$r['status']==='green'?'st-green':($r['status']==='amber'?'st-amber':'st-red');
+                $stLbl=$r['status']==='green'?'Mendekati':($r['status']==='amber'?'Mendekati':'Kritis');
+                $progW=min($r['prog'],100);
               @endphp
               <tr>
-                <td><strong>{{ $r[0] }}</strong></td>
-                <td>{{ $r[1] }}</td>
-                <td><strong style="color:var(--navy);">{{ $r[2] }}</strong></td>
+                <td><strong>{{ $r['label'] }}</strong></td>
+                <td>{{ $r['baseline'] }}</td>
+                <td><strong style="color:var(--navy);">{{ $r['target'] }}</strong></td>
                 <td style="min-width:80px;">
-                  <div class="prog-lbl" style="color:{{ $color }};">{{ $r[3] }}%</div>
+                  <div class="prog-lbl" style="color:{{ $color }};">{{ $r['prog'] }}%</div>
                   <div class="prog-bar"><div class="prog-fill" style="width:{{ $progW }}%;background:{{ $color }};"></div></div>
                 </td>
                 <td><span class="st {{ $stCls }}"><span class="st-dot"></span>{{ $stLbl }}</span></td>
@@ -155,9 +144,9 @@
     <div class="card">
       <div class="ch"><div class="ch-left"><div class="ch-icon" style="background:var(--green-lt);color:var(--green-dk);"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="ch-title">Alokasi Dana Masyarakat — Target 2026</div><div class="ch-sub">Total alokasi peningkatan dari pendapatan dana masyarakat (target 21,5%)</div></div></div></div>
       <div class="alokasi-grid">
-        <div class="alokasi-item"><div class="alokasi-lbl">Riset</div><div class="alokasi-baseline">10,3%</div><div class="alokasi-target">↑ Target: 11,5%</div></div>
-        <div class="alokasi-item"><div class="alokasi-lbl">Upskilling Dosen</div><div class="alokasi-baseline">3,95%</div><div class="alokasi-target">↑ Target: 5%</div></div>
-        <div class="alokasi-item"><div class="alokasi-lbl">Update Lab</div><div class="alokasi-baseline">2%</div><div class="alokasi-target">↑ Target: 5%</div></div>
+        @foreach($alokasi as $al)
+        <div class="alokasi-item"><div class="alokasi-lbl">{{ $al['label'] }}</div><div class="alokasi-baseline">{{ $al['baseline'] }}</div><div class="alokasi-target">↑ Target: {{ $al['target'] }}</div></div>
+        @endforeach<div class="alokasi-baseline">2%</div><div class="alokasi-target">↑ Target: 5%</div></div>
       </div>
     </div>
   </div>

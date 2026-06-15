@@ -319,7 +319,7 @@
           </div>
           <div class="subind-right">
             <div class="subind-bl">Baseline: <strong>100%</strong></div>
-            <div class="subind-tgt">Target: 100%</div>
+            <div class="subind-tgt">Target: 100%</div>{{-- nilai tetap 100% sesuai PDF --}}
             <span class="st st-green" style="margin-top:4px;display:inline-flex;">Dipertahankan</span>
           </div>
         </div>

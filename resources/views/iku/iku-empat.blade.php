@@ -168,25 +168,25 @@
       <div class="dual-panel">
         <div class="metric-box rekognisi">
           <div class="metric-label">Rekognisi Internasional</div>
-          <div class="metric-baseline">37,33%</div>
-          <div class="metric-target">↑ Target 2026: 44,60%</div>
-          <div class="metric-desc">±784 dosen dari total dosen aktif</div>
-          @php $prog1=round(37.33/44.60*100,1); @endphp
+          <div class="metric-baseline">{{ number_format($baseline_rekognisi, 2, ',', '.') }}%</div>
+          <div class="metric-target">↑ Target 2026: {{ number_format($target_rekognisi, 2, ',', '.') }}%</div>
+          <div class="metric-desc">Target ± 784 dosen dari total dosen aktif</div>
+          {{-- $prog_rekognisi dari controller --}}
           <div style="margin-top:12px;height:8px;background:#e4e7ec;border-radius:999px;overflow:hidden;">
-            <div style="width:{{ $prog1 }}%;height:100%;background:var(--indigo);border-radius:999px;"></div>
+            <div style="width:{{ $prog_rekognisi }}%;height:100%;background:var(--indigo);border-radius:999px;"></div>
           </div>
-          <div style="font-size:11px;color:var(--indigo-dk);font-weight:700;margin-top:4px;">Progres: {{ $prog1 }}%</div>
+          <div style="font-size:11px;color:var(--indigo-dk);font-weight:700;margin-top:4px;">Progres: {{ $prog_rekognisi }}%</div>
         </div>
         <div class="metric-box s3">
           <div class="metric-label">Dosen Berpendidikan S3</div>
-          <div class="metric-baseline">29,75%</div>
-          <div class="metric-target">↑ Target 2026: 39,60%</div>
-          <div class="metric-desc">±689 dosen dari total dosen aktif</div>
-          @php $prog2=round(29.75/39.60*100,1); @endphp
+          <div class="metric-baseline">{{ number_format($baseline_s3, 2, ',', '.') }}%</div>
+          <div class="metric-target">↑ Target 2026: {{ number_format($target_s3, 2, ',', '.') }}%</div>
+          <div class="metric-desc">Target ± 689 dosen dari total dosen aktif</div>
+          {{-- $prog_s3 dari controller --}}
           <div style="margin-top:12px;height:8px;background:#e4e7ec;border-radius:999px;overflow:hidden;">
-            <div style="width:{{ $prog2 }}%;height:100%;background:var(--purple);border-radius:999px;"></div>
+            <div style="width:{{ $prog_s3 }}%;height:100%;background:var(--purple);border-radius:999px;"></div>
           </div>
-          <div style="font-size:11px;color:var(--purple);font-weight:700;margin-top:4px;">Progres: {{ $prog2 }}%</div>
+          <div style="font-size:11px;color:var(--purple);font-weight:700;margin-top:4px;">Progres: {{ $prog_s3 }}%</div>
         </div>
       </div>
     </div>
@@ -217,24 +217,24 @@
             <tbody>
               <tr>
                 <td><strong>Rekognisi Internasional</strong><div style="font-size:11px;color:var(--muted);">% dosen dari total dosen PT</div></td>
-                <td>37,33%</td>
-                <td><strong style="color:var(--navy);">44,60%</strong></td>
-                <td style="color:var(--amber-dk);">+7,27 pp</td>
+                <td>{{ number_format($baseline_rekognisi, 2, ',', '.') }}%</td>
+                <td><strong style="color:var(--navy);">{{ number_format($target_rekognisi, 2, ',', '.') }}%</strong></td>
+                <td style="color:var(--amber-dk);">+{{ number_format($delta_rekognisi, 2, ',', '.') }} pp</td>
                 <td class="prog">
-                  <div class="prog-lbl" style="color:var(--indigo);">{{ $prog1 }}%</div>
-                  <div class="prog-bar"><div class="prog-fill" style="width:{{ $prog1 }}%;background:var(--indigo);"></div></div>
+                  <div class="prog-lbl" style="color:var(--indigo);">{{ $prog_rekognisi }}%</div>
+                  <div class="prog-bar"><div class="prog-fill" style="width:{{ $prog_rekognisi }}%;background:var(--indigo);"></div></div>
                 </td>
                 <td style="color:var(--muted);">–</td>
                 <td><span class="st st-amber"><span class="st-dot"></span>Mendekati</span></td>
               </tr>
               <tr>
                 <td><strong>Dosen Berpendidikan S3</strong><div style="font-size:11px;color:var(--muted);">% dosen dari total dosen PT</div></td>
-                <td>29,75%</td>
-                <td><strong style="color:var(--navy);">39,60%</strong></td>
-                <td style="color:var(--amber-dk);">+9,85 pp</td>
+                <td>{{ number_format($baseline_s3, 2, ',', '.') }}%</td>
+                <td><strong style="color:var(--navy);">{{ number_format($target_s3, 2, ',', '.') }}%</strong></td>
+                <td style="color:var(--amber-dk);">+{{ number_format($delta_s3, 2, ',', '.') }} pp</td>
                 <td class="prog">
-                  <div class="prog-lbl" style="color:var(--purple);">{{ $prog2 }}%</div>
-                  <div class="prog-bar"><div class="prog-fill" style="width:{{ $prog2 }}%;background:var(--purple);"></div></div>
+                  <div class="prog-lbl" style="color:var(--purple);">{{ $prog_s3 }}%</div>
+                  <div class="prog-bar"><div class="prog-fill" style="width:{{ $prog_s3 }}%;background:var(--purple);"></div></div>
                 </td>
                 <td style="color:var(--muted);">–</td>
                 <td><span class="st st-red"><span class="st-dot"></span>Kritis</span></td>
@@ -273,11 +273,11 @@
     <div class="side-card">
       <div class="side-head"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="side-head-title">TARGET PK REKTOR 2026</div></div>
       <div class="side-body">
-        <div class="tgt-row"><span class="tgt-lbl">Rekognisi – Baseline</span><span class="tgt-val" style="color:var(--muted);">37,33%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Rekognisi – Target</span><span class="tgt-val" style="color:var(--green-dk);">44,60%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Rekognisi – Baseline</span><span class="tgt-val" style="color:var(--muted);">{{ number_format($baseline_rekognisi,2,',','.') }}%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Rekognisi – Target</span><span class="tgt-val" style="color:var(--green-dk);">{{ number_format($target_rekognisi,2,',','.') }}%</span></div>
         <div class="tgt-row"><span class="tgt-lbl">Est. Jumlah Dosen</span><span class="tgt-val" style="color:var(--navy);">784 dosen</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">S3 – Baseline</span><span class="tgt-val" style="color:var(--muted);">29,75%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">S3 – Target</span><span class="tgt-val" style="color:var(--green-dk);">39,60%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">S3 – Baseline</span><span class="tgt-val" style="color:var(--muted);">{{ number_format($baseline_s3,2,',','.') }}%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">S3 – Target</span><span class="tgt-val" style="color:var(--green-dk);">{{ number_format($target_s3,2,',','.') }}%</span></div>
         <div class="tgt-row"><span class="tgt-lbl">Est. Dosen S3</span><span class="tgt-val" style="color:var(--navy);">689 dosen</span></div>
         <div class="tgt-row" style="border:none;"><span class="tgt-lbl">PJ</span><span class="tgt-val">WR2 / Dir SDM</span></div>
       </div>

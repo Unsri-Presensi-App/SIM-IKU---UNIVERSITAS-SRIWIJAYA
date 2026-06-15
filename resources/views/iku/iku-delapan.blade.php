@@ -75,23 +75,23 @@
 </section>
 <div class="notice-kritis">
   <div style="color:var(--red);flex-shrink:0;"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-  <div><div style="font-size:13px;font-weight:700;color:var(--red-dk);">⚠ Status Kritis — Gap 20 Percentage Point</div><div style="font-size:12px;color:var(--red-dk);margin-top:2px;line-height:1.5;">Baseline 2025 = <strong>5%</strong> vs Target 2026 = <strong>25%</strong>. Diperlukan keterlibatan tambahan <strong>436 dosen/peneliti</strong> dalam penyusunan kebijakan.</div></div>
+  <div><div style="font-size:13px;font-weight:700;color:var(--red-dk);">⚠ Status Kritis — Gap 20 Percentage Point</div><div style="font-size:12px;color:var(--red-dk);margin-top:2px;line-height:1.5;">Baseline 2025 = <strong>{{ $baseline }}%</strong> vs Target 2026 = <strong>{{ $target }}%</strong>. Diperlukan keterlibatan tambahan <strong>{{ $target_dosen }} dosen/peneliti</strong> dalam penyusunan kebijakan.</div></div>
   <div style="font-size:11px;color:var(--red-dk);font-weight:700;background:var(--red-lt);padding:4px 10px;border-radius:999px;white-space:nowrap;align-self:center;">STATUS KRITIS</div>
 </div>
 <div class="sum-grid">
   <div class="sc"><div><div class="sc-lbl">Baseline 2025</div><div class="sc-val">{{ $baseline ?? 5 }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div></div><div class="sc-ic ic-red"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg></div></div>
   <div class="sc"><div><div class="sc-lbl">Target 2026</div><div class="sc-val">{{ $target ?? 25 }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div></div><div class="sc-ic ic-green"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div></div>
-  <div class="sc"><div><div class="sc-lbl">Gap Target</div><div class="sc-val" style="color:var(--red);">+20<span style="font-size:14px;font-weight:600;color:var(--muted);">pp</span></div></div><div class="sc-ic ic-amber"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div></div>
-  <div class="sc"><div><div class="sc-lbl">Target Jumlah Dosen</div><div class="sc-val" style="color:var(--navy);">436</div></div><div class="sc-ic ic-navy"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div></div>
+  <div class="sc"><div><div class="sc-lbl">Gap Target</div><div class="sc-val" style="color:var(--red);">+{{ $gap }}<span style="font-size:14px;font-weight:600;color:var(--muted);">pp</span></div></div><div class="sc-ic ic-amber"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div></div>
+  <div class="sc"><div><div class="sc-lbl">Target Jumlah Dosen</div><div class="sc-val" style="color:var(--navy);">{{ $target_dosen }}</div></div><div class="sc-ic ic-navy"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div></div>
 </div>
 <div class="lay">
   <div>
-    @php $prog8=round(5/25*100,1); @endphp
+    {{-- $prog dari controller --}}
     <div class="big-metric">
       <div class="big-metric-label">Progres Baseline → Target 2026</div>
-      <div class="big-metric-val">{{ $prog8 }}%</div>
-      <div class="big-metric-target">Target: 25% (436 dosen/peneliti)</div>
-      <div style="margin:16px auto 0;max-width:400px;height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;"><div style="width:{{ $prog8 }}%;height:100%;background:var(--gold);border-radius:999px;"></div></div>
+      <div class="big-metric-val">{{ $prog }}%</div>
+      <div class="big-metric-target">Target: {{ $target }}% ({{ $target_dosen }} dosen/peneliti)</div>
+      <div style="margin:16px auto 0;max-width:400px;height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;"><div style="width:{{ $prog }}%;height:100%;background:var(--gold);border-radius:999px;"></div></div>
       <div style="font-size:12px;opacity:.6;margin-top:8px;">Diperlukan peningkatan 4× lipat dari baseline saat ini</div>
     </div>
     <div class="card">
@@ -114,7 +114,7 @@
     </div>
   </div>
   <div class="side">
-    <div class="side-card"><div class="side-head"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="side-head-title">TARGET PK REKTOR 2026</div></div><div class="side-body"><div class="tgt-row"><span class="tgt-lbl">Baseline 2025</span><span class="tgt-val" style="color:var(--red);">5%</span></div><div class="tgt-row"><span class="tgt-lbl">Target 2026</span><span class="tgt-val" style="color:var(--green-dk);">25%</span></div><div class="tgt-row"><span class="tgt-lbl">Gap</span><span class="tgt-val" style="color:var(--red-dk);">+20 pp</span></div><div class="tgt-row"><span class="tgt-lbl">Est. Dosen Terlibat</span><span class="tgt-val" style="color:var(--navy);">436 dosen</span></div><div class="tgt-row" style="border:none;"><span class="tgt-lbl">PJ</span><span class="tgt-val">WR2 & WR3</span></div></div></div>
+    <div class="side-card"><div class="side-head"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="side-head-title">TARGET PK REKTOR 2026</div></div><div class="side-body"><div class="tgt-row"><span class="tgt-lbl">Baseline 2025</span><span class="tgt-val" style="color:var(--red);">{{ $baseline }}%</span></div><div class="tgt-row"><span class="tgt-lbl">Target 2026</span><span class="tgt-val" style="color:var(--green-dk);">{{ $target }}%</span></div><div class="tgt-row"><span class="tgt-lbl">Gap</span><span class="tgt-val" style="color:var(--red-dk);">+{{ $gap }} pp</span></div><div class="tgt-row"><span class="tgt-lbl">Est. Dosen Terlibat</span><span class="tgt-val" style="color:var(--navy);">{{ $target_dosen }} dosen</span></div><div class="tgt-row" style="border:none;"><span class="tgt-lbl">PJ</span><span class="tgt-val">WR2 & WR3</span></div></div></div>
     <div class="side-card"><div class="side-head" style="background:#1e40af;"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg><div class="side-head-title">FORMULA</div></div><div class="side-body"><div class="formula"><strong>Formula:</strong><br><code style="font-size:11px;">Σ Dosen/Peneliti terlibat kebijakan ÷ Total Dosen PT × 100%</code><br><br><strong>Ketentuan:</strong><br>Satu dosen bisa masuk 1 kategori saja (tidak double-counted). Wajib dibuktikan dengan dokumen resmi (SK, kontrak, surat tugas).</div></div></div>
   </div>
 </div>

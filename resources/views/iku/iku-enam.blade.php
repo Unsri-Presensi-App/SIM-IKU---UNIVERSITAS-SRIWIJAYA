@@ -129,7 +129,7 @@
     <div class="sc-ic ic-amber"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
   </div>
   <div class="sc">
-    <div><div class="sc-lbl">Kolab Int'l – Target</div><div class="sc-val">25,1<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div></div>
+    <div><div class="sc-lbl">Kolab Int'l – Target</div><div class="sc-val">{{ number_format($sub_indikator['kolab_target'],1,',','.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div></div>
     <div class="sc-ic ic-purple"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
   </div>
 </div>
@@ -148,33 +148,33 @@
       <div class="sub-metric">
         <div class="sm-item">
           <div class="sm-lbl">Total Publikasi</div>
-          <div class="sm-val-b">590</div>
-          <div class="sm-val-t">↑ Target: 708</div>
-          @php $p6a=round(590/708*100,1); @endphp
+          <div class="sm-val-b">{{ number_format($total_baseline, 0, ',', '.') }}</div>
+          <div class="sm-val-t">↑ Target: {{ number_format($total_target, 0, ',', '.') }}</div>
+          @php $p6a=round($total_baseline/$total_target*100,1); @endphp
           <div style="margin-top:8px;height:6px;background:#e4e7ec;border-radius:999px;overflow:hidden;"><div style="width:{{ $p6a }}%;height:100%;background:var(--indigo);border-radius:999px;"></div></div>
           <div style="font-size:10px;color:var(--indigo);font-weight:700;margin-top:3px;">{{ $p6a }}%</div>
         </div>
         <div class="sm-item">
           <div class="sm-lbl">% Top Tier</div>
-          <div class="sm-val-b">8,0%</div>
-          <div class="sm-val-t">↑ Target: 8,7%</div>
-          @php $p6b=round(8.0/8.7*100,1); @endphp
+          <div class="sm-val-b">{{ number_format($sub_indikator['top_tier_baseline'], 1, ',', '.') }}%</div>
+          <div class="sm-val-t">↑ Target: {{ number_format($sub_indikator['top_tier_target'], 1, ',', '.') }}%</div>
+          @php $p6b=round($sub_indikator['top_tier_baseline']/$sub_indikator['top_tier_target']*100,1); @endphp
           <div style="margin-top:8px;height:6px;background:#e4e7ec;border-radius:999px;overflow:hidden;"><div style="width:{{ $p6b }}%;height:100%;background:var(--gold);border-radius:999px;"></div></div>
           <div style="font-size:10px;color:var(--amber-dk);font-weight:700;margin-top:3px;">{{ $p6b }}%</div>
         </div>
         <div class="sm-item">
           <div class="sm-lbl">% Q1</div>
-          <div class="sm-val-b">31,5%</div>
-          <div class="sm-val-t">↑ Target: 32%</div>
-          @php $p6c=round(31.5/32*100,1); @endphp
+          <div class="sm-val-b">{{ number_format($sub_indikator['q1_baseline'], 1, ',', '.') }}%</div>
+          <div class="sm-val-t">↑ Target: {{ number_format($sub_indikator['q1_target'], 1, ',', '.') }}%</div>
+          @php $p6c=round($sub_indikator['q1_baseline']/$sub_indikator['q1_target']*100,1); @endphp
           <div style="margin-top:8px;height:6px;background:#e4e7ec;border-radius:999px;overflow:hidden;"><div style="width:{{ $p6c }}%;height:100%;background:var(--green);border-radius:999px;"></div></div>
           <div style="font-size:10px;color:var(--green-dk);font-weight:700;margin-top:3px;">{{ $p6c }}%</div>
         </div>
         <div class="sm-item">
           <div class="sm-lbl">Kolab Int'l</div>
-          <div class="sm-val-b">23,6%</div>
-          <div class="sm-val-t">↑ Target: 25,1%</div>
-          @php $p6d=round(23.6/25.1*100,1); @endphp
+          <div class="sm-val-b">{{ number_format($sub_indikator['kolab_baseline'], 1, ',', '.') }}%</div>
+          <div class="sm-val-t">↑ Target: {{ number_format($sub_indikator['kolab_target'], 1, ',', '.') }}%</div>
+          @php $p6d=round($sub_indikator['kolab_baseline']/$sub_indikator['kolab_target']*100,1); @endphp
           <div style="margin-top:8px;height:6px;background:#e4e7ec;border-radius:999px;overflow:hidden;"><div style="width:{{ $p6d }}%;height:100%;background:var(--purple);border-radius:999px;"></div></div>
           <div style="font-size:10px;color:var(--purple);font-weight:700;margin-top:3px;">{{ $p6d }}%</div>
         </div>
@@ -205,24 +205,9 @@
               </tr>
             </thead>
             <tbody>
-              @php
-              $fak6 = [
-                ['f'=>'FE',      'tb'=>33, 'tt'=>34, 'topb'=>0, 'topt'=>2,  'q1b'=>5,  'q1t'=>6,  'kb'=>0,  'kt'=>9],
-                ['f'=>'FH',      'tb'=>13, 'tt'=>14, 'topb'=>0, 'topt'=>2,  'q1b'=>3,  'q1t'=>4,  'kb'=>0,  'kt'=>4],
-                ['f'=>'FT',      'tb'=>109,'tt'=>112,'topb'=>11,'topt'=>22, 'q1b'=>32, 'q1t'=>34, 'kb'=>0,  'kt'=>27],
-                ['f'=>'FK',      'tb'=>80, 'tt'=>82, 'topb'=>1, 'topt'=>3,  'q1b'=>18, 'q1t'=>19, 'kb'=>0,  'kt'=>20],
-                ['f'=>'FP',      'tb'=>89, 'tt'=>92, 'topb'=>6, 'topt'=>12, 'q1b'=>18, 'q1t'=>19, 'kb'=>0,  'kt'=>21],
-                ['f'=>'FKIP',    'tb'=>108,'tt'=>111,'topb'=>5, 'topt'=>10, 'q1b'=>68, 'q1t'=>71, 'kb'=>1,  'kt'=>27],
-                ['f'=>'FISIP',   'tb'=>17, 'tt'=>18, 'topb'=>1, 'topt'=>3,  'q1b'=>7,  'q1t'=>8,  'kb'=>0,  'kt'=>5],
-                ['f'=>'FMIPA',   'tb'=>122,'tt'=>125,'topb'=>3, 'topt'=>6,  'q1b'=>31, 'q1t'=>33, 'kb'=>0,  'kt'=>30],
-                ['f'=>'FASILKOM','tb'=>52, 'tt'=>54, 'topb'=>4, 'topt'=>8,  'q1b'=>15, 'q1t'=>16, 'kb'=>0,  'kt'=>13],
-                ['f'=>'FKM',     'tb'=>30, 'tt'=>31, 'topb'=>0, 'topt'=>2,  'q1b'=>8,  'q1t'=>9,  'kb'=>0,  'kt'=>8],
-                ['f'=>'SPS',     'tb'=>38, 'tt'=>39, 'topb'=>1, 'topt'=>3,  'q1b'=>11, 'q1t'=>12, 'kb'=>0,  'kt'=>10],
-              ];
-              $sumTB=0;$sumTT=0;
-              foreach($fak6 as $r){$sumTB+=$r['tb'];$sumTT+=$r['tt'];}
-              @endphp
-              @foreach($fak6 as $r)
+              {{-- Data dari controller via $rows_publikasi (mock PDF hal.27, TODO: API SINTA/Scopus) --}}
+              @php $sumTB=collect($rows_publikasi)->sum('tb'); $sumTT=collect($rows_publikasi)->sum('tt'); @endphp
+              @foreach($rows_publikasi as $r)
               @php
                 $prog=round($r['tb']/$r['tt']*100,1);
                 $color=$prog>=100?'var(--green)':($prog>=80?'var(--amber)':'var(--red)');
@@ -290,7 +275,7 @@
         <div class="tgt-row"><span class="tgt-lbl">Total Publikasi T2026</span><span class="tgt-val" style="color:var(--green-dk);">708 artikel</span></div>
         <div class="tgt-row"><span class="tgt-lbl">% Top Tier T2026</span><span class="tgt-val">8,7% (62 judul)</span></div>
         <div class="tgt-row"><span class="tgt-lbl">% Q1 T2026</span><span class="tgt-val">32% (226 judul)</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Kolab Int'l T2026</span><span class="tgt-val">25,1%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Kolab Int'l T2026</span><span class="tgt-val">{{ number_format($sub_indikator['kolab_target'],1,',','.') }}%</span></div>
         <div class="tgt-row" style="border:none;"><span class="tgt-lbl">PJ</span><span class="tgt-val">WR3 / LPPM</span></div>
       </div>
     </div>

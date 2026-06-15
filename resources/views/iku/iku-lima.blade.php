@@ -115,7 +115,7 @@
   <div class="notice-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
   <div class="notice-body">
     <div class="notice-title">⚠ Status Kritis — Gap Target Sangat Besar</div>
-    <div class="notice-desc">Baseline 2025 hanya <strong>0,58%</strong> vs Target 2026 <strong>5%</strong>. Kenaikan yang diperlukan = <strong>+4,42 pp</strong> (lebih dari 8× lipat). IKU ini memerlukan perhatian dan intervensi segera dari Rektorat.</div>
+    <div class="notice-desc">Baseline 2025 hanya <strong>{{ number_format($baseline, 2, ',', '.') }}%</strong> vs Target 2026 <strong>{{ number_format($target, 2, ',', '.') }}%</strong>. Kenaikan yang diperlukan = <strong>+{{ number_format($target - $baseline, 2, ',', '.') }} pp</strong>. IKU ini memerlukan perhatian dan intervensi segera dari Rektorat.</div>
   </div>
   <div style="font-size:11px;color:var(--red-dk);font-weight:700;background:var(--red-lt);padding:4px 10px;border-radius:999px;white-space:nowrap;align-self:center;">STATUS KRITIS</div>
 </div>
@@ -138,14 +138,14 @@
   <div class="sc">
     <div>
       <div class="sc-lbl">Gap ke Target</div>
-      <div class="sc-val" style="color:var(--red);">+4,42<span style="font-size:14px;font-weight:600;color:var(--muted);">pp</span></div>
+      <div class="sc-val" style="color:var(--red);">+{{ number_format($target - $baseline, 2, ',', '.') }}<span style="font-size:14px;font-weight:600;color:var(--muted);">pp</span></div>
     </div>
     <div class="sc-ic ic-amber"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>
   </div>
   <div class="sc">
     <div>
       <div class="sc-lbl">Target Luaran</div>
-      <div class="sc-val" style="color:var(--navy);">87</div>
+      <div class="sc-val" style="color:var(--navy);">{{ $target_luaran }}</div>
     </div>
     <div class="sc-ic ic-navy"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
   </div>
@@ -155,15 +155,15 @@
   <div>
 
     {{-- Big metric --}}
-    @php $progres5 = round(0.58/5.00*100,1); @endphp
+    {{-- $prog dari controller --}}
     <div class="big-metric">
       <div class="big-metric-label">Progres Baseline → Target 2026</div>
-      <div class="big-metric-val">{{ $progres5 }}%</div>
-      <div class="big-metric-target">Target: 5,00% (87 luaran kerjasama)</div>
+      <div class="big-metric-val">{{ $prog }}%</div>
+      <div class="big-metric-target">Target: {{ number_format($target, 2, ',', '.') }}% ({{ $target_luaran }} luaran kerjasama)</div>
       <div style="margin:16px auto 0;max-width:400px;height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;">
-        <div style="width:{{ $progres5 }}%;height:100%;background:var(--gold);border-radius:999px;"></div>
+        <div style="width:{{ $prog }}%;height:100%;background:var(--gold);border-radius:999px;"></div>
       </div>
-      <div class="big-metric-sub">Posisi saat ini: 0,58% dari total kerjasama aktif PT</div>
+      <div class="big-metric-sub">Posisi saat ini: {{ number_format($baseline, 2, ',', '.') }}% dari total kerjasama aktif PT</div>
     </div>
 
     {{-- Tabel --}}
@@ -192,24 +192,24 @@
             <tbody>
               <tr>
                 <td><strong>% Luaran Kerjasama</strong><div style="font-size:11px;color:var(--muted);">terhadap total kerjasama PT</div></td>
-                <td>0,58%</td>
-                <td><strong style="color:var(--navy);">5,00%</strong></td>
-                <td style="color:var(--red-dk);">+4,42 pp (8,6×)</td>
+                <td>{{ number_format($baseline, 2, ',', '.') }}%</td>
+                <td><strong style="color:var(--navy);">{{ number_format($target, 2, ',', '.') }}%</strong></td>
+                <td style="color:var(--red-dk);">+{{ number_format($target - $baseline, 2, ',', '.') }} pp</td>
                 <td class="prog">
-                  <div class="prog-lbl" style="color:var(--red);">{{ $progres5 }}%</div>
-                  <div class="prog-bar"><div class="prog-fill" style="width:{{ $progres5 }}%;background:var(--red);"></div></div>
+                  <div class="prog-lbl" style="color:var(--red);">{{ $prog }}%</div>
+                  <div class="prog-bar"><div class="prog-fill" style="width:{{ $prog }}%;background:var(--red);"></div></div>
                 </td>
                 <td style="color:var(--muted);">–</td>
                 <td><span class="st st-red"><span class="st-dot"></span>Kritis</span></td>
               </tr>
               <tr>
                 <td><strong>Jumlah Luaran (estimasi)</strong><div style="font-size:11px;color:var(--muted);">judul/karya, bukan jumlah dosen</div></td>
-                <td>~10 luaran</td>
-                <td><strong style="color:var(--navy);">87 luaran</strong></td>
-                <td style="color:var(--red-dk);">+77 luaran</td>
+                <td>~{{ round($baseline * 17) }} luaran</td>
+                <td><strong style="color:var(--navy);">{{ $target_luaran }} luaran</strong></td>
+                <td style="color:var(--red-dk);">+{{ $target_luaran - round($baseline * 17) }} luaran</td>
                 <td class="prog">
-                  <div class="prog-lbl" style="color:var(--red);">11,5%</div>
-                  <div class="prog-bar"><div class="prog-fill" style="width:11.5%;background:var(--red);"></div></div>
+                  <div class="prog-lbl" style="color:var(--red);">{{ round($baseline / ($target_luaran / 87) / 5 * 100, 1) }}%</div>
+                  <div class="prog-bar"><div class="prog-fill" style="width:{{ min(round($baseline * 17 / $target_luaran * 100, 1), 100) }}%;background:var(--red);"></div></div>
                 </td>
                 <td style="color:var(--muted);">–</td>
                 <td><span class="st st-red"><span class="st-dot"></span>Kritis</span></td>
@@ -246,10 +246,10 @@
     <div class="side-card">
       <div class="side-head"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="side-head-title">TARGET PK REKTOR 2026</div></div>
       <div class="side-body">
-        <div class="tgt-row"><span class="tgt-lbl">Baseline 2025</span><span class="tgt-val" style="color:var(--red);">0,58%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Target 2026</span><span class="tgt-val" style="color:var(--green-dk);">5,00%</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Kenaikan</span><span class="tgt-val" style="color:var(--red-dk);">+4,42 pp</span></div>
-        <div class="tgt-row"><span class="tgt-lbl">Est. Luaran</span><span class="tgt-val" style="color:var(--navy);">87 judul/karya</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Baseline 2025</span><span class="tgt-val" style="color:var(--red);">{{ number_format($baseline, 2, ',', '.') }}%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Target 2026</span><span class="tgt-val" style="color:var(--green-dk);">{{ number_format($target, 2, ',', '.') }}%</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Kenaikan</span><span class="tgt-val" style="color:var(--red-dk);">+{{ number_format($target - $baseline, 2, ',', '.') }} pp</span></div>
+        <div class="tgt-row"><span class="tgt-lbl">Est. Luaran</span><span class="tgt-val" style="color:var(--navy);">{{ $target_luaran }} judul/karya</span></div>
         <div class="tgt-row"><span class="tgt-lbl">Satuan</span><span class="tgt-val">% Kerjasama</span></div>
         <div class="tgt-row" style="border:none;"><span class="tgt-lbl">PJ</span><span class="tgt-val">WR3 / DIH</span></div>
       </div>

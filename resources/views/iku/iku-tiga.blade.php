@@ -234,7 +234,7 @@
   <div class="sc">
     <div>
       <div class="sc-lbl">Total Target Mhs</div>
-      <div class="sc-val">12.145</div>
+      <div class="sc-val">{{ number_format($total_target, 0, ',', '.') }}</div>
     </div>
     <div class="sc-ic ic-navy">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -282,23 +282,8 @@
               </tr>
             </thead>
             <tbody>
-              @php
-              $rows = [
-                ['fak'=>'FE',      's1'=>2718,'d3'=>733, 'target'=>1208],
-                ['fak'=>'FH',      's1'=>2158,'d3'=>0,   'target'=>755],
-                ['fak'=>'FT',      's1'=>3912,'d3'=>0,   'target'=>1369],
-                ['fak'=>'FK',      's1'=>2171,'d3'=>0,   'target'=>760],
-                ['fak'=>'FP',      's1'=>4691,'d3'=>0,   'target'=>1642],
-                ['fak'=>'FKIP',    's1'=>5932,'d3'=>0,   'target'=>2076],
-                ['fak'=>'FISIP',   's1'=>4531,'d3'=>0,   'target'=>1586],
-                ['fak'=>'FMIPA',   's1'=>2724,'d3'=>0,   'target'=>953],
-                ['fak'=>'FASILKOM','s1'=>2332,'d3'=>833, 'target'=>1108],
-                ['fak'=>'FKM',     's1'=>1965,'d3'=>0,   'target'=>688],
-              ];
-              $totalS1=0;$totalD3=0;$totalTarget=0;
-              foreach($rows as $r){$totalS1+=$r['s1'];$totalD3+=$r['d3'];$totalTarget+=$r['target'];}
-              @endphp
-              @foreach($rows as $row)
+              {{-- Data dari controller via $rows_fakultas (seeder IKU 3) --}}
+              @foreach($rows_fakultas as $row)
               @php
                 $total=$row['s1']+$row['d3'];
                 $pct=$total>0?round($row['target']/$total*100,1):0;
@@ -322,10 +307,10 @@
               @endforeach
               <tr class="total-row">
                 <td>TOTAL</td>
-                <td>{{ number_format($totalS1) }}</td>
-                <td>{{ number_format($totalD3) }}</td>
-                <td>{{ number_format($totalS1+$totalD3) }}</td>
-                <td>{{ number_format($totalTarget) }}</td>
+                <td>{{ number_format($total_s1) }}</td>
+                <td>{{ number_format($total_d3) }}</td>
+                <td>{{ number_format($total_s1+$total_d3) }}</td>
+                <td>{{ number_format($total_target) }}</td>
                 <td>–</td>
                 <td>–</td>
                 <td><span class="st st-amber"><span class="st-dot"></span>Menunggu API</span></td>
@@ -351,8 +336,8 @@
         </div>
       </div>
       <div class="fac-grid">
-        @foreach($rows as $row)
-        @php $pctTotal=round($row['target']/$totalTarget*100,1); @endphp
+        @foreach($rows_fakultas as $row)
+        @php $pctTotal=round($row['target']/$total_target*100,1); @endphp
         <div class="fac-card">
           <div class="fac-badge">{{ $row['fak'] }}</div>
           <div class="fac-val">{{ number_format($row['target']) }}</div>

@@ -125,7 +125,7 @@
   $baseline = $baseline ?? 0;
   $target = $target ?? 2;
   $realisasi = $realisasi ?? 0;
-  $persen_prog = $target > 0 ? round($realisasi / $target * 100, 1) : 0;
+  $prog = $target > 0 ? round($realisasi / $target * 100, 1) : 0;
 @endphp
 
 <div class="sum-grid">
@@ -162,7 +162,7 @@
   <div class="sc">
     <div>
       <div class="sc-lbl">Progres Pencapaian</div>
-      <div class="sc-val" style="color:{{ $persen_prog >= 100 ? 'var(--green-dk)' : ($persen_prog >= 50 ? 'var(--amber)' : 'var(--red)') }};">{{ $persen_prog }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
+      <div class="sc-val" style="color:{{ $prog >= 100 ? 'var(--green-dk)' : ($prog >= 50 ? 'var(--amber)' : 'var(--red)') }};">{{ $prog }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div>
       <div style="font-size:11px;color:var(--muted);margin-top:4px;">dari target</div>
     </div>
     <div class="sc-ic ic-teal">
@@ -178,9 +178,9 @@
       <div class="big-metric-val">{{ $target }} Unit</div>
       <div class="big-metric-target">Menuju WBK / WBBM</div>
       <div style="margin:16px auto 0;max-width:400px;height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;">
-        <div style="width:{{ min($persen_prog,100) }}%;height:100%;background:var(--gold);border-radius:999px;transition:width .4s;"></div>
+        <div style="width:{{ min($prog,100) }}%;height:100%;background:var(--gold);border-radius:999px;transition:width .4s;"></div>
       </div>
-      <div style="font-size:12px;opacity:.6;margin-top:8px;">{{ $realisasi }} unit diusulkan dari {{ $target }} unit target · {{ $persen_prog }}%</div>
+      <div style="font-size:12px;opacity:.6;margin-top:8px;">{{ $realisasi }} unit diusulkan dari {{ $target }} unit target · {{ $prog }}%</div>
     </div>
 
     {{-- Tahapan Pembangunan ZI --}}

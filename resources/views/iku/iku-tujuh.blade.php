@@ -82,23 +82,23 @@
 </section>
 <div class="notice">
   <div style="color:var(--amber);flex-shrink:0;"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-  <div><div class="notice-title">Data Progres Sementara</div><div class="notice-desc">Baseline 2025 = <strong>36%</strong> (THE Impact Ranking 2025 peringkat 601–800). Data realisasi 2026 menunggu publikasi resmi THE Impact Ranking.</div></div>
+  <div><div class="notice-title">Data Progres Sementara</div><div class="notice-desc">Baseline 2025 = <strong>{{ $baseline }}%</strong> (THE Impact Ranking 2025 peringkat 601–800). Data realisasi 2026 menunggu publikasi resmi THE Impact Ranking.</div></div>
   <div style="font-size:11px;color:var(--amber-dk);font-weight:600;white-space:nowrap;align-self:center;">Mode sementara</div>
 </div>
 <div class="sum-grid">
   <div class="sc"><div><div class="sc-lbl">Baseline 2025</div><div class="sc-val">{{ $baseline ?? 36 }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div></div><div class="sc-ic ic-red"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg></div></div>
   <div class="sc"><div><div class="sc-lbl">Target 2026</div><div class="sc-val">{{ $target ?? 55 }}<span style="font-size:14px;font-weight:600;color:var(--muted);">%</span></div></div><div class="sc-ic ic-green"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div></div>
-  <div class="sc"><div><div class="sc-lbl">Gap Target</div><div class="sc-val" style="color:var(--red);">+19<span style="font-size:14px;font-weight:600;color:var(--muted);">pp</span></div></div><div class="sc-ic ic-amber"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div></div>
+  <div class="sc"><div><div class="sc-lbl">Gap Target</div><div class="sc-val" style="color:var(--red);">+{{ $gap }}<span style="font-size:14px;font-weight:600;color:var(--muted);">pp</span></div></div><div class="sc-ic ic-amber"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div></div>
   <div class="sc"><div><div class="sc-lbl">Peringkat THE Impact</div><div class="sc-val" style="font-size:16px;line-height:1.3;">601–800</div></div><div class="sc-ic ic-navy"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/></svg></div></div>
 </div>
 <div class="lay">
   <div>
-    @php $prog7=round(36/55*100,1); @endphp
+    {{-- $prog dari controller --}}
     <div class="big-metric">
       <div class="big-metric-label">Progres Baseline → Target 2026</div>
-      <div class="big-metric-val">{{ $prog7 }}%</div>
-      <div class="big-metric-target">Target: 55% | Baseline: 36%</div>
-      <div style="margin:16px auto 0;max-width:400px;height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;"><div style="width:{{ $prog7 }}%;height:100%;background:var(--gold);border-radius:999px;"></div></div>
+      <div class="big-metric-val">{{ $prog }}%</div>
+      <div class="big-metric-target">Target: {{ $target }}% | Baseline: {{ $baseline }}%</div>
+      <div style="margin:16px auto 0;max-width:400px;height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;"><div style="width:{{ $prog }}%;height:100%;background:var(--gold);border-radius:999px;"></div></div>
       <div style="font-size:12px;opacity:.6;margin-top:8px;">Sumber: THE Impact Ranking 2025 — peringkat 601–800</div>
     </div>
     <div class="card">
@@ -123,7 +123,7 @@
     </div>
   </div>
   <div class="side">
-    <div class="side-card"><div class="side-head"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="side-head-title">TARGET PK REKTOR 2026</div></div><div class="side-body"><div class="tgt-row"><span class="tgt-lbl">Baseline 2025</span><span class="tgt-val" style="color:var(--red);">36%</span></div><div class="tgt-row"><span class="tgt-lbl">Target 2026</span><span class="tgt-val" style="color:var(--green-dk);">55%</span></div><div class="tgt-row"><span class="tgt-lbl">Gap</span><span class="tgt-val" style="color:var(--red-dk);">+19 pp</span></div><div class="tgt-row"><span class="tgt-lbl">THE Impact Ranking</span><span class="tgt-val">601–800</span></div><div class="tgt-row" style="border:none;"><span class="tgt-lbl">PJ</span><span class="tgt-val">WR1 / Tim SDGs</span></div></div></div>
+    <div class="side-card"><div class="side-head"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="side-head-title">TARGET PK REKTOR 2026</div></div><div class="side-body"><div class="tgt-row"><span class="tgt-lbl">Baseline 2025</span><span class="tgt-val" style="color:var(--red);">36%</span></div><div class="tgt-row"><span class="tgt-lbl">Target 2026</span><span class="tgt-val" style="color:var(--green-dk);">55%</span></div><div class="tgt-row"><span class="tgt-lbl">Gap</span><span class="tgt-val" style="color:var(--red-dk);">+{{ $gap }} pp</span></div><div class="tgt-row"><span class="tgt-lbl">THE Impact Ranking</span><span class="tgt-val">601–800</span></div><div class="tgt-row" style="border:none;"><span class="tgt-lbl">PJ</span><span class="tgt-val">WR1 / Tim SDGs</span></div></div></div>
     <div class="side-card"><div class="side-head" style="background:#1e40af;"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg><div class="side-head-title">SUMBER DATA</div></div><div class="side-body"><div class="formula"><strong>Sumber Data Utama:</strong><br>THE Impact Ranking (times highereducation.com)<br><br><strong>Metode Pengukuran:</strong><br>Persentase keterlibatan dari total poin THE Impact pada 5 SDG prioritas UNSRI</div></div></div>
   </div>
 </div>

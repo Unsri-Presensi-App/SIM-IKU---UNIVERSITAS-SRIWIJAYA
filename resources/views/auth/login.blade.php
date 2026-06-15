@@ -289,22 +289,38 @@
       box-shadow: 0 0 0 4px rgba(79,70,229,.10);
     }
 
-    /* Password toggle */
-    .input-wrap .toggle-pw {
-      position: absolute;
-      right: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--muted);
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      transition: color .15s;
-    }
-    .input-wrap .toggle-pw:hover { color: var(--sub); }
+/* Password toggle */
+.input-wrap .toggle-pw {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 4px; /* Area ekstra untuk mempermudah klik */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  
+  /* Tambahan: Beri ukuran tetap pada tombol */
+  width: 32px;  /* Silakan sesuaikan angkanya */
+  height: 32px; /* Silakan sesuaikan angkanya */
+  transition: color .15s;
+}
+
+.input-wrap .toggle-pw svg {
+  /* Tambahan: Paksa SVG menyesuaikan kotak tombol */
+  width: 20px;  /* Ukuran aktual ikon mata */
+  height: 20px;
+  display: block;
+  margin: 0;
+  
+  /* KUNCI UTAMA: Biarkan klik tembus langsung ke <button> */
+  pointer-events: none; 
+}
 
     /* ── Row: remember + forgot ── */
     .form-row-meta {
@@ -619,7 +635,7 @@
     {{-- Footer --}}
     <div class="login-foot">
       <p>&copy; {{ date('Y') }} Universitas Sriwijaya<br>Akses terbatas — hanya untuk staf berwenang.</p>
-      <span class="foot-badge">SIM IKU v2</span>
+      <span class="foot-badge">SIM IKU v1</span>
     </div>
 
   </div>{{-- /panel-right --}}

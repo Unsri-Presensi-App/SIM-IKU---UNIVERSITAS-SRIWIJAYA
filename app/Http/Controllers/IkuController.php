@@ -6,89 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\IkuSatuExport;
+use App\Services\MahasiswaService;
 
 class IkuController extends Controller
 {
     /**
-     * ============================================================
-     *  PLACEHOLDER API DATA MAHASISWA (DALAM PENGEMBANGAN — Pak Rahmat)
-     * ============================================================
-     *  Dua endpoint berikut akan disediakan oleh dosen (Rahmat):
-     *    - getJumlahMahasiswaAktif($prodi)  -> int jumlah mhs aktif per prodi
-     *    - getJumlahMahasiswaKeluar($prodi) -> array of { jenis_keluar, jumlah }
-     *
-     *  Untuk sementara KEDUA method di bawah memakai data DUMMY/MOCK.
-     *  GANTI isi method ini dengan panggilan API/HTTP yang sesungguhnya
-     *  begitu API sudah siap, mis:
-     *      $resp = Http::get(config('services.simak.url')."/mahasiswa-aktif", ['prodi'=>$prodi]);
-     *      return (int) $resp->json('jumlah');
-     *
-     *  Kontrak/format return TIDAK boleh berubah agar alur AEE tetap jalan.
-     * ============================================================
+     * Service data mahasiswa (placeholder API).
+     * Diinjeksikan agar mudah di-mock saat pengujian & di-swap saat API live.
      */
-
-    /**
-     * Mengembalikan jumlah mahasiswa AKTIF untuk sebuah prodi/jenjang.
-     * @param  string $prodi  kode prodi/jenjang (mis. "FE|S1", "S1", dst.)
-     * @return int|null  null bila data belum tersedia
-     */
-    private function getJumlahMahasiswaAktif(string $prodi): ?int
-    {
-        // TODO: Ganti dengan panggilan API asli dari Pak Rahmat.
-        // return (int) Http::get($url, ['prodi' => $prodi])->json('jumlah');
-
-        // --- MOCK SEMENTARA ---
-        $mock = $this->mockMahasiswa();
-        return $mock[$prodi]['aktif'] ?? null;
-    }
-
-    /**
-     * Mengembalikan data mahasiswa KELUAR (pindah, DO, cuti melebihi ketentuan).
-     * @param  string $prodi
-     * @return array  daftar { jenis_keluar, jumlah }; kosong bila belum tersedia
-     */
-    private function getJumlahMahasiswaKeluar(string $prodi): array
-    {
-        // TODO: Ganti dengan panggilan API asli dari Pak Rahmat.
-        // return Http::get($url, ['prodi' => $prodi])->json(); // [{jenis_keluar, jumlah}, ...]
-
-        // --- MOCK SEMENTARA ---
-        $mock = $this->mockMahasiswa();
-        return $mock[$prodi]['keluar'] ?? [];
-    }
-
-    /**
-     * Data dummy gabungan agar halaman tetap bisa diuji sebelum API siap.
-     * STRUKTUR INI HANYA SEMENTARA — hapus saat API live.
-     * Key memakai format "FAKULTAS|JENJANG".
-     */
-    private function mockMahasiswa(): array
-    {
-        // [aktif, lulus_tepat_waktu]; keluar dibiarkan kosong dulu (belum ada data riil)
-        $base = [
-            'Universitas Sriwijaya|D3'=>[1566,269], 'Universitas Sriwijaya|S1'=>[33134,5004],
-            'Universitas Sriwijaya|S2'=>[2615,536],  'Universitas Sriwijaya|S3'=>[837,97],
-            'FE|D3'=>[733,126], 'FE|S1'=>[2718,479], 'FE|S2'=>[290,58], 'FE|S3'=>[129,2],
-            'FH|S1'=>[2158,350], 'FH|S2'=>[413,83], 'FH|S3'=>[110,6],
-            'FT|S1'=>[3912,360], 'FT|S2'=>[179,36], 'FT|S3'=>[203,22],
-            'FK|S1'=>[2171,436], 'FK|S2'=>[777,88], 'FK|S3'=>[121,26],
-            'FP|S1'=>[4691,679], 'FP|S2'=>[92,19], 'FP|S3'=>[33,7],
-            'FKIP|S1'=>[5932,923], 'FKIP|S2'=>[357,134], 'FKIP|S3'=>[66,4],
-            'FISIP|S1'=>[4531,605], 'FISIP|S2'=>[182,47], 'FISIP|S3'=>[106,21],
-            'FMIPA|S1'=>[2724,526], 'FMIPA|S2'=>[76,19], 'FMIPA|S3'=>[34,9],
-            'FASILKOM|D3'=>[833,143], 'FASILKOM|S1'=>[2332,373], 'FASILKOM|S2'=>[66,14], 'FASILKOM|S3'=>[16,0],
-            'FKM|S1'=>[1965,275], 'FKM|S2'=>[136,28], 'FKM|S3'=>[19,0],
-            'SPS|S2'=>[47,11],
-        ];
-        $out = [];
-        foreach ($base as $key => [$aktif, $lulus]) {
-            $out[$key] = [
-                'aktif'  => $aktif,
-                'lulus'  => $lulus,   // lulus tepat waktu (mock)
-                'keluar' => [],       // contoh isi: [['jenis_keluar'=>'DO','jumlah'=>0]]
-            ];
-        }
-        return $out;
+    public function __construct(
+        private MahasiswaService $mahasiswaService
+    ) {
     }
 
     public function ikuSatu(Request $request)
@@ -122,16 +50,33 @@ class IkuController extends Controller
             'SPS'      => ['S2'],
         ];
 
-        // 5. Ambil Target Utama Universitas (AEE PT) dari Seeder.
-        //    Sumber resmi: matriks Kontrak Kinerja Rektor (PDF hal.2) => Target AEE PT 2026 = 43,13%.
-        $targetIku   = DB::table('target_iku')->where('kode_iku', 'IKU 1')->first();
-        $targetAeePT = $targetIku->target_2026 ?? 43.13;
+        // 5. Ambil Target Utama Universitas (AEE PT).
+        //    a) AEE PT headline PK Rektor (PDF hal.2): baseline 42,53% -> target 43,13%.
+        //       Ini skala "AEE PT langsung", ditampilkan sbg info resmi di sidebar.
+        $targetIku     = DB::table('target_iku')->where('kode_iku', 'IKU 1')->first();
+        $targetAeePT   = $targetIku->target_2026   ?? 43.13;
+        $baselineAeePT = $targetIku->baseline_2025 ?? 42.53;
+
+        //    b) Target Rekap Tingkat Pencapaian (PDF hal.5/15) = 47,11% — pembanding SETARA
+        //       untuk rata-rata tingkat pencapaian yang dihitung di bawah (hindari campur skala).
+        $rekapPT             = DB::table('target_iku')->where('kode_iku', 'IKU 1_PENCAPAIAN_PT')->first();
+        $targetPencapaianPT  = $rekapPT->target_2026   ?? 47.11;
+        $baselinePencapaianPT = $rekapPT->baseline_2025 ?? 36.95;
 
         // PEMBAGI RUMUS AEE / "AEE Ideal" (PDF Kepmen hal.4): D3=33, S1=25, S2=50, S3=33
         $aee_ideal_map = ['D3' => 33.00, 'S1' => 25.00, 'S2' => 50.00, 'S3' => 33.00];
 
-        // TARGET KINERJA REKTOR per jenjang (PDF matriks PK hal.2): D3=51,5 S1=50 S2=40 S3=31
-        $target_pk_map = ['D3' => 51.50, 'S1' => 50.00, 'S2' => 40.00, 'S3' => 31.00];
+        // TARGET TINGKAT PENCAPAIAN AEE per jenjang (PDF hal.5 - tabel PJ).
+        // Ini pembanding yang setara dengan kolom "tingkat_pencapaian" tiap baris.
+        // Sumber resmi (OCR PDF hal.5): D3=52,05% S1=60,41% S2=41,02% S3=35,05%.
+        // Diambil dari seeder (kode_iku 'IKU 1_PENCAPAIAN_*') agar tidak ada hardcode,
+        // dengan fallback ke angka PDF bila baris seeder belum tersedia.
+        $target_pencapaian_map = [
+            'D3' => optional(DB::table('target_iku')->where('kode_iku', 'IKU 1_PENCAPAIAN_D3')->first())->target_2026 ?? 52.05,
+            'S1' => optional(DB::table('target_iku')->where('kode_iku', 'IKU 1_PENCAPAIAN_S1')->first())->target_2026 ?? 60.41,
+            'S2' => optional(DB::table('target_iku')->where('kode_iku', 'IKU 1_PENCAPAIAN_S2')->first())->target_2026 ?? 41.02,
+            'S3' => optional(DB::table('target_iku')->where('kode_iku', 'IKU 1_PENCAPAIAN_S3')->first())->target_2026 ?? 35.05,
+        ];
 
         $nama_jenjang = ['D3' => 'Diploma Tiga', 'S1' => 'Sarjana', 'S2' => 'Magister', 'S3' => 'Doktor'];
 
@@ -144,12 +89,12 @@ class IkuController extends Controller
             // Kunci prodi untuk API. Saat API riil siap, ganti dgn kode prodi sebenarnya.
             $prodiKey = $selectedFakultas . '|' . $jenjang;
 
-            // === Panggil API (placeholder) ===
-            $aktif  = $this->getJumlahMahasiswaAktif($prodiKey);
-            $keluar = $this->getJumlahMahasiswaKeluar($prodiKey);
+            // === Panggil API (placeholder via MahasiswaService) ===
+            $aktif  = $this->mahasiswaService->getJumlahMahasiswaAktif($prodiKey);
+            $keluar = $this->mahasiswaService->getJumlahMahasiswaKeluar($prodiKey);
 
-            // Bila API belum mengembalikan data, tandai & lewati baris ini dengan aman.
-            if ($aktif === null) {
+            // Bila API belum mengembalikan data (aktif <= 0), tandai & lewati baris ini dengan aman.
+            if ($aktif <= 0) {
                 $dataBelumLengkap = true;
                 continue;
             }
@@ -158,7 +103,7 @@ class IkuController extends Controller
             $totalKeluar = collect($keluar)->sum('jumlah');
 
             // Lulus tepat waktu: sementara dari mock; nanti dari endpoint terkait.
-            $lulus = $this->mockMahasiswa()[$prodiKey]['lulus'] ?? 0;
+            $lulus = $this->mahasiswaService->getJumlahLulusTepatWaktu($prodiKey);
 
             // Cohort = aktif dikurangi yang keluar (PDF: pindah/DO/cuti tidak dihitung).
             $cohort = max(0, $aktif - $totalKeluar);
@@ -168,7 +113,8 @@ class IkuController extends Controller
             $ideal      = $aee_ideal_map[$jenjang] ?? 0;
             // Tingkat Pencapaian AEE = realisasi / ideal * 100  (PDF Formula b)
             $pencapaian = $ideal > 0 ? ($realisasi / $ideal) * 100 : 0;
-            $target_pk  = $target_pk_map[$jenjang] ?? 0;
+            // Target Tingkat Pencapaian resmi per jenjang (PDF hal.5) sebagai pembanding setara.
+            $target_pk  = $target_pencapaian_map[$jenjang] ?? 0;
 
             $dataTabel[] = (object)[
                 'jenjang'           => $nama_jenjang[$jenjang] ?? $jenjang,
@@ -184,13 +130,18 @@ class IkuController extends Controller
         // 7. AEE PT = rata-rata tingkat pencapaian seluruh jenjang  (PDF Formula c)
         $aee_pt = count($dataTabel) > 0 ? collect($dataTabel)->avg('tingkat_pencapaian') : 0;
 
-        // 8. % capaian terhadap target PK (untuk kartu ringkasan, makna jelas)
-        $capaian_thd_target = $targetAeePT > 0 ? ($aee_pt / $targetAeePT) * 100 : 0;
+        // 8. % capaian terhadap target. Pembanding SETARA: rata-rata tingkat pencapaian
+        //    dibandingkan target rekap pencapaian (47,11%), bukan headline PK (43,13%),
+        //    agar tidak mencampur dua skala berbeda (lihat TEMUAN dokumentasi).
+        $capaian_thd_target = $targetPencapaianPT > 0 ? ($aee_pt / $targetPencapaianPT) * 100 : 0;
 
         return view('iku.iku-satu', compact(
             'dataTabel',
             'aee_pt',
             'targetAeePT',
+            'baselineAeePT',
+            'targetPencapaianPT',
+            'baselinePencapaianPT',
             'capaian_thd_target',
             'selectedFakultas',
             'selectedTahun',
@@ -201,7 +152,8 @@ class IkuController extends Controller
 
     public function exportIkuSatuExcel()
     {
-        return Excel::download(new IkuSatuExport, 'Laporan_IKU_1_AEE.xlsx');
+        // Resolve via container agar dependensi MahasiswaService terinjeksi otomatis.
+        return Excel::download(app(IkuSatuExport::class), 'Laporan_IKU_1_AEE.xlsx');
     }
 
     // IKU 2 - Lulusan Bekerja

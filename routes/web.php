@@ -9,12 +9,12 @@ use App\Http\Controllers\AuthController;
 |--------------------------------------------------------------------------
 | Rute Publik (Landing & Autentikasi)
 |--------------------------------------------------------------------------
-| Landing page tetap dapat diakses publik. Halaman login hanya untuk tamu
-| (guest). Registrasi publik SENGAJA tidak disediakan — akun ditambah manual.
+| Pengunjung yang mengakses '/' akan langsung diarahkan ke halaman login.
+| Halaman login hanya untuk tamu (guest).
 */
-Route::get('/', function () {
-    return view('welcome');
-})->name('landing');
+
+// Redirect URL utama langsung ke rute login
+Route::redirect('/', '/login');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

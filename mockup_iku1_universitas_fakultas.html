@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup SIM IKU UNSRI - IKU 1 AEE</title>
+  <style>
+    :root{
+      --navy:#082b57;--navy2:#0e3a73;--blue:#1769e0;--blue2:#0f58c9;--bg:#f5f7fb;--card:#fff;--line:#e5e7eb;--text:#0f172a;--muted:#64748b;--green:#16a34a;--green-bg:#eaf8ef;--orange:#f59e0b;--orange-bg:#fff7e6;--red:#dc2626;--red-bg:#fee2e2;--purple:#7c3aed;--purple-bg:#f3e8ff;--shadow:0 16px 34px rgba(15,23,42,.08);--radius:18px;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .app{display:grid;grid-template-columns:285px 1fr;min-height:100vh}.sidebar{background:linear-gradient(180deg,#071d3d 0%,#0a326b 60%,#061934 100%);color:white;padding:22px 16px;position:sticky;top:0;height:100vh;overflow-y:auto}.brand{display:flex;gap:14px;align-items:center;padding:6px 8px 24px;border-bottom:1px solid rgba(255,255,255,.16);margin-bottom:18px}.logo{width:50px;height:50px;border-radius:16px;background:radial-gradient(circle at 38% 35%,#ffe86a 0 25%,#f8a80a 26% 43%,#0c55a6 44% 70%,white 71%);box-shadow:0 10px 24px rgba(0,0,0,.25)}.brand h1{font-size:21px;margin:0;letter-spacing:-.03em}.brand p{font-size:12px;color:#cbd5e1;margin:4px 0 0}.nav-title{font-size:11px;color:#b7c8df;text-transform:uppercase;letter-spacing:.08em;margin:22px 10px 8px}.nav-item,.nav-parent{display:flex;align-items:center;justify-content:space-between;border-radius:12px;padding:12px 12px;font-size:14px;color:#e5edf8;cursor:pointer}.nav-item:hover,.nav-parent:hover{background:rgba(255,255,255,.1)}.nav-item.active{background:var(--blue);box-shadow:0 10px 24px rgba(23,105,224,.28);color:#fff}.nav-left{display:flex;align-items:center;gap:10px}.nav-children{display:grid;gap:3px;margin:4px 0 12px 18px}.nav-children .nav-item{font-size:13px;padding:10px 12px}.nav-badge{font-size:10px;background:#16a34a;color:white;border-radius:999px;padding:3px 7px;margin-left:8px}.main{min-width:0}.topbar{height:76px;background:rgba(255,255,255,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:9}.crumb{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}.crumb strong{color:var(--text)}.top-actions{display:flex;align-items:center;gap:12px}.select,.search,.btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 13px;min-height:44px;color:var(--text);font:inherit}.search{width:300px;color:var(--muted)}.avatar{width:42px;height:42px;border-radius:999px;background:linear-gradient(135deg,#dbeafe,#1d4ed8);border:3px solid white;box-shadow:0 4px 16px rgba(0,0,0,.14)}.content{padding:28px 30px 46px}.page-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:start;margin-bottom:20px}.page-head h2{font-size:28px;margin:0 0 8px;letter-spacing:-.03em;line-height:1.2}.page-head p{margin:0;color:var(--muted);line-height:1.55;max-width:1060px}.badge{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:800}.badge.auto{background:var(--green-bg);color:var(--green)}.badge.info{background:#eaf2ff;color:var(--blue)}.badge.warn{background:var(--orange-bg);color:#b45309}.badge.good{background:var(--green-bg);color:var(--green)}.badge.red{background:var(--red-bg);color:var(--red)}.notice{background:linear-gradient(90deg,#eff6ff,#fff);border:1px solid #bfdbfe;border-radius:var(--radius);padding:16px 18px;margin-bottom:20px;color:#1e40af;display:flex;justify-content:space-between;gap:16px;align-items:center}.notice strong{color:#1d4ed8}.tabs{display:flex;gap:10px;border-bottom:1px solid var(--line);margin-bottom:20px}.tab{padding:13px 16px;border-bottom:3px solid transparent;color:var(--muted);font-weight:800;font-size:14px;cursor:pointer}.tab.active{color:var(--blue);border-color:var(--blue)}.section{display:none}.section.active{display:block}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}.mini-card,.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.mini-card{padding:18px;display:flex;justify-content:space-between;align-items:center}.mini-card .label{font-size:13px;color:var(--muted)}.mini-card .value{font-size:26px;font-weight:900;letter-spacing:-.04em;margin-top:6px}.bubble{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:24px}.b-blue{background:#eaf2ff;color:var(--blue)}.b-green{background:var(--green-bg);color:var(--green)}.b-orange{background:var(--orange-bg);color:var(--orange)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:20px}.card{padding:18px;margin-bottom:20px}.card-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.card-title h3{font-size:17px;margin:0}.small{font-size:12px}.muted{color:var(--muted)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:13px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}th{font-size:12px;color:#475569;background:#f8fafc}tr:hover td{background:#fbfdff}.progress{height:9px;background:#e5e7eb;border-radius:999px;overflow:hidden;min-width:90px}.progress span{display:block;height:100%;background:var(--blue);border-radius:999px}.progress.green span{background:var(--green)}.progress.orange span{background:var(--orange)}.btn{font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.btn.ghost{background:white;color:var(--blue)}.chart{height:245px;display:grid;grid-template-columns:repeat(4,1fr);align-items:end;gap:20px;padding:30px 14px 12px;border-left:1px solid var(--line);border-bottom:1px solid var(--line);background-image:linear-gradient(to top,rgba(226,232,240,.9) 1px,transparent 1px);background-size:100% 48px}.bar-wrap{text-align:center;color:var(--muted);font-size:12px}.bar{height:var(--h);width:52%;margin:0 auto 8px;background:linear-gradient(180deg,#60a5fa,#1168e8);border-radius:12px 12px 4px 4px;position:relative}.bar:before{content:attr(data-v);position:absolute;top:-24px;left:50%;transform:translateX(-50%);color:var(--blue);font-weight:900}.side{position:sticky;top:96px}.target-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:10px 0;font-size:13px}.formula{font-family:Georgia,serif;background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:14px;line-height:1.6}.sync-row{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:center;font-size:13px;padding:9px 0;border-bottom:1px solid var(--line)}.dot{width:22px;height:22px;border-radius:999px;background:var(--green);color:white;display:grid;place-items:center;font-size:11px}.faculty-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.faculty-card{padding:16px;border:1px solid var(--line);border-radius:16px;background:#fff}.faculty-card h4{margin:0 0 8px;font-size:14px}.faculty-card .big{font-size:25px;font-weight:900;color:var(--blue);margin-bottom:10px}.rank{display:inline-flex;width:28px;height:28px;border-radius:999px;align-items:center;justify-content:center;background:#eaf2ff;color:var(--blue);font-weight:900}.filter-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.filter-row .select,.filter-row .search{min-height:40px;padding:9px 12px}.view-note{padding:12px 14px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:14px;color:#475569;margin-bottom:16px;font-size:13px}.footer-note{margin-top:12px;color:var(--muted);font-size:12px}.mode-switch{display:flex;background:#eef2ff;border:1px solid #dbeafe;border-radius:14px;padding:4px}.mode-switch button{border:0;background:transparent;padding:10px 14px;border-radius:11px;font-weight:900;color:#475569;cursor:pointer}.mode-switch button.active{background:white;color:var(--blue);box-shadow:0 5px 16px rgba(15,23,42,.08)}
+    @media(max-width:1200px){.app{grid-template-columns:1fr}.sidebar{position:static;height:auto}.layout{grid-template-columns:1fr}.side{position:static}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.faculty-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo"></div><div><h1>SIM IKU</h1><p>Universitas Sriwijaya</p></div></div>
+    <div class="nav-item"><span class="nav-left">⌂ Dashboard</span></div>
+    <div class="nav-item"><span class="nav-left">◉ Perjanjian Kinerja</span></div>
+    <div class="nav-item"><span class="nav-left">▣ Capaian IKU</span></div>
+    <div class="nav-title">Input Data IKU</div>
+    <div class="nav-parent"><span class="nav-left">✦ Talenta</span><span>⌃</span></div>
+    <div class="nav-children">
+      <div class="nav-item active">IKU 1 - AEE PT <span class="nav-badge">Auto</span></div>
+      <div class="nav-item">IKU 2 - Lulusan</div>
+      <div class="nav-item">IKU 3 - Kegiatan/Prestasi</div>
+      <div class="nav-item">IKU 4 - Rekognisi Dosen</div>
+    </div>
+    <div class="nav-parent"><span class="nav-left">⚙ Inovasi</span><span>⌄</span></div>
+    <div class="nav-parent"><span class="nav-left">◇ Kontribusi Masyarakat</span><span>⌄</span></div>
+    <div class="nav-parent"><span class="nav-left">▰ Tata Kelola Berintegritas</span><span>⌄</span></div>
+    <div class="nav-title">Lainnya</div>
+    <div class="nav-item">▤ Eviden</div>
+    <div class="nav-item">✓ Validasi Direktorat</div>
+    <div class="nav-item">▥ Monitoring Triwulan</div>
+    <div class="nav-item">⚙ Pengaturan</div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div class="crumb">☰ <span>Input Data IKU</span> <span>›</span> <strong id="crumb">IKU 1 - AEE PT / Universitas</strong></div>
+      <div class="top-actions">
+        <div class="mode-switch"><button id="btnUniv" class="active">User Universitas</button><button id="btnFak">User Fakultas</button></div>
+        <select class="select" id="facultySelect"><option>Universitas Sriwijaya</option><option>Fakultas Teknik</option><option>Fakultas Ilmu Komputer</option></select>
+        <select class="select"><option>2026</option><option>2027</option></select>
+        <div class="search">Cari prodi, fakultas, atau data AEE...</div>
+        <div class="avatar"></div>
+      </div>
+    </header>
+
+    <div class="content">
+      <section class="page-head">
+        <div>
+          <h2 id="title">IKU 1 - AEE Universitas Sriwijaya <span class="badge auto">OTOMATIS DATALAKE</span></h2>
+          <p id="desc">Menampilkan AEE keseluruhan Unsri per jenjang dan AEE rata-rata universitas. Bagian lain menampilkan perbandingan AEE per fakultas. Seluruh data berasal dari API Data Lake, sehingga tidak ada penginputan data oleh user.</p>
+        </div>
+        <span class="badge auto">Tidak ada input manual</span>
+      </section>
+
+      <div class="notice">
+        <div><strong>Data otomatis dari API Data Lake.</strong> Sistem melakukan sinkronisasi terjadwal. User hanya melihat hasil, tanggal update, dan riwayat sinkronisasi.</div>
+        <div class="small">Update terakhir: <strong>23 Mei 2026, 02.00 WIB</strong></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" id="tabUniv">Halaman Universitas</div>
+        <div class="tab" id="tabFak">Halaman Fakultas</div>
+      </div>
+
+      <section id="univSection" class="section active">
+        <div class="summary">
+          <div class="mini-card"><div><div class="label">AEE Rata-rata Universitas</div><div class="value">41,87%</div></div><div class="bubble b-blue">∑</div></div>
+          <div class="mini-card"><div><div class="label">Target AEE PT 2026</div><div class="value">43,13%</div></div><div class="bubble b-green">🎯</div></div>
+          <div class="mini-card"><div><div class="label">Capaian terhadap Target</div><div class="value">97,08%</div></div><div class="bubble b-orange">↗</div></div>
+          <div class="mini-card"><div><div class="label">Jumlah Fakultas</div><div class="value">10</div></div><div class="bubble b-blue">🏛</div></div>
+        </div>
+
+        <div class="layout">
+          <div>
+            <div class="card">
+              <div class="card-title"><h3>AEE Universitas per Jenjang</h3><button class="btn ghost">⬇ Export Excel</button></div>
+              <div class="view-note">Tabel ini menampilkan AEE agregat Universitas Sriwijaya per jenjang. Data tidak dapat diedit karena berasal dari API Data Lake.</div>
+              <table>
+                <thead><tr><th>Jenjang</th><th>Mahasiswa Masuk Cohort</th><th>Lulus Tepat Waktu</th><th>Dikecualikan</th><th>AEE Realisasi</th><th>AEE Ideal/Target</th><th>Capaian</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>D1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="badge info">Tidak dibuka</span></td></tr>
+                  <tr><td>D2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="badge info">Tidak dibuka</span></td></tr>
+                  <tr><td>D3</td><td>2.156</td><td>1.125</td><td>31</td><td>52,17%</td><td>51,50%</td><td><span class="badge good">101,30%</span></td><td><span class="badge good">Tercapai</span></td></tr>
+                  <tr><td>D4/S1</td><td>7.842</td><td>3.856</td><td>142</td><td>49,13%</td><td>50,00%</td><td><span class="badge warn">98,26%</span></td><td><span class="badge warn">Mendekati</span></td></tr>
+                  <tr><td>S2</td><td>1.832</td><td>690</td><td>58</td><td>37,64%</td><td>40,00%</td><td><span class="badge warn">94,10%</span></td><td><span class="badge warn">Perhatian</span></td></tr>
+                  <tr><td>S3</td><td>812</td><td>243</td><td>21</td><td>30,07%</td><td>31,00%</td><td><span class="badge warn">96,97%</span></td><td><span class="badge warn">Mendekati</span></td></tr>
+                  <tr><td><strong>Rata-rata AEE PT</strong></td><td colspan="3"></td><td><strong>41,87%</strong></td><td><strong>43,13%</strong></td><td><strong>97,08%</strong></td><td><span class="badge warn">Baik</span></td></tr>
+                </tbody>
+              </table>
+              <div class="footer-note">Keterangan: mahasiswa pindah, DO, dan cuti lebih dari ketentuan tidak masuk perhitungan.</div>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><h3>AEE per Fakultas</h3><button class="btn ghost">Lihat Detail Semua Fakultas</button></div>
+              <div class="faculty-grid">
+                <div class="faculty-card"><h4><span class="rank">1</span> Fakultas Kedokteran</h4><div class="big">48,90%</div><div class="progress green"><span style="width:113%"></span></div><p class="small muted">Capaian 113,4% dari target universitas</p></div>
+                <div class="faculty-card"><h4><span class="rank">2</span> Fakultas Ekonomi</h4><div class="big">45,20%</div><div class="progress green"><span style="width:105%"></span></div><p class="small muted">Capaian 104,8% dari target universitas</p></div>
+                <div class="faculty-card"><h4><span class="rank">3</span> Fakultas Teknik</h4><div class="big">42,60%</div><div class="progress orange"><span style="width:98.7%"></span></div><p class="small muted">Capaian 98,7% dari target universitas</p></div>
+                <div class="faculty-card"><h4><span class="rank">4</span> FASILKOM</h4><div class="big">41,10%</div><div class="progress orange"><span style="width:95.3%"></span></div><p class="small muted">Capaian 95,3% dari target universitas</p></div>
+                <div class="faculty-card"><h4><span class="rank">5</span> FKIP</h4><div class="big">39,50%</div><div class="progress orange"><span style="width:91.6%"></span></div><p class="small muted">Capaian 91,6% dari target universitas</p></div>
+                <div class="faculty-card"><h4><span class="rank">6</span> Fakultas Pertanian</h4><div class="big">38,70%</div><div class="progress orange"><span style="width:89.7%"></span></div><p class="small muted">Perlu tindak lanjut pada jenjang S1</p></div>
+              </div>
+            </div>
+          </div>
+          <aside class="side">
+            <div class="card"><div class="card-title"><h3>Capaian AEE per Triwulan</h3></div><div class="chart"><div class="bar-wrap"><div class="bar" style="--h:52px" data-v="10,42%"></div>TW1</div><div class="bar-wrap"><div class="bar" style="--h:92px" data-v="21,56%"></div>TW2</div><div class="bar-wrap"><div class="bar" style="--h:128px" data-v="31,44%"></div>TW3</div><div class="bar-wrap"><div class="bar" style="--h:170px" data-v="41,87%"></div>TW4</div></div></div>
+            <div class="card"><div class="card-title"><h3>Target PK Rektor 2026</h3></div><div class="target-row"><span>AEE PT</span><strong>43,13%</strong></div><div class="target-row"><span>D3</span><strong>51,50%</strong></div><div class="target-row"><span>S1</span><strong>50,00%</strong></div><div class="target-row"><span>S2</span><strong>40,00%</strong></div><div class="target-row"><span>S3</span><strong>31,00%</strong></div></div>
+            <div class="card"><div class="card-title"><h3>Formula</h3></div><div class="formula">AEE PT = rata-rata tingkat pencapaian AEE dari setiap program pendidikan.<br><br>AEE = lulus tepat waktu / total mahasiswa cohort × 100%</div></div>
+            <div class="card"><div class="card-title"><h3>Riwayat Sinkronisasi</h3></div><div class="sync-row"><div class="dot">✓</div><div>23 Mei 2026, 02.00 WIB<br><span class="muted small">API Data Lake</span></div><span class="badge good">Berhasil</span></div><div class="sync-row"><div class="dot">✓</div><div>22 Mei 2026, 02.00 WIB<br><span class="muted small">API Data Lake</span></div><span class="badge good">Berhasil</span></div></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="fakSection" class="section">
+        <div class="summary">
+          <div class="mini-card"><div><div class="label">AEE Rata-rata Fakultas</div><div class="value">42,60%</div></div><div class="bubble b-blue">∑</div></div>
+          <div class="mini-card"><div><div class="label">Target AEE PT 2026</div><div class="value">43,13%</div></div><div class="bubble b-green">🎯</div></div>
+          <div class="mini-card"><div><div class="label">Capaian terhadap Target</div><div class="value">98,77%</div></div><div class="bubble b-orange">↗</div></div>
+          <div class="mini-card"><div><div class="label">Jumlah Prodi</div><div class="value">14</div></div><div class="bubble b-blue">🎓</div></div>
+        </div>
+        <div class="layout">
+          <div>
+            <div class="card">
+              <div class="card-title"><h3>AEE Fakultas Teknik per Jenjang</h3><button class="btn ghost">⬇ Export Excel</button></div>
+              <div class="view-note">Halaman user fakultas menampilkan AEE fakultas per jenjang dan rincian AEE per prodi. Seluruh data read-only dari API Data Lake.</div>
+              <table>
+                <thead><tr><th>Jenjang</th><th>Mahasiswa Masuk</th><th>Lulus Tepat Waktu</th><th>Dikecualikan</th><th>AEE Realisasi</th><th>AEE Ideal/Target</th><th>Capaian</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>D3</td><td>380</td><td>202</td><td>9</td><td>53,16%</td><td>51,50%</td><td><span class="badge good">103,22%</span></td><td><span class="badge good">Tercapai</span></td></tr>
+                  <tr><td>D4/S1</td><td>1.920</td><td>920</td><td>42</td><td>47,92%</td><td>50,00%</td><td><span class="badge warn">95,84%</span></td><td><span class="badge warn">Perhatian</span></td></tr>
+                  <tr><td>S2</td><td>420</td><td>166</td><td>13</td><td>39,52%</td><td>40,00%</td><td><span class="badge warn">98,80%</span></td><td><span class="badge warn">Mendekati</span></td></tr>
+                  <tr><td>S3</td><td>120</td><td>39</td><td>4</td><td>32,50%</td><td>31,00%</td><td><span class="badge good">104,84%</span></td><td><span class="badge good">Tercapai</span></td></tr>
+                  <tr><td><strong>Rata-rata Fakultas</strong></td><td colspan="3"></td><td><strong>42,60%</strong></td><td><strong>43,13%</strong></td><td><strong>98,77%</strong></td><td><span class="badge warn">Mendekati</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <div class="card-title"><h3>AEE per Program Studi</h3><button class="btn ghost">Lihat Semua Prodi</button></div>
+              <div class="filter-row"><select class="select"><option>Semua Jenjang</option><option>D3</option><option>S1</option><option>S2</option><option>S3</option></select><select class="select"><option>Semua Status</option><option>Tercapai</option><option>Perhatian</option></select><div class="search">Cari nama program studi...</div></div>
+              <table>
+                <thead><tr><th>No</th><th>Program Studi</th><th>Jenjang</th><th>Masuk</th><th>Lulus Tepat Waktu</th><th>AEE</th><th>Capaian</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>Teknik Sipil</td><td>S1</td><td>210</td><td>108</td><td>51,43%</td><td>102,86%</td><td><span class="badge good">Tercapai</span></td></tr>
+                  <tr><td>2</td><td>Teknik Pertambangan</td><td>S1</td><td>185</td><td>92</td><td>49,73%</td><td>99,46%</td><td><span class="badge warn">Mendekati</span></td></tr>
+                  <tr><td>3</td><td>Teknik Kimia</td><td>S1</td><td>180</td><td>83</td><td>46,11%</td><td>92,22%</td><td><span class="badge warn">Perhatian</span></td></tr>
+                  <tr><td>4</td><td>Teknik Elektro</td><td>S1</td><td>175</td><td>78</td><td>44,57%</td><td>89,14%</td><td><span class="badge red">Risiko</span></td></tr>
+                  <tr><td>5</td><td>Magister Teknik Sipil</td><td>S2</td><td>70</td><td>30</td><td>42,86%</td><td>107,15%</td><td><span class="badge good">Tercapai</span></td></tr>
+                  <tr><td>6</td><td>Doktor Ilmu Teknik</td><td>S3</td><td>120</td><td>39</td><td>32,50%</td><td>104,84%</td><td><span class="badge good">Tercapai</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <aside class="side">
+            <div class="card"><div class="card-title"><h3>Capaian Fakultas per Triwulan</h3></div><div class="chart"><div class="bar-wrap"><div class="bar" style="--h:54px" data-v="10,65%"></div>TW1</div><div class="bar-wrap"><div class="bar" style="--h:96px" data-v="21,30%"></div>TW2</div><div class="bar-wrap"><div class="bar" style="--h:132px" data-v="31,95%"></div>TW3</div><div class="bar-wrap"><div class="bar" style="--h:174px" data-v="42,60%"></div>TW4</div></div></div>
+            <div class="card"><div class="card-title"><h3>Prodi Perlu Perhatian</h3></div><div class="target-row"><span>Teknik Elektro</span><strong style="color:var(--red)">44,57%</strong></div><div class="target-row"><span>Teknik Kimia</span><strong style="color:#b45309">46,11%</strong></div><div class="target-row"><span>Teknik Mesin</span><strong style="color:#b45309">47,20%</strong></div></div>
+            <div class="card"><div class="card-title"><h3>Catatan Sistem</h3></div><p class="muted small">Tidak ada form input pada halaman IKU 1. Jika terdapat perbedaan data, perbaikan dilakukan pada sistem sumber/Data Lake, bukan di SIM IKU.</p></div>
+            <div class="card"><div class="card-title"><h3>Riwayat Sinkronisasi</h3></div><div class="sync-row"><div class="dot">✓</div><div>23 Mei 2026, 02.00 WIB<br><span class="muted small">API Data Lake</span></div><span class="badge good">Berhasil</span></div><div class="sync-row"><div class="dot">✓</div><div>22 Mei 2026, 02.00 WIB<br><span class="muted small">API Data Lake</span></div><span class="badge good">Berhasil</span></div></div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<script>
+  const btnUniv=document.getElementById('btnUniv'),btnFak=document.getElementById('btnFak'),tabUniv=document.getElementById('tabUniv'),tabFak=document.getElementById('tabFak'),univ=document.getElementById('univSection'),fak=document.getElementById('fakSection'),title=document.getElementById('title'),desc=document.getElementById('desc'),crumb=document.getElementById('crumb'),facultySelect=document.getElementById('facultySelect');
+  function showUniv(){btnUniv.classList.add('active');btnFak.classList.remove('active');tabUniv.classList.add('active');tabFak.classList.remove('active');univ.classList.add('active');fak.classList.remove('active');crumb.textContent='IKU 1 - AEE PT / Universitas';title.innerHTML='IKU 1 - AEE Universitas Sriwijaya <span class="badge auto">OTOMATIS DATALAKE</span>';desc.textContent='Menampilkan AEE keseluruhan Unsri per jenjang dan AEE rata-rata universitas. Bagian lain menampilkan perbandingan AEE per fakultas. Seluruh data berasal dari API Data Lake, sehingga tidak ada penginputan data oleh user.';facultySelect.value='Universitas Sriwijaya'}
+  function showFak(){btnFak.classList.add('active');btnUniv.classList.remove('active');tabFak.classList.add('active');tabUniv.classList.remove('active');fak.classList.add('active');univ.classList.remove('active');crumb.textContent='IKU 1 - AEE PT / Fakultas Teknik';title.innerHTML='IKU 1 - AEE Fakultas Teknik <span class="badge auto">OTOMATIS DATALAKE</span>';desc.textContent='Menampilkan AEE Fakultas Teknik per jenjang dan AEE per program studi. Data hanya ditampilkan dari API Data Lake, tidak ada penginputan data pada SIM IKU.';facultySelect.value='Fakultas Teknik'}
+  btnUniv.onclick=showUniv;btnFak.onclick=showFak;tabUniv.onclick=showUniv;tabFak.onclick=showFak;
+</script>
+</body>
+</html>

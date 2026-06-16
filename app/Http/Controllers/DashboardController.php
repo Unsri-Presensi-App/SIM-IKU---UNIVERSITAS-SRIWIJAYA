@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InputIku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +14,24 @@ class DashboardController extends Controller
 
         // Ambil seluruh target IKU dari DB, di-index per kode_iku.
         $targets = DB::table('target_iku')->get()->keyBy('kode_iku');
+
+        // ── Agregat realisasi dari entri yang diinput unit (manual/hybrid) ──
+        // Jumlah entri per kode IKU, dipisah berdasarkan status validasi.
+        $validPerKode    = InputIku::where('status', 'valid')
+            ->selectRaw('kode_iku, COUNT(*) as n')->groupBy('kode_iku')->pluck('n', 'kode_iku');
+        $diajukanPerKode = InputIku::where('status', 'diajukan')
+            ->selectRaw('kode_iku, COUNT(*) as n')->groupBy('kode_iku')->pluck('n', 'kode_iku');
+
+        $totalValidEntri    = (int) $validPerKode->sum();
+        $totalDiajukanEntri = (int) $diajukanPerKode->sum();
+
+        // Map nomor IKU → jumlah entri valid. IKU 11 menggabungkan sub 11a–11d.
+        $validForIku = function (int $i) use ($validPerKode): int {
+            if ($i === 11) {
+                return (int) collect(['11a', '11b', '11c', '11d'])->sum(fn ($k) => $validPerKode[$k] ?? 0);
+            }
+            return (int) ($validPerKode[(string) $i] ?? 0);
+        };
 
         $chartLabels  = [];
         $chartCapaian = [];   // = "Progres Baseline -> Target" (bukan realisasi nyata, lihat catatan)
@@ -124,6 +143,7 @@ class DashboardController extends Controller
                 'target'         => $targetVal,
                 'realisasi'      => $realisasiVal,
                 'capaian_persen' => $progres_final,
+                'entri_valid'    => $validForIku($i), // entri tervalidasi dari unit
             ];
         }
 
@@ -167,7 +187,8 @@ class DashboardController extends Controller
             'fakultas', 'radarData', 'semuaIku',
             'rata_rata_pt', 'aman', 'mendekati', 'kritis',
             'tabelKritis', 'dimensi',
-            'selectedTahun', 'realisasiTersedia'
+            'selectedTahun', 'realisasiTersedia',
+            'totalValidEntri', 'totalDiajukanEntri'
         ));
     }
 }

@@ -56,6 +56,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/iku-1/export-excel', [IkuController::class, 'exportIkuSatuExcel'])->name('iku.satu.export');
 
+    // ── Serve eviden files through Laravel (auth required, fixes 403 on direct storage access) ──
+    Route::get('/eviden/{eviden}', [InputIkuController::class, 'serveEviden'])->name('eviden.serve');
+
     // ── Input data IKU (manual/hybrid) — hanya operator & admin ──
     Route::middleware('role:operator,admin')->group(function () {
         Route::post('/iku/{kode}/input',  [InputIkuController::class, 'store'])->name('input.store');

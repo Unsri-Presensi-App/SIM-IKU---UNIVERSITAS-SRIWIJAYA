@@ -43,7 +43,7 @@
             </div>
           </div>
           <div style="display:flex;gap:6px;flex-shrink:0;">
-            <a href="{{ Storage::url($ev->path_file) }}" target="_blank" class="btn btn-sm">
+            <a href="{{ route('eviden.serve', $ev->id) }}" target="_blank" class="btn btn-sm">
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
               Buka
             </a>

@@ -162,6 +162,20 @@ class InputIkuController extends Controller
     }
 
     /**
+     * Sajikan file eviden melalui Laravel (menghindari error 403 dari web server).
+     */
+    public function serveEviden(EvidenIku $eviden)
+    {
+        abort_unless(Storage::disk('public')->exists($eviden->path_file), 404);
+
+        return Storage::disk('public')->response(
+            $eviden->path_file,
+            $eviden->nama_asli,
+            ['Content-Disposition' => 'inline; filename="' . addslashes($eviden->nama_asli) . '"']
+        );
+    }
+
+    /**
      * Hapus satu file eviden.
      */
     public function hapusEviden(EvidenIku $eviden)

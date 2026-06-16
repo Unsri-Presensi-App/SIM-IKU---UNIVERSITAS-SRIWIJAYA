@@ -56,13 +56,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/iku-1/export-excel', [IkuController::class, 'exportIkuSatuExcel'])->name('iku.satu.export');
 
-    // ── Input data IKU (manual/hybrid) ──
-    Route::post('/iku/{kode}/input',        [InputIkuController::class, 'store'])->name('input.store');
-    Route::put('/input/{input}',            [InputIkuController::class, 'update'])->name('input.update');
-    Route::delete('/input/{input}',         [InputIkuController::class, 'destroy'])->name('input.destroy');
-    Route::delete('/eviden/{eviden}',       [InputIkuController::class, 'hapusEviden'])->name('eviden.destroy');
+    // ── Input data IKU (manual/hybrid) — hanya operator & admin ──
+    Route::middleware('role:operator,admin')->group(function () {
+        Route::post('/iku/{kode}/input',  [InputIkuController::class, 'store'])->name('input.store');
+        Route::put('/input/{input}',      [InputIkuController::class, 'update'])->name('input.update');
+        Route::delete('/input/{input}',   [InputIkuController::class, 'destroy'])->name('input.destroy');
+        Route::delete('/eviden/{eviden}', [InputIkuController::class, 'hapusEviden'])->name('eviden.destroy');
+    });
 
-    // ── Validasi Direktorat ──
-    Route::post('/input/{input}/validasi',  [ValidasiController::class, 'validasi'])->name('validasi.terima');
-    Route::post('/input/{input}/kembalikan',[ValidasiController::class, 'kembalikan'])->name('validasi.kembalikan');
+    // ── Validasi Direktorat — hanya validator & admin ──
+    Route::middleware('role:validator,admin')->group(function () {
+        Route::post('/input/{input}/validasi',   [ValidasiController::class, 'validasi'])->name('validasi.terima');
+        Route::post('/input/{input}/kembalikan', [ValidasiController::class, 'kembalikan'])->name('validasi.kembalikan');
+    });
 });

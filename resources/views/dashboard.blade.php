@@ -305,7 +305,7 @@
     </div>
   </div>
 
-  {{-- Menunggu Validasi --}}
+  {{-- Menunggu Validasi (agregat dari entri unit) --}}
   <div class="card mc">
     <div class="mc-top">
       <span class="mc-label">Menunggu Validasi</span>
@@ -315,7 +315,10 @@
         </svg>
       </div>
     </div>
-    <div class="mc-value">0 <span style="font-size:14px; font-weight:500; color:var(--muted); letter-spacing:0;">Dokumen</span></div>
+    <div class="mc-value">{{ $totalDiajukanEntri }} <span style="font-size:14px; font-weight:500; color:var(--muted); letter-spacing:0;">Dokumen</span></div>
+    <div style="font-size:12px; color:var(--muted); margin-top:8px;">
+      <strong style="color:var(--green-dk);">{{ $totalValidEntri }}</strong> entri tervalidasi
+    </div>
   </div>
 
   {{-- Status Data Lake --}}
@@ -564,6 +567,7 @@
             <th>Baseline 2025</th>
             <th>Target 2026</th>
             <th>Progres</th>
+            <th>Entri Valid</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -575,6 +579,13 @@
             <td style="color:var(--muted);">{{ number_format($iku->baseline, 2, ',', '.') }} <span style="font-size:11px;color:var(--faint);">{{ $iku->satuan }}</span></td>
             <td style="font-weight:600;">{{ number_format($iku->target, 2, ',', '.') }} <span style="font-size:11px;color:var(--faint);">{{ $iku->satuan }}</span></td>
             <td style="font-weight:700; color:var(--text);">{{ number_format($iku->capaian_persen, 1, ',', '.') }}%</td>
+            <td style="text-align:center;">
+              @if($iku->entri_valid > 0)
+                <span class="badge good" style="font-weight:700;">{{ $iku->entri_valid }}</span>
+              @else
+                <span style="color:var(--faint);">–</span>
+              @endif
+            </td>
             <td>
               @if($iku->capaian_persen >= 100)
                 <span class="badge good"><span class="badge-dot"></span>Tercapai</span>

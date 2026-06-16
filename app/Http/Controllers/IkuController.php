@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\IkuSatuExport;
 use App\Services\MahasiswaService;
+use App\Models\InputIku;
 
 class IkuController extends Controller
 {
@@ -161,11 +162,11 @@ class IkuController extends Controller
     {
         $targetIku      = DB::table('target_iku')->where('kode_iku', 'IKU 2')->first();
         $targetFakultas = DB::table('target_fakultas')->where('kode_iku', 'IKU 2')->get();
-
-        // === PLACEHOLDER API TRACER STUDY (DALAM PENGEMBANGAN) ===
-        // Realisasi IKU 2 idealnya dari hasil tracer study (responden berbobot, rumus Slovin galat 2,3%).
-        // Saat API tracer tersedia, isi realisasi dari sana. Sementara: null (belum tersedia).
         $realisasiTersedia = false;
+
+        $iku_meta    = config('iku.2');
+        $entri       = InputIku::kode('2')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('2')->where('status', 'valid')->count();
 
         return view('iku.iku-dua', [
             'target'            => $targetIku->target_2026 ?? 75,
@@ -173,6 +174,9 @@ class IkuController extends Controller
             'satuan'            => $targetIku->satuan ?? '%',
             'fakultas'          => $targetFakultas,
             'realisasiTersedia' => $realisasiTersedia,
+            'iku_meta'          => $iku_meta,
+            'entri'             => $entri,
+            'jumlahValid'       => $jumlahValid,
         ]);
     }
 
@@ -185,16 +189,12 @@ class IkuController extends Controller
         $baseline = $targetIku->baseline_2025 ?? 14.90;
         $target   = $targetIku->target_2026   ?? 35.00;
 
-        // Data mahasiswa aktif S1/D3 per fakultas dari MahasiswaService (mock sementara).
-        // Digunakan untuk kolom "Mhs Aktif S1", "Mhs Aktif D3", dan "Total S1/D3".
-        // TODO: saat API live, service sudah siap menerima data riil.
         $mahasiswa_s1_map = [
             'FE'=>2718,'FH'=>2158,'FT'=>3912,'FK'=>2171,'FP'=>4691,
             'FKIP'=>5932,'FISIP'=>4531,'FMIPA'=>2724,'FASILKOM'=>2332,'FKM'=>1965,
         ];
         $mahasiswa_d3_map = ['FE'=>733,'FASILKOM'=>833];
 
-        // Susun baris tabel per fakultas — data target dari seeder, aktif dari service (mock)
         $rows_fakultas = [];
         $total_s1 = 0; $total_d3 = 0; $total_target = 0;
         foreach ($targetFakultas as $fak) {
@@ -210,9 +210,14 @@ class IkuController extends Controller
             ];
         }
 
+        $iku_meta    = config('iku.3');
+        $entri       = InputIku::kode('3')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('3')->where('status', 'valid')->count();
+
         return view('iku.iku-tiga', compact(
             'target', 'baseline',
-            'rows_fakultas', 'total_s1', 'total_d3', 'total_target'
+            'rows_fakultas', 'total_s1', 'total_d3', 'total_target',
+            'iku_meta', 'entri', 'jumlahValid'
         ));
     }
 
@@ -227,19 +232,21 @@ class IkuController extends Controller
         $baseline_s3        = $targetS3->baseline_2025  ?? 29.75;
         $target_s3          = $targetS3->target_2026    ?? 39.60;
 
-        // Progres baseline → target (untuk progress bar)
-        $prog_rekognisi = $target_rekognisi > 0 ? round($baseline_rekognisi / $target_rekognisi * 100, 1) : 0;
-        $prog_s3        = $target_s3 > 0        ? round($baseline_s3 / $target_s3 * 100, 1) : 0;
-
-        // Kenaikan dalam percentage point
+        $prog_rekognisi  = $target_rekognisi > 0 ? round($baseline_rekognisi / $target_rekognisi * 100, 1) : 0;
+        $prog_s3         = $target_s3 > 0        ? round($baseline_s3 / $target_s3 * 100, 1) : 0;
         $delta_rekognisi = round($target_rekognisi - $baseline_rekognisi, 2);
         $delta_s3        = round($target_s3 - $baseline_s3, 2);
+
+        $iku_meta    = config('iku.4');
+        $entri       = InputIku::kode('4')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('4')->where('status', 'valid')->count();
 
         return view('iku.iku-empat', compact(
             'baseline_rekognisi', 'target_rekognisi',
             'baseline_s3', 'target_s3',
             'prog_rekognisi', 'prog_s3',
-            'delta_rekognisi', 'delta_s3'
+            'delta_rekognisi', 'delta_s3',
+            'iku_meta', 'entri', 'jumlahValid'
         ));
     }
 
@@ -248,13 +255,19 @@ class IkuController extends Controller
     {
         $targetIku = DB::table('target_iku')->where('kode_iku', 'IKU 5')->first();
 
-        $baseline = $targetIku->baseline_2025 ?? 0.58;
-        $target   = $targetIku->target_2026   ?? 5.00;
-        $prog     = $target > 0 ? round($baseline / $target * 100, 1) : 0;
-        // Target jumlah luaran absolut (PDF hal.24: target 87 luaran)
+        $baseline      = $targetIku->baseline_2025 ?? 0.58;
+        $target        = $targetIku->target_2026   ?? 5.00;
+        $prog          = $target > 0 ? round($baseline / $target * 100, 1) : 0;
         $target_luaran = 87;
 
-        return view('iku.iku-lima', compact('target', 'baseline', 'prog', 'target_luaran'));
+        $iku_meta    = config('iku.5');
+        $entri       = InputIku::kode('5')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('5')->where('status', 'valid')->count();
+
+        return view('iku.iku-lima', compact(
+            'target', 'baseline', 'prog', 'target_luaran',
+            'iku_meta', 'entri', 'jumlahValid'
+        ));
     }
 
     // IKU 6 - Publikasi Internasional
@@ -266,18 +279,12 @@ class IkuController extends Controller
         $total_target   = $targetIku->target_2026   ?? 708;
         $total_baseline = $targetIku->baseline_2025  ?? 590;
 
-        // Sub-indikator IKU 6 (sumber: PDF hal.27 & tabel PJ hal.25)
-        // TODO: ganti dengan data API SINTA/Scopus saat tersedia
         $sub_indikator = [
             'top_tier_baseline' => 8.0,   'top_tier_target' => 8.7,
             'q1_baseline'       => 31.5,  'q1_target'       => 32.0,
             'kolab_baseline'    => 23.6,  'kolab_target'    => 25.1,
         ];
 
-        // Data per fakultas (baseline 2025 & target 2026) — sumber PDF hal.27
-        // Diambil dari seeder untuk total publikasi; sub-kolom (top_tier, q1, kolab)
-        // belum di-seeder karena banyak kolom; pakai mock array sementara.
-        // TODO: ganti dengan API call nyata — endpoint: GET /publikasi?tahun=2025&fakultas={fak}
         $rows_publikasi = [
             ['f'=>'FE',      'tb'=>33, 'tt'=>34, 'topb'=>0,  'topt'=>2,  'q1b'=>5,  'q1t'=>6,  'kb'=>0, 'kt'=>9],
             ['f'=>'FH',      'tb'=>13, 'tt'=>14, 'topb'=>0,  'topt'=>2,  'q1b'=>3,  'q1t'=>4,  'kb'=>0, 'kt'=>4],
@@ -292,9 +299,14 @@ class IkuController extends Controller
             ['f'=>'SPS',     'tb'=>38, 'tt'=>39, 'topb'=>1,  'topt'=>3,  'q1b'=>11, 'q1t'=>12, 'kb'=>0, 'kt'=>10],
         ];
 
+        $iku_meta    = config('iku.6');
+        $entri       = InputIku::kode('6')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('6')->where('status', 'valid')->count();
+
         return view('iku.iku-enam', compact(
             'total_target', 'total_baseline',
-            'sub_indikator', 'rows_publikasi'
+            'sub_indikator', 'rows_publikasi',
+            'iku_meta', 'entri', 'jumlahValid'
         ));
     }
 
@@ -305,12 +317,17 @@ class IkuController extends Controller
 
         $baseline = $targetIku->baseline_2025 ?? 36;
         $target   = $targetIku->target_2026   ?? 55;
+        $prog     = $target > 0 ? round($baseline / $target * 100, 1) : 0;
+        $gap      = round($target - $baseline, 1);
 
-        // Progres & gap dihitung di controller, bukan di blade
-        $prog = $target > 0 ? round($baseline / $target * 100, 1) : 0;
-        $gap  = round($target - $baseline, 1);
+        $iku_meta    = config('iku.7');
+        $entri       = InputIku::kode('7')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('7')->where('status', 'valid')->count();
 
-        return view('iku.iku-tujuh', compact('target', 'baseline', 'prog', 'gap'));
+        return view('iku.iku-tujuh', compact(
+            'target', 'baseline', 'prog', 'gap',
+            'iku_meta', 'entri', 'jumlahValid'
+        ));
     }
 
     // IKU 8 - SDM Kebijakan
@@ -318,15 +335,20 @@ class IkuController extends Controller
     {
         $targetIku = DB::table('target_iku')->where('kode_iku', 'IKU 8')->first();
 
-        $baseline = $targetIku->baseline_2025 ?? 5;
-        $target   = $targetIku->target_2026   ?? 25;
-
+        $baseline     = $targetIku->baseline_2025 ?? 5;
+        $target       = $targetIku->target_2026   ?? 25;
         $prog         = $target > 0 ? round($baseline / $target * 100, 1) : 0;
         $gap          = round($target - $baseline, 1);
-        // Target jumlah dosen/peneliti terlibat (PDF hal.32: target 25% dari ±1744 dosen = 436)
         $target_dosen = 436;
 
-        return view('iku.iku-delapan', compact('target', 'baseline', 'prog', 'gap', 'target_dosen'));
+        $iku_meta    = config('iku.8');
+        $entri       = InputIku::kode('8')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('8')->where('status', 'valid')->count();
+
+        return view('iku.iku-delapan', compact(
+            'target', 'baseline', 'prog', 'gap', 'target_dosen',
+            'iku_meta', 'entri', 'jumlahValid'
+        ));
     }
 
     // IKU 9 - Pendapatan Non UKT
@@ -339,8 +361,6 @@ class IkuController extends Controller
         $prog     = $target > 0 ? round($baseline / $target * 100, 1) : 0;
         $gap      = round($target - $baseline, 1);
 
-        // Sub-indikator IKU 9 (sumber: PDF hal.4 & hal.34-37)
-        // TODO: ganti dengan data laporan keuangan resmi saat terintegrasi
         $sub_rows = [
             ['label'=>'Pendapatan Non-UKT / Total Pendapatan', 'baseline'=>'13,3%', 'target'=>'15%',    'prog'=>round(13.3/15*100,1),    'status'=>'amber'],
             ['label'=>'Pendapatan terhadap Total Aset',         'baseline'=>'59,35%','target'=>'—',      'prog'=>100,                     'status'=>'green'],
@@ -352,14 +372,20 @@ class IkuController extends Controller
             ['label'=>'Alokasi Update Laboratorium',            'baseline'=>'2%',    'target'=>'5%',     'prog'=>round(2/5*100,1),        'status'=>'red'],
         ];
 
-        // Alokasi dana masyarakat target 2026 (PDF hal.4)
         $alokasi = [
             ['label'=>'Riset',            'baseline'=>'10,3%', 'target'=>'11,5%'],
             ['label'=>'Upskilling Dosen', 'baseline'=>'3,95%', 'target'=>'5%'],
             ['label'=>'Update Lab',       'baseline'=>'2%',    'target'=>'5%'],
         ];
 
-        return view('iku.iku-sembilan', compact('target', 'baseline', 'prog', 'gap', 'sub_rows', 'alokasi'));
+        $iku_meta    = config('iku.9');
+        $entri       = InputIku::kode('9')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('9')->where('status', 'valid')->count();
+
+        return view('iku.iku-sembilan', compact(
+            'target', 'baseline', 'prog', 'gap', 'sub_rows', 'alokasi',
+            'iku_meta', 'entri', 'jumlahValid'
+        ));
     }
 
     // IKU 10 - Zona Integritas
@@ -367,45 +393,88 @@ class IkuController extends Controller
     {
         $targetIku = DB::table('target_iku')->where('kode_iku', 'IKU 10')->first();
 
-        $baseline  = (int)($targetIku->baseline_2025 ?? 0);
-        $target    = (int)($targetIku->target_2026   ?? 2);
-        // Realisasi berjalan (placeholder — data dari tim ZI)
-        // TODO: ganti dengan data riil usulan ZI berjalan saat tersedia
-        $realisasi = 0;
+        $baseline    = (int)($targetIku->baseline_2025 ?? 0);
+        $target      = (int)($targetIku->target_2026   ?? 2);
+        $iku_meta    = config('iku.10');
+        $entri       = InputIku::kode('10')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('10')->where('status', 'valid')->count();
+        $realisasi   = $jumlahValid; // entri valid = unit yang sudah mengajukan ZI
+        $prog        = $target > 0 ? round($realisasi / $target * 100, 1) : 0;
 
-        $prog = $target > 0 ? round($realisasi / $target * 100, 1) : 0;
-
-        return view('iku.iku-sepuluh', compact('target', 'baseline', 'realisasi', 'prog'));
+        return view('iku.iku-sepuluh', compact(
+            'target', 'baseline', 'realisasi', 'prog',
+            'iku_meta', 'entri', 'jumlahValid'
+        ));
     }
 
-    // IKU 11 - Opini WTP & SAKIP
-    public function ikuSebelas()
+    // IKU 11a - Opini WTP
+    public function ikuSebelasA()
     {
-        $wtp   = DB::table('target_iku')->where('kode_iku', 'IKU 11_WTP')->first();
-        $sakip = DB::table('target_iku')->where('kode_iku', 'IKU 11_SAKIP')->first();
-
-        // Sub-indikator IKU 11 (PDF hal.4):
-        // a. Opini WTP  b. Predikat SAKIP  c. Pelanggaran = 0  d. Pencegahan = 100%
-        $opini_baseline = 'WTP';    // sudah WTP, dipertahankan
+        $wtp            = DB::table('target_iku')->where('kode_iku', 'IKU 11_WTP')->first();
+        $opini_baseline = 'WTP';
         $opini_target   = $wtp->keterangan ?? 'WTP';
+        $iku_meta       = config('iku.11a');
+        $entri          = InputIku::kode('11a')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid    = InputIku::kode('11a')->where('status', 'valid')->count();
+
+        return view('iku.iku-sebelas', compact(
+            'opini_baseline', 'opini_target',
+            'iku_meta', 'entri', 'jumlahValid'
+        ));
+    }
+
+    // IKU 11b - Predikat SAKIP
+    public function ikuSebelasB()
+    {
+        $sakip = DB::table('target_iku')->where('kode_iku', 'IKU 11_SAKIP')->first();
         $sakip_baseline = 'A';
         $sakip_target   = $sakip->keterangan ?? 'AA';
-
-        // Skor SAKIP per predikat (standar KemenPAN-RB, referensi untuk konteks UI)
-        $sakip_levels = [
+        $sakip_levels   = [
             ['predikat'=>'D',  'range'=>'<30',    'warna'=>'#ef4444'],
             ['predikat'=>'C',  'range'=>'30–50',  'warna'=>'#f97316'],
             ['predikat'=>'CC', 'range'=>'50–60',  'warna'=>'#eab308'],
             ['predikat'=>'B',  'range'=>'60–70',  'warna'=>'#84cc16'],
             ['predikat'=>'BB', 'range'=>'70–75',  'warna'=>'#22c55e'],
-            ['predikat'=>'A',  'range'=>'75–90',  'warna'=>'#06b6d4',  'aktif'=>true],
-            ['predikat'=>'AA', 'range'=>'90–100', 'warna'=>'#4f46e5',  'target'=>true],
+            ['predikat'=>'A',  'range'=>'75–90',  'warna'=>'#06b6d4', 'aktif'=>true],
+            ['predikat'=>'AA', 'range'=>'90–100', 'warna'=>'#4f46e5', 'target'=>true],
         ];
+        $iku_meta    = config('iku.11b');
+        $entri       = InputIku::kode('11b')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('11b')->where('status', 'valid')->count();
 
-        return view('iku.iku-sebelas', compact(
-            'opini_baseline', 'opini_target',
-            'sakip_baseline', 'sakip_target',
-            'sakip_levels'
+        return view('iku.iku-sebelas-b', compact(
+            'sakip_baseline', 'sakip_target', 'sakip_levels',
+            'iku_meta', 'entri', 'jumlahValid'
         ));
+    }
+
+    // IKU 11c - Integritas Akademik
+    public function ikuSebelasC()
+    {
+        $iku_meta    = config('iku.11c');
+        $entri       = InputIku::kode('11c')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('11c')->where('status', 'valid')->count();
+
+        return view('iku.iku-sebelas-c', compact('iku_meta', 'entri', 'jumlahValid'));
+    }
+
+    // IKU 11d - Anti Kekerasan/Narkoba/Korupsi
+    public function ikuSebelasD()
+    {
+        $iku_meta    = config('iku.11d');
+        $entri       = InputIku::kode('11d')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('11d')->where('status', 'valid')->count();
+
+        return view('iku.iku-sebelas-d', compact('iku_meta', 'entri', 'jumlahValid'));
+    }
+
+    // IKU 12 - Kesejahteraan Dosen
+    public function ikuDuabelas()
+    {
+        $iku_meta    = config('iku.12');
+        $entri       = InputIku::kode('12')->with(['eviden', 'riwayat', 'pembuat'])->latest()->get();
+        $jumlahValid = InputIku::kode('12')->where('status', 'valid')->count();
+
+        return view('iku.iku-duabelas', compact('iku_meta', 'entri', 'jumlahValid'));
     }
 }

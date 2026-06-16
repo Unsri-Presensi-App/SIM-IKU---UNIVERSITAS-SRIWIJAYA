@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup SIM IKU UNSRI - Input Seluruh IKU</title>
+  <style>
+    :root {
+      --navy: #082a55;
+      --navy-2: #0d3c78;
+      --blue: #1168e8;
+      --blue-soft: #eaf2ff;
+      --green: #18a058;
+      --green-soft: #e8f7ef;
+      --red: #c1121f;
+      --red-soft: #fdecef;
+      --yellow: #f59e0b;
+      --yellow-soft: #fff7e6;
+      --purple: #7c3aed;
+      --purple-soft: #f2ecff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e5e7eb;
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 292px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #061d3f 0%, #0b3267 55%, #041936 100%);
+      color: white;
+      padding: 24px 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 4px 8px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.15);
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 40% 35%, #fde047, #f59e0b 42%, #0b4aa2 44%, #0b4aa2 70%, #f8fafc 72%);
+      box-shadow: 0 10px 24px rgba(0,0,0,.24);
+    }
+
+    .brand h1 {
+      font-size: 20px;
+      line-height: 1.05;
+      margin: 0;
+      letter-spacing: -.02em;
+    }
+
+    .brand p { margin: 4px 0 0; font-size: 12px; color: #cbd5e1; }
+
+    .nav-title {
+      margin: 22px 10px 8px;
+      color: #b7c8df;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .nav-item, .nav-parent {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 12px;
+      color: #e5edf8;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .nav-item:hover, .nav-parent:hover { background: rgba(255,255,255,.1); }
+    .nav-parent.active { background: rgba(17,104,232,.24); }
+    .nav-item.active { background: var(--blue); color: white; box-shadow: 0 10px 24px rgba(17,104,232,.25); }
+    .nav-children { margin: 4px 0 12px 18px; display: grid; gap: 3px; }
+    .nav-children .nav-item { font-size: 13px; padding: 10px 12px; color: #dbeafe; }
+    .nav-icon { width: 18px; display: inline-flex; justify-content: center; opacity: .95; }
+    .nav-left { display: flex; align-items: center; gap: 10px; }
+
+    .main {
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 78px;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .crumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .crumb strong { color: var(--ink); }
+    .top-actions { display: flex; align-items: center; gap: 14px; }
+
+    .select, .search, .btn {
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 12px;
+      padding: 11px 13px;
+      color: var(--ink);
+      min-height: 44px;
+    }
+    .search { min-width: 280px; color: var(--muted); }
+    .avatar {
+      width: 42px; height: 42px; border-radius: 999px;
+      background: linear-gradient(135deg, #dbeafe, #1d4ed8);
+      border: 3px solid white;
+      box-shadow: 0 4px 16px rgba(0,0,0,.13);
+    }
+
+    .content { padding: 28px 30px 48px; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      margin-bottom: 22px;
+      align-items: start;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: -.03em;
+    }
+    .hero p { color: var(--muted); margin: 0; max-width: 1050px; line-height: 1.55; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .badge.auto { background: var(--green-soft); color: var(--green); }
+    .badge.hybrid { background: var(--yellow-soft); color: #b45309; }
+    .badge.manual { background: var(--blue-soft); color: var(--blue); }
+    .badge.draft { background: var(--yellow-soft); color: #b45309; }
+    .badge.valid { background: var(--green-soft); color: var(--green); }
+    .badge.risk { background: var(--red-soft); color: var(--red); }
+    .badge.purple { background: var(--purple-soft); color: var(--purple); }
+
+    .notice {
+      border: 1px solid #bfdbfe;
+      background: linear-gradient(90deg, #eff6ff, #ffffff);
+      color: #1e40af;
+      border-radius: var(--radius);
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .notice strong { color: #1d4ed8; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .mini-card, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .mini-card { padding: 18px; display: flex; align-items: center; justify-content: space-between; }
+    .mini-card .label { color: var(--muted); font-size: 13px; }
+    .mini-card .value { font-size: 26px; font-weight: 800; margin-top: 6px; letter-spacing: -.03em; }
+    .icon-bubble {
+      width: 54px; height: 54px; border-radius: 18px;
+      display: grid; place-items: center; font-size: 24px;
+    }
+    .blue-bubble { background: var(--blue-soft); color: var(--blue); }
+    .green-bubble { background: var(--green-soft); color: var(--green); }
+    .yellow-bubble { background: var(--yellow-soft); color: var(--yellow); }
+    .red-bubble { background: var(--red-soft); color: var(--red); }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card { padding: 18px; margin-bottom: 20px; }
+    .card-title {
+      display: flex; align-items: center; justify-content: space-between;
+      margin: 0 0 16px;
+    }
+    .card-title h3 { margin: 0; font-size: 17px; }
+    .muted { color: var(--muted); }
+    .small { font-size: 12px; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
+      overflow-x: auto;
+    }
+    .tab {
+      padding: 12px 14px;
+      border-bottom: 3px solid transparent;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .tab.active { color: var(--blue); border-color: var(--blue); }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+    }
+    .form-grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .field label {
+      display: block;
+      font-weight: 700;
+      font-size: 12px;
+      margin-bottom: 7px;
+      color: #334155;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 12px;
+      padding: 11px 12px;
+      min-height: 44px;
+      color: var(--ink);
+      font: inherit;
+    }
+    .field textarea { min-height: 92px; resize: vertical; }
+    .field input[readonly], .field select[disabled] { background: #f8fafc; color: #475569; }
+
+    .upload {
+      border: 1.5px dashed #bfdbfe;
+      background: #f8fbff;
+      min-height: 142px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #2563eb;
+      padding: 18px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn.primary { background: var(--blue); color: white; border-color: var(--blue); }
+    .btn.red { background: var(--red); color: white; border-color: var(--red); }
+    .btn.ghost { background: white; color: var(--blue); }
+    .btn:active { transform: translateY(1px); }
+    .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; flex-wrap: wrap; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 13px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+    th { color: #475569; font-size: 12px; background: #f8fafc; }
+    tr:hover td { background: #fbfdff; }
+
+    .progress {
+      width: 100%; height: 9px; background: #e5e7eb; border-radius: 999px; overflow: hidden;
+    }
+    .progress span { display: block; height: 100%; background: var(--blue); border-radius: 999px; }
+    .progress.green span { background: var(--green); }
+    .progress.yellow span { background: var(--yellow); }
+    .progress.red span { background: var(--red); }
+
+    .quarter-chart {
+      height: 220px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      align-items: end;
+      padding: 24px 12px 10px;
+      border-left: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background-image: linear-gradient(to top, rgba(226,232,240,.8) 1px, transparent 1px);
+      background-size: 100% 44px;
+    }
+    .bar-wrap { text-align: center; font-size: 12px; color: var(--muted); }
+    .bar {
+      height: var(--h);
+      min-height: 12px;
+      border-radius: 10px 10px 3px 3px;
+      background: linear-gradient(180deg, #60a5fa, #1168e8);
+      margin: 0 auto 8px;
+      width: 54%;
+      position: relative;
+    }
+    .bar::before {
+      content: attr(data-value);
+      position: absolute;
+      top: -22px;
+      left: 50%; transform: translateX(-50%);
+      color: var(--blue); font-weight: 800;
+    }
+
+    .timeline { display: grid; gap: 12px; }
+    .time-row { display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: center; font-size: 13px; }
+    .dot { width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center; color: white; background: var(--green); font-size: 11px; }
+
+    .side-stack { position: sticky; top: 98px; }
+    .target-list { display: grid; gap: 10px; }
+    .target-row { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 8px 0; font-size: 13px; }
+
+    .iku-section { display: none; }
+    .iku-section.active { display: block; }
+
+    .readonly-table td:first-child { font-weight: 700; color: #334155; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { padding: 9px 11px; border-radius: 999px; background: #f1f5f9; font-size: 13px; font-weight: 700; color: #475569; }
+    .pill.selected { background: var(--blue-soft); color: var(--blue); }
+
+    @media (max-width: 1180px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .layout { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .side-stack { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>SIM IKU</h1>
+          <p>Universitas Sriwijaya</p>
+        </div>
+      </div>
+
+      <div class="nav-item"><span class="nav-left"><span class="nav-icon">⌂</span> Dashboard</span></div>
+      <div class="nav-item"><span class="nav-left"><span class="nav-icon">◉</span> Perjanjian Kinerja</span></div>
+      <div class="nav-item"><span class="nav-left"><span class="nav-icon">▣</span> Capaian IKU</span></div>
+
+      <div class="nav-title">Input Data IKU</div>
+      <div class="nav-parent active"><span class="nav-left"><span class="nav-icon">✦</span> Talenta</span><span>⌃</span></div>
+      <div class="nav-children">
+        <div class="nav-item active" data-iku="iku1">IKU 1 - AEE PT</div>
+        <div class="nav-item" data-iku="iku2">IKU 2 - Lulusan</div>
+        <div class="nav-item" data-iku="iku3">IKU 3 - Kegiatan/Prestasi Mahasiswa</div>
+        <div class="nav-item" data-iku="iku4">IKU 4 - Rekognisi Dosen</div>
+      </div>
+
+      <div class="nav-parent active"><span class="nav-left"><span class="nav-icon">⚙</span> Inovasi</span><span>⌃</span></div>
+      <div class="nav-children">
+        <div class="nav-item" data-iku="iku5">IKU 5 - Kerja Sama/Hilirisasi</div>
+        <div class="nav-item" data-iku="iku6">IKU 6 - Publikasi Scopus/WoS</div>
+      </div>
+
+      <div class="nav-parent active"><span class="nav-left"><span class="nav-icon">◇</span> Kontribusi Masyarakat</span><span>⌃</span></div>
+      <div class="nav-children">
+        <div class="nav-item" data-iku="iku7">IKU 7 - SDGs</div>
+        <div class="nav-item" data-iku="iku8">IKU 8 - Penyusunan Kebijakan</div>
+      </div>
+
+      <div class="nav-parent active"><span class="nav-left"><span class="nav-icon">▰</span> Tata Kelola Berintegritas</span><span>⌃</span></div>
+      <div class="nav-children">
+        <div class="nav-item" data-iku="iku9">IKU 9 - Pendapatan Non-UKT</div>
+        <div class="nav-item" data-iku="iku10">IKU 10 - Zona Integritas</div>
+        <div class="nav-item" data-iku="iku11a">IKU 11a - Opini Keuangan</div>
+        <div class="nav-item" data-iku="iku11b">IKU 11b - SAKIP</div>
+        <div class="nav-item" data-iku="iku11c">IKU 11c - Integritas Akademik</div>
+        <div class="nav-item" data-iku="iku11d">IKU 11d - Anti Kekerasan, Narkoba, Korupsi</div>
+        <div class="nav-item" data-iku="iku12">IKU 12 - Kesejahteraan Dosen</div>
+      </div>
+
+      <div class="nav-title">Lainnya</div>
+      <div class="nav-item"><span class="nav-left"><span class="nav-icon">▤</span> Eviden</span></div>
+      <div class="nav-item"><span class="nav-left"><span class="nav-icon">✓</span> Validasi Direktorat</span></div>
+      <div class="nav-item"><span class="nav-left"><span class="nav-icon">▥</span> Monitoring Triwulan</span></div>
+      <div class="nav-item"><span class="nav-left"><span class="nav-icon">⚙</span> Pengaturan</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="crumb">☰ <span>Input Data IKU</span> <span>›</span> <strong id="crumbTitle">Talenta / IKU 1 - AEE PT</strong></div>
+        <div class="top-actions">
+          <select class="select"><option>Fakultas Teknik</option><option>Fakultas Ilmu Komputer</option><option>Universitas</option></select>
+          <select class="select"><option>2026</option><option>2027</option></select>
+          <div class="search">Cari menu, data, atau IKU...</div>
+          <span>🔔</span>
+          <div class="avatar"></div>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="hero">
+          <div>
+            <h2 id="pageTitle">IKU 1 - Angka Efisiensi Edukasi Perguruan Tinggi (AEE PT) <span class="badge auto">OTOMATIS</span></h2>
+            <p id="pageDesc">Data diperoleh otomatis dari SIM Akademik. Unit tidak perlu melakukan input, menarik data, atau mengubah angka perhitungan.</p>
+          </div>
+          <span id="statusBadge" class="badge auto">Data otomatis · Tidak perlu input</span>
+        </section>
+
+        <div id="autoNotice" class="notice">
+          <div><strong>Informasi data otomatis:</strong> sinkronisasi berjalan terjadwal. Halaman otomatis hanya menampilkan data, tanggal update, dan riwayat sinkronisasi.</div>
+          <div class="small">Update terakhir: <strong>23 Mei 2026, 02.00 WIB</strong></div>
+        </div>
+
+        <div class="summary-grid" id="summaryCards">
+          <div class="mini-card"><div><div class="label">Target 2026</div><div class="value">43,13%</div></div><div class="icon-bubble blue-bubble">🎯</div></div>
+          <div class="mini-card"><div><div class="label">Realisasi</div><div class="value">41,87%</div></div><div class="icon-bubble green-bubble">✓</div></div>
+          <div class="mini-card"><div><div class="label">Capaian Target</div><div class="value">97,08%</div></div><div class="icon-bubble yellow-bubble">↗</div></div>
+          <div class="mini-card"><div><div class="label">Update Sumber</div><div class="value" style="font-size:18px">23 Mei</div></div><div class="icon-bubble blue-bubble">⟳</div></div>
+        </div>
+
+        <div class="layout">
+          <div>
+            <!-- IKU 1 -->
+            <section class="iku-section active" id="iku1">
+              <div class="card">
+                <div class="tabs"><div class="tab active">Ringkasan Otomatis</div><div class="tab">Rincian Program</div><div class="tab">Perhitungan</div><div class="tab">Riwayat Sinkronisasi</div></div>
+                <div class="card-title"><h3>Rincian Capaian per Program Pendidikan</h3><button class="btn ghost">⬇ Export Excel</button></div>
+                <table>
+                  <thead><tr><th>Jenjang</th><th>Mahasiswa Masuk</th><th>Lulus Tepat Waktu</th><th>Dikecualikan</th><th>AEE Realisasi</th><th>AEE Ideal</th><th>Pencapaian</th></tr></thead>
+                  <tbody>
+                    <tr><td>D3</td><td>2.156</td><td>1.125</td><td>31</td><td>52,17%</td><td>51,50%</td><td><span class="badge valid">101,30%</span></td></tr>
+                    <tr><td>D4/S1</td><td>7.842</td><td>3.856</td><td>142</td><td>49,13%</td><td>50,00%</td><td><span class="badge draft">98,26%</span></td></tr>
+                    <tr><td>S2</td><td>1.832</td><td>690</td><td>58</td><td>37,64%</td><td>40,00%</td><td><span class="badge draft">94,10%</span></td></tr>
+                    <tr><td>S3</td><td>812</td><td>243</td><td>21</td><td>30,07%</td><td>31,00%</td><td><span class="badge draft">96,97%</span></td></tr>
+                    <tr><td><strong>Rata-rata AEE PT</strong></td><td colspan="3"></td><td><strong>41,87%</strong></td><td>-</td><td><strong>97,08%</strong></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- IKU 2 -->
+            <section class="iku-section" id="iku2">
+              <div class="card">
+                <div class="tabs"><div class="tab active">Ringkasan</div><div class="tab">Data Responden</div><div class="tab">Input Pelengkap</div><div class="tab">Eviden</div></div>
+                <div class="split">
+                  <div>
+                    <div class="card-title"><h3>Ringkasan Status Lulusan</h3><span class="badge hybrid">HYBRID</span></div>
+                    <table>
+                      <thead><tr><th>Status</th><th>Jumlah</th><th>Bobot</th><th>Nilai Tertimbang</th></tr></thead>
+                      <tbody>
+                        <tr><td>Bekerja ≥ 1,2 UMP</td><td>796</td><td>1,00</td><td>36,78%</td></tr>
+                        <tr><td>Bekerja &lt; 1,2 UMP</td><td>192</td><td>0,75</td><td>6,65%</td></tr>
+                        <tr><td>Berwirausaha</td><td>164</td><td>1,00</td><td>7,57%</td></tr>
+                        <tr><td>Melanjutkan Studi</td><td>193</td><td>1,00</td><td>8,89%</td></tr>
+                        <tr><td><strong>Total Terkontribusi</strong></td><td><strong>1.345</strong></td><td>-</td><td><strong>59,89%</strong></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div>
+                    <div class="card-title"><h3>Input Manual / Pelengkap Responden</h3><button class="btn ghost">+ Tambah</button></div>
+                    <div class="form-grid">
+                      <div class="field"><label>NIM</label><input placeholder="Masukkan NIM" /></div>
+                      <div class="field"><label>Nama Lengkap</label><input placeholder="Masukkan nama" /></div>
+                      <div class="field"><label>Status Saat Ini</label><select><option>Bekerja</option><option>Berwirausaha</option><option>Melanjutkan Studi</option></select></div>
+                      <div class="field"><label>Penghasilan / Bukti</label><input placeholder="Gaji atau dokumen pendukung" /></div>
+                    </div>
+                    <div class="actions"><button class="btn">Batal</button><button class="btn primary">Simpan</button></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- IKU 3 -->
+            <section class="iku-section" id="iku3">
+              <div class="card">
+                <div class="tabs"><div class="tab active">Data Otomatis</div><div class="tab">Tambah Manual</div><div class="tab">Rekognisi SKS</div><div class="tab">Eviden</div><div class="tab">Perhitungan</div></div>
+                <div class="notice" style="background:linear-gradient(90deg,#ecfdf5,#ffffff);border-color:#bbf7d0;color:#166534;margin-bottom:18px">
+                  <div><strong>Data prestasi dan kegiatan</strong> diambil otomatis dari SIM Kemahasiswaan dan SIM Akademik.</div>
+                  <button class="btn ghost">Lihat Riwayat Sinkronisasi</button>
+                </div>
+                <div class="split">
+                  <div>
+                    <div class="card-title"><h3>Data Capaian Otomatis</h3><span class="badge valid">1.245 data</span></div>
+                    <table>
+                      <thead><tr><th>NIM</th><th>Nama</th><th>Jenis</th><th>Tingkat</th><th>SKS</th><th>Bobot</th><th>Status</th></tr></thead>
+                      <tbody>
+                        <tr><td>09041182126001</td><td>Rizky Ananda</td><td>Prestasi</td><td>Nasional Juara 2</td><td>-</td><td>0,30</td><td><span class="badge valid">Valid</span></td></tr>
+                        <tr><td>08041382126045</td><td>Nabila Azzahra</td><td>Kegiatan Luar Prodi</td><td>Magang Industri</td><td>6</td><td>0,60</td><td><span class="badge draft">Menunggu</span></td></tr>
+                        <tr><td>09041182126078</td><td>Farhan Dwi</td><td>Prestasi</td><td>Provinsi Juara 1</td><td>-</td><td>0,40</td><td><span class="badge valid">Valid</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div>
+                    <div class="card-title"><h3>Tambah Data Manual</h3><span class="badge hybrid">Direktorat Kemahasiswaan</span></div>
+                    <div class="form-grid">
+                      <div class="field"><label>NIM</label><input placeholder="Masukkan NIM" /></div>
+                      <div class="field"><label>Jenis Capaian</label><select><option>Prestasi</option><option>Kegiatan Luar Prodi</option></select></div>
+                      <div class="field"><label>Tingkat</label><select><option>Internasional</option><option>Nasional</option><option>Provinsi</option></select></div>
+                      <div class="field"><label>Peringkat / SKS</label><input placeholder="Juara / jumlah SKS" /></div>
+                    </div>
+                    <div style="margin-top:14px" class="upload">☁ Upload sertifikat, SK, bukti kegiatan</div>
+                    <div class="actions"><button class="btn">Simpan Draft</button><button class="btn primary">Ajukan ke Direktorat</button></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Generic manual/hybrid sections -->
+            <section class="iku-section" id="iku4"></section>
+            <section class="iku-section" id="iku5"></section>
+            <section class="iku-section" id="iku6"></section>
+            <section class="iku-section" id="iku7"></section>
+            <section class="iku-section" id="iku8"></section>
+            <section class="iku-section" id="iku9"></section>
+            <section class="iku-section" id="iku10"></section>
+            <section class="iku-section" id="iku11a"></section>
+            <section class="iku-section" id="iku11b"></section>
+            <section class="iku-section" id="iku11c"></section>
+            <section class="iku-section" id="iku11d"></section>
+            <section class="iku-section" id="iku12"></section>
+          </div>
+
+          <aside class="side-stack">
+            <div class="card">
+              <div class="card-title"><h3>Capaian per Triwulan</h3></div>
+              <div class="quarter-chart" id="quarterChart">
+                <div class="bar-wrap"><div class="bar" style="--h:42px" data-value="10,42%"></div>TW 1</div>
+                <div class="bar-wrap"><div class="bar" style="--h:72px" data-value="21,56%"></div>TW 2</div>
+                <div class="bar-wrap"><div class="bar" style="--h:104px" data-value="31,44%"></div>TW 3</div>
+                <div class="bar-wrap"><div class="bar" style="--h:138px" data-value="41,87%"></div>TW 4</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><h3>Target Perjanjian Kinerja 2026</h3></div>
+              <div class="target-list" id="targetList">
+                <div class="target-row"><span>Target Tahunan</span><strong>43,13%</strong></div>
+                <div class="target-row"><span>TW1</span><strong>10,78%</strong></div>
+                <div class="target-row"><span>TW2</span><strong>21,56%</strong></div>
+                <div class="target-row"><span>TW3</span><strong>32,34%</strong></div>
+                <div class="target-row"><span>TW4</span><strong>43,13%</strong></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><h3>Informasi Formula</h3></div>
+              <p class="muted small" id="formulaText">AEE PT = rata-rata tingkat pencapaian AEE setiap program pendidikan. Data otomatis dari SIM Akademik.</p>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><h3>Riwayat Sinkronisasi / Validasi</h3></div>
+              <div class="timeline">
+                <div class="time-row"><div class="dot">✓</div><div>23 Mei 2026, 02.00 WIB</div><span class="badge valid">Berhasil</span></div>
+                <div class="time-row"><div class="dot">✓</div><div>22 Mei 2026, 02.00 WIB</div><span class="badge valid">Berhasil</span></div>
+                <div class="time-row"><div class="dot">✓</div><div>21 Mei 2026, 02.00 WIB</div><span class="badge valid">Berhasil</span></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const configs = {
+      iku1: {
+        crumb: 'Talenta / IKU 1 - AEE PT',
+        title: 'IKU 1 - Angka Efisiensi Edukasi Perguruan Tinggi (AEE PT) <span class="badge auto">OTOMATIS</span>',
+        desc: 'Data diperoleh otomatis dari SIM Akademik. Unit tidak perlu melakukan input, menarik data, atau mengubah angka perhitungan.',
+        badge: '<span class="badge auto">Data otomatis · Tidak perlu input</span>',
+        notice: true,
+        cards: ['43,13%', '41,87%', '97,08%', '23 Mei'],
+        target: '43,13%', formula: 'AEE PT = rata-rata tingkat pencapaian AEE setiap program pendidikan. Data otomatis dari SIM Akademik.'
+      },
+      iku2: {
+        crumb: 'Talenta / IKU 2 - Lulusan',
+        title: 'IKU 2 - Persentase Lulusan Bekerja, Berwirausaha, atau Melanjutkan Studi <span class="badge hybrid">HYBRID</span>',
+        desc: 'Data utama berasal dari Tracer Study. Unit/CDC dapat melengkapi responden yang belum lengkap dan mengunggah bukti pendukung.',
+        badge: '<span class="badge hybrid">Data tracer · Perlu pelengkapan</span>',
+        notice: false,
+        cards: ['73,00%', '68,24%', '93,48%', '09:15'],
+        target: '73,00%', formula: 'IKU 2 = Σ responden valid × bobot / total responden tracer × 100%. Responden minimum mengikuti rumus Slovin.'
+      },
+      iku3: {
+        crumb: 'Talenta / IKU 3 - Kegiatan/Prestasi Mahasiswa',
+        title: 'IKU 3 - Mahasiswa Berkegiatan/Meraih Prestasi di Luar Program Studi <span class="badge hybrid">HYBRID</span>',
+        desc: 'Data otomatis dari SIM Kemahasiswaan dan SIM Akademik, ditambah input manual untuk capaian yang belum tersedia di sistem.',
+        badge: '<span class="badge hybrid">Menunggu Validasi Direktorat Kemahasiswaan</span>',
+        notice: false,
+        cards: ['30,00%', '22,18%', '73,93%', '03:20'],
+        target: '30,00%', formula: 'IKU 3 = Σ mahasiswa terkontribusi × bobot / total mahasiswa aktif D1–S1 × 100%.'
+      },
+      iku4: {
+        crumb: 'Talenta / IKU 4 - Rekognisi Dosen',
+        title: 'IKU 4 - Persentase Dosen Mendapatkan Rekognisi Internasional <span class="badge hybrid">HYBRID</span>',
+        desc: 'Unit menginput rekognisi dosen yang belum tersedia di SIM SDM/SIM Riset. Bukti divalidasi Direktorat SDM atau Riset.',
+        badge: '<span class="badge hybrid">Hybrid · Validasi SDM/Riset</span>',
+        cards: ['44,60%', '37,80%', '84,75%', 'Manual'],
+        target: '44,60%', formula: 'Jumlah dosen dengan NUPTK yang mendapat rekognisi internasional / total dosen PT × 100%.',
+        form: 'dosen'
+      },
+      iku5: { crumb:'Inovasi / IKU 5 - Kerja Sama/Hilirisasi', title:'IKU 5 - Luaran Hasil Kerja Sama dan Hilirisasi <span class="badge hybrid">HYBRID</span>', desc:'Data kerja sama berasal dari SIM Kerja Sama. Unit menginput luaran dan bukti pemanfaatan/hilirisasi oleh mitra.', badge:'<span class="badge hybrid">Hybrid · Validasi Kerja Sama/Riset</span>', cards:['5,00%','3,20%','64,00%','Manual'], target:'5,00%', formula:'Jumlah luaran hasil kerja sama PT dan mitra / total kerja sama perguruan tinggi × 100%.', form:'kerjasama' },
+      iku6: { crumb:'Inovasi / IKU 6 - Publikasi Scopus/WoS', title:'IKU 6 - Publikasi Bereputasi Internasional Scopus/WoS <span class="badge auto">OTOMATIS</span>', desc:'Data publikasi diperoleh otomatis dari SIM Riset, SINTA, Scopus, atau WoS. Unit hanya dapat mengajukan koreksi metadata.', badge:'<span class="badge auto">Data publikasi otomatis</span>', notice:true, cards:['708 Artikel','590','83,33%','01:00'], target:'708 Artikel', formula:'Σ publikasi per kategori × bobot / total publikasi PT × 100%.', table:'publikasi' },
+      iku7: { crumb:'Kontribusi Masyarakat / IKU 7 - SDGs', title:'IKU 7 - Keterlibatan PT dalam SDG 1, SDG 4, SDG 17, dan 2 SDGs Pilihan <span class="badge manual">MANUAL</span>', desc:'Unit menginput program/kegiatan SDGs, output, penerima manfaat, mitra, dan bukti pendukung. Validasi oleh Direktorat Perencanaan/Pengabdian.', badge:'<span class="badge draft">Draft · Input Unit</span>', cards:['55,00%','40,00%','72,73%','Manual'], target:'55,00%', formula:'Jumlah program/kegiatan PT yang berkontribusi pada SDGs wajib dan pilihan / total program SDGs PT × 100%.', form:'sdgs' },
+      iku8: { crumb:'Kontribusi Masyarakat / IKU 8 - Penyusunan Kebijakan', title:'IKU 8 - SDM PT Terlibat dalam Penyusunan Kebijakan <span class="badge manual">MANUAL</span>', desc:'Unit menginput dosen/peneliti/perekayasa yang terlibat resmi dalam kebijakan nasional, daerah, atau industri.', badge:'<span class="badge draft">Manual · Validasi SDM/Kerja Sama</span>', cards:['25,00%','12,00%','48,00%','Manual'], target:'25,00%', formula:'Jumlah SDM yang terlibat dalam penyusunan kebijakan / total SDM PT dalam satu periode × 100%.', form:'kebijakan' },
+      iku9: { crumb:'Tata Kelola / IKU 9 - Pendapatan Non-UKT', title:'IKU 9 - Pendapatan Non-Pendidikan/UKT terhadap Total Pendapatan <span class="badge auto">OTOMATIS</span>', desc:'Data diperoleh otomatis dari SIM Keuangan. Unit tidak dapat mengubah data pada halaman ini.', badge:'<span class="badge auto">Data keuangan otomatis</span>', notice:true, cards:['15,00%','16,20%','108,00%','01:30'], target:'15,00%', formula:'Jumlah pendapatan nonmahasiswa / total pendapatan PT dalam satu periode × 100%.', table:'keuangan' },
+      iku10: { crumb:'Tata Kelola / IKU 10 - Zona Integritas', title:'IKU 10 - Jumlah Usulan Zona Integritas WBK/WBBM <span class="badge manual">MANUAL</span>', desc:'SPI atau unit tata kelola menginput usulan unit kerja menuju WBK/WBBM beserta bukti pengajuan resmi.', badge:'<span class="badge manual">Manual · Validasi SPI/RB</span>', cards:['2 Unit','1 Unit','50,00%','Manual'], target:'2 Unit', formula:'Jumlah unit kerja yang mengajukan Zona Integritas PT dalam satu periode.', form:'zi' },
+      iku11a: { crumb:'Tata Kelola / IKU 11a - Opini Keuangan', title:'IKU 11a - Opini atas Laporan Keuangan Perguruan Tinggi <span class="badge manual">MANUAL</span>', desc:'Direktorat Keuangan/SPI mengunggah laporan audit resmi dan menginput opini audit tahun berjalan.', badge:'<span class="badge manual">Upload dokumen audit</span>', cards:['WTP','WTP','Tercapai','Manual'], target:'WTP', formula:'Opini atas laporan keuangan perguruan tinggi.', form:'opini' },
+      iku11b: { crumb:'Tata Kelola / IKU 11b - SAKIP', title:'IKU 11b - Predikat SAKIP Perguruan Tinggi <span class="badge manual">MANUAL</span>', desc:'Direktorat Perencanaan mengunggah hasil evaluasi SAKIP resmi dan dokumen pendukung.', badge:'<span class="badge manual">Upload evaluasi SAKIP</span>', cards:['AA','A','Belum','Manual'], target:'AA', formula:'Nilai rata-rata predikat SAKIP perguruan tinggi yang dinilai pada tahun berjalan.', form:'sakip' },
+      iku11c: { crumb:'Tata Kelola / IKU 11c - Integritas Akademik', title:'IKU 11c - Pencegahan dan Penanganan Pelanggaran Integritas Akademik <span class="badge manual">MANUAL</span>', desc:'Direktorat Akademik/Komisi Etik menginput jumlah laporan, tindak lanjut, dan bukti mekanisme integritas akademik.', badge:'<span class="badge manual">Manual · semakin rendah semakin baik</span>', cards:['0 Laporan','0','Tercapai','Manual'], target:'0 Laporan', formula:'Jumlah laporan pelanggaran integritas akademik pada satu periode.', form:'integritas' },
+      iku11d: { crumb:'Tata Kelola / IKU 11d - Anti Kekerasan/Narkoba/Korupsi', title:'IKU 11d - Pencegahan dan Penanganan Anti Kekerasan, Anti Narkoba, dan Anti Korupsi <span class="badge manual">MANUAL</span>', desc:'Satgas/SPI/Kemahasiswaan menginput kegiatan rencana dan realisasi beserta bukti implementasi.', badge:'<span class="badge manual">Manual · Validasi Satgas/SPI</span>', cards:['100%','80%','80%','Manual'], target:'100%', formula:'Jumlah kegiatan pencegahan dan penanganan yang terlaksana / total kegiatan yang direncanakan × 100%.', form:'pencegahan' },
+      iku12: { crumb:'Tata Kelola / IKU 12 - Kesejahteraan Dosen', title:'IKU 12 - Ketersediaan Perencanaan Strategis Peningkatan Kesejahteraan Dosen <span class="badge manual">MANUAL</span>', desc:'Direktorat SDM/Perencanaan mengunggah dokumen resmi yang memuat kebijakan, program, target, dan pendanaan kesejahteraan dosen.', badge:'<span class="badge manual">Upload dokumen resmi</span>', cards:['1 Dokumen','1 Dokumen','Tercapai','Manual'], target:'1 Dokumen', formula:'Dokumen perencanaan peningkatan kesejahteraan dosen.', form:'dokumen' }
+    };
+
+    function genericContent(id, cfg) {
+      const formTitle = {
+        dosen:'Input Rekognisi Dosen', kerjasama:'Input Luaran Kerja Sama/Hilirisasi', sdgs:'Input Program/Kegiatan SDGs', kebijakan:'Input Keterlibatan Penyusunan Kebijakan', zi:'Input Usulan Zona Integritas', opini:'Upload Opini Laporan Keuangan', sakip:'Upload Hasil Evaluasi SAKIP', integritas:'Input Laporan Integritas Akademik', pencegahan:'Input Kegiatan Pencegahan/Penanganan', dokumen:'Upload Dokumen Perencanaan'
+      }[cfg.form] || 'Input Data IKU';
+      const fields = {
+        dosen:['NIDN/NUPTK','Nama Dosen','Jenis Rekognisi','Institusi/Negara'],
+        kerjasama:['Nomor MoU/MoA/PKS','Nama Mitra','Jenis Luaran','Status Hilirisasi'],
+        sdgs:['Nama Program/Kegiatan','Jenis Kegiatan','Sasaran SDGs','Penerima Manfaat'],
+        kebijakan:['Nama SDM','Jenis Kebijakan','Instansi Penyusun','Bentuk Keterlibatan'],
+        zi:['Nama Unit Kerja','Jenis Usulan','Tanggal Pengajuan','Nomor Surat'],
+        opini:['Tahun Laporan','Auditor','Opini','Nomor Laporan Audit'],
+        sakip:['Tahun Evaluasi','Nilai Akhir','Predikat','Evaluator'],
+        integritas:['Jumlah Laporan Masuk','Jumlah Diverifikasi','Jumlah Ditindaklanjuti','Jenis Pelanggaran'],
+        pencegahan:['Jenis Program','Nama Kegiatan','Tanggal Pelaksanaan','Jumlah Peserta'],
+        dokumen:['Nama Dokumen','Jenis Dokumen','Nomor Pengesahan','Periode Berlaku']
+      }[cfg.form] || ['Field 1','Field 2','Field 3','Field 4'];
+      return `
+        <div class="card">
+          <div class="tabs"><div class="tab active">Input Data</div><div class="tab">Eviden</div><div class="tab">Validasi Direktorat</div><div class="tab">Riwayat</div></div>
+          <div class="card-title"><h3>${formTitle}</h3><span class="badge manual">Input Unit</span></div>
+          <div class="form-grid">
+            ${fields.map(f => `<div class="field"><label>${f} <span style="color:var(--red)">*</span></label><input placeholder="Masukkan ${f.toLowerCase()}" /></div>`).join('')}
+          </div>
+          <div class="form-grid" style="margin-top:14px">
+            <div class="field"><label>Deskripsi / Catatan</label><textarea placeholder="Tuliskan uraian singkat capaian dan relevansinya terhadap IKU"></textarea></div>
+            <div class="field"><label>Eviden Pendukung</label><div class="upload">☁ Upload PDF, JPG, PNG, XLSX<br><span class="small muted">SK, laporan, MoU, sertifikat, dokumen resmi</span></div></div>
+          </div>
+          <div class="actions"><button class="btn">Simpan Draft</button><button class="btn primary">Ajukan ke Direktorat</button></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><h3>Data yang Sudah Diinput</h3><span class="badge draft">3 draft</span></div>
+          <table><thead><tr><th>No</th><th>Judul / Subjek</th><th>Unit</th><th>Status</th><th>Eviden</th><th>Aksi</th></tr></thead>
+          <tbody><tr><td>1</td><td>Contoh data ${formTitle}</td><td>Fakultas Teknik</td><td><span class="badge draft">Draft</span></td><td>2 file</td><td><button class="btn ghost">Kelola</button></td></tr>
+          <tr><td>2</td><td>Contoh data terverifikasi</td><td>Fakultas Teknik</td><td><span class="badge valid">Valid Direktorat</span></td><td>4 file</td><td><button class="btn ghost">Lihat</button></td></tr></tbody></table>
+        </div>`;
+    }
+
+    function readOnlyTable(type) {
+      if (type === 'publikasi') return `<div class="card"><div class="card-title"><h3>Data Publikasi Otomatis</h3><span class="badge auto">Read-only</span></div><table><thead><tr><th>Judul</th><th>DOI</th><th>Indeks</th><th>Kuartil</th><th>Kolaborasi</th><th>Bobot</th></tr></thead><tbody><tr><td>Smart Agriculture Model for Wetlands</td><td>10.1234/demo</td><td>Scopus</td><td>Q1</td><td>Ya</td><td>1,25</td></tr><tr><td>Renewable Energy Optimization</td><td>10.5678/demo</td><td>WoS</td><td>Top Tier</td><td>Tidak</td><td>1,20</td></tr></tbody></table><div class="actions"><button class="btn ghost">Ajukan Koreksi Metadata</button></div></div>`;
+      if (type === 'keuangan') return `<div class="card"><div class="card-title"><h3>Rincian Pendapatan Non-UKT</h3><span class="badge auto">Read-only SIM Keuangan</span></div><table class="readonly-table"><tbody><tr><td>Pendapatan Riset dan Inovasi</td><td>Rp 18.200.000.000</td></tr><tr><td>Pendapatan Kerja Sama dan Layanan</td><td>Rp 23.450.000.000</td></tr><tr><td>Pendapatan Unit Bisnis</td><td>Rp 12.100.000.000</td></tr><tr><td>Filantropi Resmi</td><td>Rp 3.000.000.000</td></tr><tr><td>Total Pendapatan PT</td><td>Rp 350.000.000.000</td></tr><tr><td><strong>Realisasi IKU 9</strong></td><td><strong>16,20%</strong></td></tr></tbody></table></div>`;
+    }
+
+    function setCards(values) {
+      const labels = ['Target 2026','Realisasi','Capaian Target','Update / Mode'];
+      const bubbles = ['blue-bubble','green-bubble','yellow-bubble','blue-bubble'];
+      document.getElementById('summaryCards').innerHTML = values.map((v,i) => `<div class="mini-card"><div><div class="label">${labels[i]}</div><div class="value">${v}</div></div><div class="icon-bubble ${bubbles[i]}">${['🎯','✓','↗','⟳'][i]}</div></div>`).join('');
+    }
+
+    function updateTarget(target) {
+      document.getElementById('targetList').innerHTML = `<div class="target-row"><span>Target Tahunan</span><strong>${target}</strong></div><div class="target-row"><span>TW1</span><strong>25%</strong></div><div class="target-row"><span>TW2</span><strong>50%</strong></div><div class="target-row"><span>TW3</span><strong>75%</strong></div><div class="target-row"><span>TW4</span><strong>100%</strong></div>`;
+    }
+
+    document.querySelectorAll('[data-iku]').forEach(item => {
+      item.addEventListener('click', () => {
+        const id = item.dataset.iku;
+        const cfg = configs[id];
+        document.querySelectorAll('[data-iku]').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        document.querySelectorAll('.iku-section').forEach(s => s.classList.remove('active'));
+        let section = document.getElementById(id);
+        if (section && !section.innerHTML.trim() && cfg.form) section.innerHTML = genericContent(id, cfg);
+        if (section && !section.innerHTML.trim() && cfg.table) section.innerHTML = readOnlyTable(cfg.table);
+        if (section) section.classList.add('active');
+        document.getElementById('crumbTitle').textContent = cfg.crumb;
+        document.getElementById('pageTitle').innerHTML = cfg.title;
+        document.getElementById('pageDesc').textContent = cfg.desc;
+        document.getElementById('statusBadge').outerHTML = `<span id="statusBadge">${cfg.badge}</span>`;
+        document.getElementById('autoNotice').style.display = cfg.notice ? 'flex' : 'none';
+        setCards(cfg.cards);
+        updateTarget(cfg.target);
+        document.getElementById('formulaText').textContent = cfg.formula;
+      });
+    });
+  </script>
+</body>
+</html>

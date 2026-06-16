@@ -213,6 +213,30 @@ class DatabaseSeeder extends Seeder
                 'satuan'        => 'Predikat',
                 'keterangan'    => 'AA',
             ],
+            [
+                'kode_iku'      => 'IKU 11_INTEGRITAS',
+                'nama_iku'      => 'Pencegahan & Penanganan Pelanggaran Integritas Akademik',
+                'baseline_2025' => 0,
+                'target_2026'   => 0,    // semakin rendah semakin baik (zero tolerance)
+                'satuan'        => 'Laporan',
+                'keterangan'    => 'Jumlah laporan pelanggaran integritas akademik = 0',
+            ],
+            [
+                'kode_iku'      => 'IKU 11_PENCEGAHAN',
+                'nama_iku'      => 'Pencegahan & Penanganan Anti Kekerasan/Narkoba/Korupsi',
+                'baseline_2025' => 80,
+                'target_2026'   => 100,
+                'satuan'        => '%',
+                'keterangan'    => 'Kegiatan terlaksana / direncanakan × 100% (PDF hal.37)',
+            ],
+            [
+                'kode_iku'      => 'IKU 12',
+                'nama_iku'      => 'Ketersediaan Perencanaan Strategis Kesejahteraan Dosen',
+                'baseline_2025' => 1,
+                'target_2026'   => 1,
+                'satuan'        => 'Dokumen',
+                'keterangan'    => 'Dokumen perencanaan kesejahteraan dosen (Permendiktisaintek 52/2025)',
+            ],
         ];
 
         foreach ($ikuData as $iku) {
@@ -325,5 +349,8 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->command->info('✅ Seeder berhasil dijalankan! Seluruh data aktual IKU 1 s.d. IKU 11 sudah disinkronisasikan ke tabel.');
+
+        // Contoh entri input + log sinkronisasi (mock untuk tampilan).
+        $this->call(InputIkuSeeder::class);
     }
 }

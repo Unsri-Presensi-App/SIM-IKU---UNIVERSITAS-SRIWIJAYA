@@ -558,9 +558,18 @@
       {{-- Section: Input Data IKU --}}
       <div class="sb-section-label">Input Data IKU</div>
 
+      @php
+        $gTalenta    = request()->routeIs('iku.satu','iku.dua','iku.tiga','iku.empat');
+        $gInovasi    = request()->routeIs('iku.lima','iku.enam');
+        $gKontribusi = request()->routeIs('iku.tujuh','iku.delapan');
+        $gTata       = request()->routeIs('iku.sembilan','iku.sepuluh','iku.sebelas*','iku.duabelas');
+        $anyIku      = $gTalenta || $gInovasi || $gKontribusi || $gTata;
+        $openTalenta = $gTalenta || !$anyIku; // buka Talenta sbg default bila bukan halaman IKU
+      @endphp
+
       {{-- Grup: Talenta --}}
       <div class="sb-group">
-        <div class="sb-group-head open" data-group="talenta">
+        <div class="sb-group-head {{ $openTalenta ? 'open' : '' }}" data-group="talenta">
           <span class="sb-item-icon">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -574,7 +583,7 @@
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </div>
-        <div class="sb-children" id="group-talenta">
+        <div class="sb-children {{ $openTalenta ? '' : 'closed' }}" id="group-talenta">
           <a href="{{ route('iku.satu') }}"
              class="sb-child {{ request()->routeIs('iku.satu') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
@@ -601,7 +610,7 @@
 
       {{-- Grup: Inovasi --}}
       <div class="sb-group">
-        <div class="sb-group-head" data-group="inovasi">
+        <div class="sb-group-head {{ $gInovasi ? 'open' : '' }}" data-group="inovasi">
           <span class="sb-item-icon">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="3"/>
@@ -613,7 +622,7 @@
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </div>
-        <div class="sb-children closed" id="group-inovasi">
+        <div class="sb-children {{ $gInovasi ? '' : 'closed' }}" id="group-inovasi">
           <a href="{{ route('iku.lima') }}"
              class="sb-child {{ request()->routeIs('iku.lima') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
@@ -629,7 +638,7 @@
 
       {{-- Grup: Kontribusi Masyarakat --}}
       <div class="sb-group">
-        <div class="sb-group-head" data-group="kontribusi">
+        <div class="sb-group-head {{ $gKontribusi ? 'open' : '' }}" data-group="kontribusi">
           <span class="sb-item-icon">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -641,7 +650,7 @@
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </div>
-        <div class="sb-children closed" id="group-kontribusi">
+        <div class="sb-children {{ $gKontribusi ? '' : 'closed' }}" id="group-kontribusi">
           <a href="{{ route('iku.tujuh') }}"
              class="sb-child {{ request()->routeIs('iku.tujuh') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
@@ -657,7 +666,7 @@
 
       {{-- Grup: Tata Kelola --}}
       <div class="sb-group">
-        <div class="sb-group-head" data-group="tatakelola">
+        <div class="sb-group-head {{ $gTata ? 'open' : '' }}" data-group="tatakelola">
           <span class="sb-item-icon">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -668,7 +677,7 @@
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </div>
-        <div class="sb-children closed" id="group-tatakelola">
+        <div class="sb-children {{ $gTata ? '' : 'closed' }}" id="group-tatakelola">
           <a href="{{ route('iku.sembilan') }}"
              class="sb-child {{ request()->routeIs('iku.sembilan') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
@@ -679,24 +688,28 @@
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 10 – Zona Integritas</span>
           </a>
-          <a href="{{ route('iku.sebelas') }}"
-             class="sb-child {{ request()->routeIs('iku.sebelas') ? 'active' : '' }}">
+          <a href="{{ route('iku.sebelas.a') }}"
+             class="sb-child {{ request()->routeIs('iku.sebelas.a') || request()->routeIs('iku.sebelas') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 11a – Opini Keuangan</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.sebelas.b') }}"
+             class="sb-child {{ request()->routeIs('iku.sebelas.b') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 11b – SAKIP</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.sebelas.c') }}"
+             class="sb-child {{ request()->routeIs('iku.sebelas.c') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 11c – Integritas Akademik</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.sebelas.d') }}"
+             class="sb-child {{ request()->routeIs('iku.sebelas.d') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 11d – Anti Kekerasan / Korupsi</span>
           </a>
-          <a href="#" class="sb-child">
+          <a href="{{ route('iku.duabelas') }}"
+             class="sb-child {{ request()->routeIs('iku.duabelas') ? 'active' : '' }}">
             <span class="sb-child-dot"></span>
             <span class="sb-child-label">IKU 12 – Kesejahteraan Dosen</span>
           </a>

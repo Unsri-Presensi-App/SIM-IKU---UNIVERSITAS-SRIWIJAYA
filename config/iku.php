@@ -1,0 +1,317 @@
+<?php
+
+/**
+ * Registri metadata seluruh IKU SIM-IKU UNSRI.
+ * Sumber tunggal kebenaran (single source of truth) untuk:
+ *  - tipe data (otomatis/hybrid/manual)
+ *  - dimensi (talenta/inovasi/kontribusi/tata_kelola)
+ *  - judul, deskripsi, badge, formula (mengacu mockup dosen + PDF Kepmen 358)
+ *  - field form input per IKU (untuk IKU manual/hybrid)
+ *
+ * Dipakai oleh InputIkuController & blade agar tidak ada hardcode tersebar.
+ * Angka baseline/target TIDAK disimpan di sini — itu di tabel target_iku (DB).
+ */
+
+return [
+
+    // ── TALENTA ────────────────────────────────────────────
+    '1' => [
+        'kode'      => '1',
+        'route'     => 'iku.satu',
+        'dimensi'   => 'talenta',
+        'tipe'      => 'otomatis',
+        'nama'      => 'Angka Efisiensi Edukasi Perguruan Tinggi (AEE PT)',
+        'judul'     => 'IKU 1 - Angka Efisiensi Edukasi Perguruan Tinggi (AEE PT)',
+        'desc'      => 'Data diperoleh otomatis dari SIM Akademik. Unit tidak perlu melakukan input, menarik data, atau mengubah angka perhitungan.',
+        'badge'     => 'Data otomatis · Tidak perlu input',
+        'satuan'    => '%',
+        'sumber'    => 'API Data Lake / SIM Akademik',
+        'formula'   => 'AEE PT = rata-rata tingkat pencapaian AEE setiap program pendidikan. Data otomatis dari SIM Akademik.',
+        'fields'    => [],
+    ],
+
+    '2' => [
+        'kode'      => '2',
+        'route'     => 'iku.dua',
+        'dimensi'   => 'talenta',
+        'tipe'      => 'hybrid',
+        'nama'      => 'Persentase Lulusan Bekerja, Berwirausaha, atau Melanjutkan Studi',
+        'judul'     => 'IKU 2 - Persentase Lulusan Bekerja, Berwirausaha, atau Melanjutkan Studi',
+        'desc'      => 'Data utama berasal dari Tracer Study. Unit/CDC dapat melengkapi responden yang belum lengkap dan mengunggah bukti pendukung.',
+        'badge'     => 'Data tracer · Perlu pelengkapan',
+        'satuan'    => '%',
+        'sumber'    => 'Tracer Study + pelengkap manual',
+        'formula'   => 'IKU 2 = Σ responden valid × bobot / total responden tracer × 100%. Responden minimum mengikuti rumus Slovin.',
+        'form_title' => 'Input Manual / Pelengkap Responden',
+        'fields'    => [
+            ['name' => 'nim',        'label' => 'NIM',                  'type' => 'text'],
+            ['name' => 'nama',       'label' => 'Nama Lengkap',         'type' => 'text'],
+            ['name' => 'status',     'label' => 'Status Saat Ini',      'type' => 'select', 'options' => ['Bekerja', 'Berwirausaha', 'Melanjutkan Studi']],
+            ['name' => 'penghasilan','label' => 'Penghasilan / Bukti',  'type' => 'text'],
+        ],
+    ],
+
+    '3' => [
+        'kode'      => '3',
+        'route'     => 'iku.tiga',
+        'dimensi'   => 'talenta',
+        'tipe'      => 'hybrid',
+        'nama'      => 'Mahasiswa Berkegiatan/Meraih Prestasi di Luar Program Studi',
+        'judul'     => 'IKU 3 - Mahasiswa Berkegiatan/Meraih Prestasi di Luar Program Studi',
+        'desc'      => 'Data otomatis dari SIM Kemahasiswaan dan SIM Akademik, ditambah input manual untuk capaian yang belum tersedia di sistem.',
+        'badge'     => 'Menunggu Validasi Direktorat Kemahasiswaan',
+        'satuan'    => '%',
+        'sumber'    => 'SIM Kemahasiswaan + manual',
+        'formula'   => 'IKU 3 = Σ mahasiswa terkontribusi × bobot / total mahasiswa aktif D1–S1 × 100%.',
+        'form_title' => 'Tambah Data Manual',
+        'fields'    => [
+            ['name' => 'nim',     'label' => 'NIM',           'type' => 'text'],
+            ['name' => 'jenis',   'label' => 'Jenis Capaian', 'type' => 'select', 'options' => ['Prestasi', 'Kegiatan Luar Prodi']],
+            ['name' => 'tingkat', 'label' => 'Tingkat',       'type' => 'select', 'options' => ['Internasional', 'Nasional', 'Provinsi']],
+            ['name' => 'peringkat','label' => 'Peringkat / SKS','type' => 'text'],
+        ],
+    ],
+
+    '4' => [
+        'kode'      => '4',
+        'route'     => 'iku.empat',
+        'dimensi'   => 'talenta',
+        'tipe'      => 'hybrid',
+        'nama'      => 'Persentase Dosen Mendapatkan Rekognisi Internasional',
+        'judul'     => 'IKU 4 - Persentase Dosen Mendapatkan Rekognisi Internasional',
+        'desc'      => 'Unit menginput rekognisi dosen yang belum tersedia di SIM SDM/SIM Riset. Bukti divalidasi Direktorat SDM atau Riset.',
+        'badge'     => 'Hybrid · Validasi SDM/Riset',
+        'satuan'    => '%',
+        'sumber'    => 'SIM SDM/Riset + manual',
+        'formula'   => 'Jumlah dosen dengan NUPTK yang mendapat rekognisi internasional / total dosen PT × 100%.',
+        'form_title' => 'Input Rekognisi Dosen',
+        'fields'    => [
+            ['name' => 'nidn',    'label' => 'NIDN/NUPTK',        'type' => 'text'],
+            ['name' => 'nama',    'label' => 'Nama Dosen',        'type' => 'text'],
+            ['name' => 'jenis',   'label' => 'Jenis Rekognisi',   'type' => 'text'],
+            ['name' => 'institusi','label' => 'Institusi/Negara',  'type' => 'text'],
+        ],
+    ],
+
+    // ── INOVASI ────────────────────────────────────────────
+    '5' => [
+        'kode'      => '5',
+        'route'     => 'iku.lima',
+        'dimensi'   => 'inovasi',
+        'tipe'      => 'hybrid',
+        'nama'      => 'Luaran Hasil Kerja Sama dan Hilirisasi',
+        'judul'     => 'IKU 5 - Luaran Hasil Kerja Sama dan Hilirisasi',
+        'desc'      => 'Data kerja sama berasal dari SIM Kerja Sama. Unit menginput luaran dan bukti pemanfaatan/hilirisasi oleh mitra.',
+        'badge'     => 'Hybrid · Validasi Kerja Sama/Riset',
+        'satuan'    => '%',
+        'sumber'    => 'SIM Kerja Sama + manual',
+        'formula'   => 'Jumlah luaran hasil kerja sama PT dan mitra / total kerja sama perguruan tinggi × 100%.',
+        'form_title' => 'Input Luaran Kerja Sama/Hilirisasi',
+        'fields'    => [
+            ['name' => 'nomor_mou','label' => 'Nomor MoU/MoA/PKS', 'type' => 'text'],
+            ['name' => 'mitra',    'label' => 'Nama Mitra',        'type' => 'text'],
+            ['name' => 'jenis',    'label' => 'Jenis Luaran',      'type' => 'text'],
+            ['name' => 'status',   'label' => 'Status Hilirisasi', 'type' => 'text'],
+        ],
+    ],
+
+    '6' => [
+        'kode'      => '6',
+        'route'     => 'iku.enam',
+        'dimensi'   => 'inovasi',
+        'tipe'      => 'otomatis',
+        'nama'      => 'Publikasi Bereputasi Internasional Scopus/WoS',
+        'judul'     => 'IKU 6 - Publikasi Bereputasi Internasional Scopus/WoS',
+        'desc'      => 'Data publikasi diperoleh otomatis dari SIM Riset, SINTA, Scopus, atau WoS. Unit hanya dapat mengajukan koreksi metadata.',
+        'badge'     => 'Data publikasi otomatis',
+        'satuan'    => 'Artikel',
+        'sumber'    => 'SIM Riset / SINTA / Scopus / WoS',
+        'formula'   => 'Σ publikasi per kategori × bobot / total publikasi PT × 100%.',
+        'fields'    => [],
+    ],
+
+    // ── KONTRIBUSI MASYARAKAT ──────────────────────────────
+    '7' => [
+        'kode'      => '7',
+        'route'     => 'iku.tujuh',
+        'dimensi'   => 'kontribusi',
+        'tipe'      => 'manual',
+        'nama'      => 'Keterlibatan PT dalam SDGs',
+        'judul'     => 'IKU 7 - Keterlibatan PT dalam SDG 1, SDG 4, SDG 17, dan 2 SDGs Pilihan',
+        'desc'      => 'Unit menginput program/kegiatan SDGs, output, penerima manfaat, mitra, dan bukti pendukung. Validasi oleh Direktorat Perencanaan/Pengabdian.',
+        'badge'     => 'Draft · Input Unit',
+        'satuan'    => '%',
+        'sumber'    => 'Input unit',
+        'formula'   => 'Jumlah program/kegiatan PT yang berkontribusi pada SDGs wajib dan pilihan / total program SDGs PT × 100%.',
+        'form_title' => 'Input Program/Kegiatan SDGs',
+        'fields'    => [
+            ['name' => 'nama_program', 'label' => 'Nama Program/Kegiatan', 'type' => 'text'],
+            ['name' => 'jenis',        'label' => 'Jenis Kegiatan',        'type' => 'text'],
+            ['name' => 'sasaran',      'label' => 'Sasaran SDGs',          'type' => 'text'],
+            ['name' => 'penerima',     'label' => 'Penerima Manfaat',      'type' => 'text'],
+        ],
+    ],
+
+    '8' => [
+        'kode'      => '8',
+        'route'     => 'iku.delapan',
+        'dimensi'   => 'kontribusi',
+        'tipe'      => 'manual',
+        'nama'      => 'SDM PT Terlibat dalam Penyusunan Kebijakan',
+        'judul'     => 'IKU 8 - SDM PT Terlibat dalam Penyusunan Kebijakan',
+        'desc'      => 'Unit menginput dosen/peneliti/perekayasa yang terlibat resmi dalam kebijakan nasional, daerah, atau industri.',
+        'badge'     => 'Manual · Validasi SDM/Kerja Sama',
+        'satuan'    => '%',
+        'sumber'    => 'Input unit',
+        'formula'   => 'Jumlah SDM yang terlibat dalam penyusunan kebijakan / total SDM PT dalam satu periode × 100%.',
+        'form_title' => 'Input Keterlibatan Penyusunan Kebijakan',
+        'fields'    => [
+            ['name' => 'nama',     'label' => 'Nama SDM',          'type' => 'text'],
+            ['name' => 'jenis',    'label' => 'Jenis Kebijakan',   'type' => 'text'],
+            ['name' => 'instansi', 'label' => 'Instansi Penyusun', 'type' => 'text'],
+            ['name' => 'bentuk',   'label' => 'Bentuk Keterlibatan','type' => 'text'],
+        ],
+    ],
+
+    // ── TATA KELOLA ────────────────────────────────────────
+    '9' => [
+        'kode'      => '9',
+        'route'     => 'iku.sembilan',
+        'dimensi'   => 'tata_kelola',
+        'tipe'      => 'otomatis',
+        'nama'      => 'Pendapatan Non-Pendidikan/UKT terhadap Total Pendapatan',
+        'judul'     => 'IKU 9 - Pendapatan Non-Pendidikan/UKT terhadap Total Pendapatan',
+        'desc'      => 'Data diperoleh otomatis dari SIM Keuangan. Unit tidak dapat mengubah data pada halaman ini.',
+        'badge'     => 'Data keuangan otomatis',
+        'satuan'    => '%',
+        'sumber'    => 'SIM Keuangan',
+        'formula'   => 'Jumlah pendapatan nonmahasiswa / total pendapatan PT dalam satu periode × 100%.',
+        'fields'    => [],
+    ],
+
+    '10' => [
+        'kode'      => '10',
+        'route'     => 'iku.sepuluh',
+        'dimensi'   => 'tata_kelola',
+        'tipe'      => 'manual',
+        'nama'      => 'Jumlah Usulan Zona Integritas WBK/WBBM',
+        'judul'     => 'IKU 10 - Jumlah Usulan Zona Integritas WBK/WBBM',
+        'desc'      => 'SPI atau unit tata kelola menginput usulan unit kerja menuju WBK/WBBM beserta bukti pengajuan resmi.',
+        'badge'     => 'Manual · Validasi SPI/RB',
+        'satuan'    => 'Unit',
+        'sumber'    => 'Input SPI/RB',
+        'formula'   => 'Jumlah unit kerja yang mengajukan Zona Integritas PT dalam satu periode.',
+        'form_title' => 'Input Usulan Zona Integritas',
+        'fields'    => [
+            ['name' => 'unit',    'label' => 'Nama Unit Kerja',  'type' => 'text'],
+            ['name' => 'jenis',   'label' => 'Jenis Usulan',     'type' => 'select', 'options' => ['WBK', 'WBBM']],
+            ['name' => 'tanggal', 'label' => 'Tanggal Pengajuan','type' => 'date'],
+            ['name' => 'nomor',   'label' => 'Nomor Surat',      'type' => 'text'],
+        ],
+    ],
+
+    '11a' => [
+        'kode'      => '11a',
+        'route'     => 'iku.sebelas.a',
+        'dimensi'   => 'tata_kelola',
+        'tipe'      => 'manual',
+        'nama'      => 'Opini atas Laporan Keuangan Perguruan Tinggi',
+        'judul'     => 'IKU 11a - Opini atas Laporan Keuangan Perguruan Tinggi',
+        'desc'      => 'Direktorat Keuangan/SPI mengunggah laporan audit resmi dan menginput opini audit tahun berjalan.',
+        'badge'     => 'Upload dokumen audit',
+        'satuan'    => 'Opini',
+        'sumber'    => 'Input Direktorat Keuangan',
+        'formula'   => 'Opini atas laporan keuangan perguruan tinggi.',
+        'form_title' => 'Upload Opini Laporan Keuangan',
+        'fields'    => [
+            ['name' => 'tahun',   'label' => 'Tahun Laporan',      'type' => 'text'],
+            ['name' => 'auditor', 'label' => 'Auditor',            'type' => 'text'],
+            ['name' => 'opini',   'label' => 'Opini',              'type' => 'select', 'options' => ['WTP', 'WDP', 'TW', 'TMP']],
+            ['name' => 'nomor',   'label' => 'Nomor Laporan Audit','type' => 'text'],
+        ],
+    ],
+
+    '11b' => [
+        'kode'      => '11b',
+        'route'     => 'iku.sebelas.b',
+        'dimensi'   => 'tata_kelola',
+        'tipe'      => 'manual',
+        'nama'      => 'Predikat SAKIP Perguruan Tinggi',
+        'judul'     => 'IKU 11b - Predikat SAKIP Perguruan Tinggi',
+        'desc'      => 'Direktorat Perencanaan mengunggah hasil evaluasi SAKIP resmi dan dokumen pendukung.',
+        'badge'     => 'Upload evaluasi SAKIP',
+        'satuan'    => 'Predikat',
+        'sumber'    => 'Input Direktorat Perencanaan',
+        'formula'   => 'Nilai rata-rata predikat SAKIP perguruan tinggi yang dinilai pada tahun berjalan.',
+        'form_title' => 'Upload Hasil Evaluasi SAKIP',
+        'fields'    => [
+            ['name' => 'tahun',     'label' => 'Tahun Evaluasi', 'type' => 'text'],
+            ['name' => 'nilai',     'label' => 'Nilai Akhir',    'type' => 'text'],
+            ['name' => 'predikat',  'label' => 'Predikat',       'type' => 'select', 'options' => ['AA', 'A', 'BB', 'B', 'CC', 'C']],
+            ['name' => 'evaluator', 'label' => 'Evaluator',      'type' => 'text'],
+        ],
+    ],
+
+    '11c' => [
+        'kode'      => '11c',
+        'route'     => 'iku.sebelas.c',
+        'dimensi'   => 'tata_kelola',
+        'tipe'      => 'manual',
+        'nama'      => 'Pencegahan dan Penanganan Pelanggaran Integritas Akademik',
+        'judul'     => 'IKU 11c - Pencegahan dan Penanganan Pelanggaran Integritas Akademik',
+        'desc'      => 'Direktorat Akademik/Komisi Etik menginput jumlah laporan, tindak lanjut, dan bukti mekanisme integritas akademik.',
+        'badge'     => 'Manual · semakin rendah semakin baik',
+        'satuan'    => 'Laporan',
+        'sumber'    => 'Input Komisi Etik',
+        'formula'   => 'Jumlah laporan pelanggaran integritas akademik pada satu periode.',
+        'form_title' => 'Input Laporan Integritas Akademik',
+        'fields'    => [
+            ['name' => 'masuk',          'label' => 'Jumlah Laporan Masuk',     'type' => 'text'],
+            ['name' => 'diverifikasi',   'label' => 'Jumlah Diverifikasi',      'type' => 'text'],
+            ['name' => 'ditindaklanjuti','label' => 'Jumlah Ditindaklanjuti',   'type' => 'text'],
+            ['name' => 'jenis',          'label' => 'Jenis Pelanggaran',        'type' => 'text'],
+        ],
+    ],
+
+    '11d' => [
+        'kode'      => '11d',
+        'route'     => 'iku.sebelas.d',
+        'dimensi'   => 'tata_kelola',
+        'tipe'      => 'manual',
+        'nama'      => 'Pencegahan dan Penanganan Anti Kekerasan, Anti Narkoba, dan Anti Korupsi',
+        'judul'     => 'IKU 11d - Pencegahan dan Penanganan Anti Kekerasan, Anti Narkoba, dan Anti Korupsi',
+        'desc'      => 'Satgas/SPI/Kemahasiswaan menginput kegiatan rencana dan realisasi beserta bukti implementasi.',
+        'badge'     => 'Manual · Validasi Satgas/SPI',
+        'satuan'    => '%',
+        'sumber'    => 'Input Satgas/SPI',
+        'formula'   => 'Jumlah kegiatan pencegahan dan penanganan yang terlaksana / total kegiatan yang direncanakan × 100%.',
+        'form_title' => 'Input Kegiatan Pencegahan/Penanganan',
+        'fields'    => [
+            ['name' => 'jenis',    'label' => 'Jenis Program',      'type' => 'select', 'options' => ['Anti Kekerasan', 'Anti Narkoba', 'Anti Korupsi']],
+            ['name' => 'nama',     'label' => 'Nama Kegiatan',      'type' => 'text'],
+            ['name' => 'tanggal',  'label' => 'Tanggal Pelaksanaan','type' => 'date'],
+            ['name' => 'peserta',  'label' => 'Jumlah Peserta',     'type' => 'text'],
+        ],
+    ],
+
+    '12' => [
+        'kode'      => '12',
+        'route'     => 'iku.duabelas',
+        'dimensi'   => 'tata_kelola',
+        'tipe'      => 'manual',
+        'nama'      => 'Ketersediaan Perencanaan Strategis Peningkatan Kesejahteraan Dosen',
+        'judul'     => 'IKU 12 - Ketersediaan Perencanaan Strategis Peningkatan Kesejahteraan Dosen',
+        'desc'      => 'Direktorat SDM/Perencanaan mengunggah dokumen resmi yang memuat kebijakan, program, target, dan pendanaan kesejahteraan dosen.',
+        'badge'     => 'Upload dokumen resmi',
+        'satuan'    => 'Dokumen',
+        'sumber'    => 'Input Direktorat SDM',
+        'formula'   => 'Dokumen perencanaan peningkatan kesejahteraan dosen.',
+        'form_title' => 'Upload Dokumen Perencanaan',
+        'fields'    => [
+            ['name' => 'nama',   'label' => 'Nama Dokumen',     'type' => 'text'],
+            ['name' => 'jenis',  'label' => 'Jenis Dokumen',    'type' => 'text'],
+            ['name' => 'nomor',  'label' => 'Nomor Pengesahan', 'type' => 'text'],
+            ['name' => 'periode','label' => 'Periode Berlaku',  'type' => 'text'],
+        ],
+    ],
+];

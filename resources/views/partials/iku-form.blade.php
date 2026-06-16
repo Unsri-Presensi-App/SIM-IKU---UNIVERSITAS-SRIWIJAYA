@@ -51,7 +51,7 @@
 
   @if($canInput)
   <div class="cp">
-    <form action="{{ route('input.store', $iku_meta['kode']) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('input.store', ['kode' => $iku_meta['kode']]) }}" method="POST" enctype="multipart/form-data">
       @csrf
       <input type="hidden" name="tahun" value="{{ date('Y') }}">
       <input type="hidden" name="semester" value="1">
